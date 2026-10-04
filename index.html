@@ -108,11 +108,11 @@
       al=false;
       const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000);
       dV.textContent=String(d).padStart(2,'0');hV.textContent=String(h).padStart(2,'0');mV.textContent=String(m).padStart(2,'0');
-      wsD.textContent=d;wmD.textContent=d;wmH.textContent=h;wmM.textContent=m;
-    }
-    tIn.addEventListener('change',()=>{hpt();upd();});tIn.addEventListener('input',upd);eIn.addEventListener('input',upd);
-    mdC.addEventListener('click',()=>{hpt();mdB.classList.remove('active');setTimeout(()=>md.style.display="none",200);});
-    setInterval(upd,1000);upd();
+      wsD.textContent=d;wmD.textContent=d;wmH.textContent=h;wmM.textContent=m;wmS.textContent=s;
+}
+tIn.addEventListener('change',()=>{hpt();upd();});tIn.addEventListener('input',upd);eIn.addEventListener('input',upd);
+mdC.addEventListener('click',()=>{hpt();mdB.classList.remove('active');setTimeout(()=>md.style.display="none",200);});
+setInterval(upd,1000);upd();
   </script>
 </body>
 </html>
