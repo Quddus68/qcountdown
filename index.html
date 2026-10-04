@@ -4,283 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Countdown</title>
-
-  <!-- PWA Capabilities for iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Countdown">
-  
-  <!-- Apple Touch Icon (App Icon on Home Screen) -->
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://w3.org viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22url(%23g)%22/><defs><linearGradient id=%22g%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22><stop offset=%220%25%22 stop-color=%22%232f80ed%22/><stop offset=%22100%25%22 stop-color=%22%2300c6ff%22/></linearGradient></defs><path d=%22M50 25C36.2 25 25 36.2 25 50s11.2 25 25 25 25-11.2 25-25S63.8 25 50 25zm0 9c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm-2 4v12.5l9.5 5.5 1.5-2.5-8-4.5V38h-3z%22 fill=%22white%22/></svg>">
-
-  <!-- Inter Font -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://w3.org viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22url(%23g)%22/><defs><linearGradient id=%22g%22><stop offset=%220%25%22 stop-color=%22%232f80ed%22/><stop offset=%22100%25%22 stop-color=%22%2300c6ff%22/></linearGradient></defs><path d=%22M50 25C36.2 25 25 36.2 25 50s11.2 25 25 25 25-11.2 25-25S63.8 25 50 25zm0 9c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm-2 4v12.5l9.5 5.5 1.5-2.5-8-4.5V38h-3z%22 fill=%22white%22/></svg>">
   <link rel="stylesheet" href="https://googleapis.com">
-
   <style>
-    :root {
-      --bg-color: #f2f2f7;
-      --card-bg: #ffffff;
-      --text-main: #000000;
-      --text-sub: #8e8e93;
-      --accent: #007af5;
-      --accent-rgb: 0, 122, 245;
-      --border: #e5e5ea;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-color: #000000;
-        --card-bg: #1c1c1e;
-        --text-main: #ffffff;
-        --text-sub: #8e8e93;
-        --accent: #0a84ff;
-        --accent-rgb: 10, 132, 255;
-        --border: #2c2c2e;
-      }
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px) 16px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    header {
-      width: 100%;
-      max-width: 400px;
-      padding: 20px 0 10px 0;
-      text-align: left;
-    }
-
-    header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 14px;
-      padding: 20px;
-      width: 100%;
-      max-width: 400px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    }
-
-    .input-group {
-      margin-bottom: 16px;
-    }
-
-    .input-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-sub);
-      text-transform: uppercase;
-      margin-bottom: 6px;
-      letter-spacing: 0.3px;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--bg-color);
-      color: var(--text-main);
-      font-size: 16px;
-      font-family: inherit;
-      outline: none;
-    }
-
-    .countdown-display {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 24px auto;
-      max-width: 360px;
-    }
-
-    .time-block {
-      background: rgba(var(--accent-rgb), 0.1);
-      border-radius: 12px;
-      padding: 16px 8px;
-      text-align: center;
-      border: 1px solid rgba(var(--accent-rgb), 0.15);
-    }
-
-    .time-num {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--accent);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .time-label {
-      font-size: 12px;
-      color: var(--text-sub);
-      font-weight: 500;
-      margin-top: 4px;
-    }
-
-    .section-title {
-      width: 100%;
-      max-width: 400px;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text-sub);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      letter-spacing: 0.3px;
-    }
-
-    /* Simulated Widgets Styles */
-    .widget-container {
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .widget-row {
-      display: flex;
-      gap: 16px;
-      width: 100%;
-    }
-
-    .sim-widget {
-      background: linear-gradient(145deg, #1d2731, #0c1014);
-      color: white;
-      border-radius: 22px;
-      position: relative;
-      overflow: hidden;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    }
-
-    .sim-widget.small {
-      width: 155px;
-      height: 155px;
-    }
-
-    .sim-widget.medium {
-      flex: 1;
-      height: 155px;
-    }
-
-    .widget-tag {
-      font-size: 11px;
-      font-weight: 600;
-      color: #0a84ff;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .widget-title {
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-top: 2px;
-    }
-
-    .widget-main-num {
-      font-size: 38px;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .widget-subtext {
-      font-size: 11px;
-      color: #8e8e93;
-    }
-
-    /* Modal Styling */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      padding: 20px;
-    }
-
-    .modal {
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 30px 24px;
-      text-align: center;
-      width: 100%;
-      max-width: 320px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transform: scale(0.9);
-      transition: transform 0.2s ease;
-    }
-
-    .modal.active {
-      transform: scale(1);
-    }
-
-    .modal-icon {
-      font-size: 48px;
-      margin-bottom: 14px;
-    }
-
-    .modal h2 {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    .modal p {
-      color: var(--text-sub);
-      font-size: 15px;
-      margin-bottom: 24px;
-    }
-
-    .modal-btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      width: 100%;
-    }
+    :root { --bg-color: #f2f2f7; --card-bg: #ffffff; --text-main: #000000; --text-sub: #8e8e93; --accent: #007af5; --accent-rgb: 0, 122, 245; --border: #e5e5ea; }
+    @media (prefers-color-scheme: dark) { :root { --bg-color: #000000; --card-bg: #1c1c1e; --text-main: #ffffff; --text-sub: #8e8e93; --accent: #0a84ff; --accent-rgb: 10, 132, 255; --border: #2c2c2e; } }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px) 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    header { width: 100%; max-width: 400px; padding: 20px 0 10px 0; }
+    header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+    .card { background: var(--card-bg); border-radius: 14px; padding: 20px; width: 100%; max-width: 400px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .input-group { margin-bottom: 16px; }
+    .input-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.3px; }
+    input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-color); color: var(--text-main); font-size: 16px; outline: none; }
+    .countdown-display { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px auto; max-width: 360px; }
+    .time-block { background: rgba(var(--accent-rgb), 0.1); border-radius: 12px; padding: 16px 8px; text-align: center; border: 1px solid rgba(var(--accent-rgb), 0.15); }
+    .time-num { font-size: 32px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .time-label { font-size: 12px; color: var(--text-sub); font-weight: 500; margin-top: 4px; }
+    .section-title { width: 100%; max-width: 400px; font-size: 15px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.3px; }
+    .widget-container { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 16px; }
+    .widget-row { display: flex; gap: 16px; width: 100%; }
+    .sim-widget { background: linear-gradient(145deg, #1d2731, #0c1014); color: white; border-radius: 22px; position: relative; overflow: hidden; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .sim-widget.small { width: 155px; height: 155px; }
+    .sim-widget.medium { flex: 1; height: 155px; }
+    .widget-tag { font-size: 11px; font-weight: 600; color: #0a84ff; text-transform: uppercase; letter-spacing: 0.5px; }
+    .widget-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+    .widget-main-num { font-size: 38px; font-weight: 700; line-height: 1; }
+    .widget-subtext { font-size: 11px; color: #8e8e93; }
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
+    .modal { background: var(--card-bg); border-radius: 20px; padding: 30px 24px; text-align: center; width: 100%; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transform: scale(0.9); transition: transform 0.2s ease; }
+    .modal.active { transform: scale(1); }
+    .modal-icon { font-size: 48px; margin-bottom: 14px; }
+    .modal h2 { font-size: 22px; margin-bottom: 8px; }
+    .modal p { color: var(--text-sub); font-size: 15px; margin-bottom: 24px; }
+    .modal-btn { background: var(--accent); color: white; border: none; padding: 12px 28px; border-radius: 12px; font-size: 16px; font-weight: 600; width: 100%; }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>Countdown</h1>
-  </header>
-
+  <header><h1>Countdown</h1></header>
   <div class="card">
     <div class="input-group">
       <label for="event-title">Event Name</label>
@@ -290,62 +54,33 @@
       <label for="target-date">Target Date & Time</label>
       <input type="datetime-local" id="target-date">
     </div>
-
     <div class="countdown-display">
-      <div class="time-block">
-        <div class="time-num" id="d-val">00</div>
-        <div class="time-label">DAYS</div>
-      </div>
-      <div class="time-block">
-        <div class="time-num" id="h-val">00</div>
-        <div class="time-label">HOURS</div>
-      </div>
-      <div class="time-block">
-        <div class="time-num" id="m-val">00</div>
-        <div class="time-label">MINUTES</div>
-      </div>
+      <div class="time-block"><div class="time-num" id="d-val">00</div><div class="time-label">DAYS</div></div>
+      <div class="time-block"><div class="time-num" id="h-val">00</div><div class="time-label">HOURS</div></div>
+      <div class="time-block"><div class="time-num" id="m-val">00</div><div class="time-label">MINUTES</div></div>
     </div>
   </div>
-
   <div class="section-title">Live Widget Preview Simulator</div>
-  
   <div class="widget-container">
     <div class="widget-row">
-      <!-- Small Widget -->
       <div class="sim-widget small">
-        <div>
-          <div class="widget-tag">Days</div>
-          <div class="widget-title" id="w-s-title">Milestone</div>
-        </div>
+        <div><div class="widget-tag">Days</div><div class="widget-title" id="w-s-title">Milestone</div></div>
         <div class="widget-main-num" id="w-s-days">0</div>
         <div class="widget-subtext">Remaining</div>
       </div>
-
-      <!-- Medium Widget -->
       <div class="sim-widget medium">
         <div>
           <div class="widget-tag" id="w-m-title">Milestone Countdown</div>
           <div style="display: flex; align-items: baseline; gap: 12px; margin-top: 14px;">
-            <div>
-              <span class="widget-main-num" id="w-m-days">0</span>
-              <span style="font-size: 13px; color:#8e8e93; margin-left:2px;">d</span>
-            </div>
-            <div>
-              <span class="widget-main-num" style="font-size: 28px;" id="w-m-hours">0</span>
-              <span style="font-size: 13px; color:#8e8e93; margin-left:2px;">h</span>
-            </div>
-            <div>
-              <span class="widget-main-num" style="font-size: 28px;" id="w-m-mins">0</span>
-              <span style="font-size: 13px; color:#8e8e93; margin-left:2px;">m</span>
-            </div>
+            <div><span class="widget-main-num" id="w-m-days">0</span><span style="font-size:13px;color:#8e8e93;margin-left:2px">d</span></div>
+            <div><span class="widget-main-num" style="font-size:28px" id="w-m-hours">0</span><span style="font-size:13px;color:#8e8e93;margin-left:2px">h</span></div>
+            <div><span class="widget-main-num" style="font-size:28px" id="w-m-mins">0</span><span style="font-size:13px;color:#8e8e93;margin-left:2px">m</span></div>
           </div>
         </div>
         <div class="widget-subtext" id="w-m-date">Live tracking</div>
       </div>
     </div>
   </div>
-
-  <!-- Alarm/Alert Modal Overlay -->
   <div class="modal-overlay" id="completion-modal">
     <div class="modal" id="modal-box">
       <div class="modal-icon">🎉</div>
@@ -354,99 +89,30 @@
       <button class="modal-btn" id="modal-close-btn">Awesome</button>
     </div>
   </div>
-
   <script>
-    const targetInput = document.getElementById('target-date');
-    const titleInput = document.getElementById('event-title');
-    
-    const dVal = document.getElementById('d-val');
-    const hVal = document.getElementById('h-val');
-    const mVal = document.getElementById('m-val');
-    
-    const wsTitle = document.getElementById('w-s-title');
-    const wsDays = document.getElementById('w-s-days');
-    
-    const wmTitle = document.getElementById('w-m-title');
-    const wmDays = document.getElementById('w-m-days');
-    const wmHours = document.getElementById('w-m-hours');
-    const wmMins = document.getElementById('w-m-mins');
-    const wmDate = document.getElementById('w-m-date');
-
-    const modal = document.getElementById('completion-modal');
-const modalBox = document.getElementById('modal-box');
-const modalTitle = document.getElementById('modal-title');
-const modalBody = document.getElementById('modal-body');
-const modalCloseBtn = document.getElementById('modal-close-btn');
-let alerted = false;
-function triggerHaptic() {
-if (navigator.vibrate) {
-navigator.vibrate(15);
-}
-}
-// Set Default Target Date safely to exactly 10 days from right now
-const nowInit = new Date();
-nowInit.setDate(nowInit.getDate() + 10);
-// Format date string perfectly for datetime-local native field (YYYY-MM-DDTHH:MM)
-const year = nowInit.getFullYear();
-const month = String(nowInit.getMonth() + 1).padStart(2, '0');
-const day = String(nowInit.getDate()).padStart(2, '0');
-const hoursStr = String(nowInit.getHours()).padStart(2, '0');
-const minsStr = String(nowInit.getMinutes()).padStart(2, '0');
-targetInput.value = ${year}-${month}-${day}T${hoursStr}:${minsStr};
-function updateCountdown() {
-if (!targetInput.value) return;
-const nowTimestamp = Date.now();
-// Read target parsing strictly to capture direct user selection
-const targetTimestamp = Date.parse(targetInput.value);
-if (isNaN(targetTimestamp)) return;
-const difference = targetTimestamp - nowTimestamp;
-const title = titleInput.value || "Milestone";
-wsTitle.textContent = title;
-wmTitle.textContent = title;
-const d = new Date(targetInput.value);
-wmDate.textContent = d.toLocaleDateString(undefined, {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
-if (difference <= 0) {
-dVal.textContent = "00";
-hVal.textContent = "00";
-mVal.textContent = "00";
-wsDays.textContent = "0";
-wmDays.textContent = "0";
-wmHours.textContent = "0";
-wmMins.textContent = "0";
-if (!alerted) {
-alerted = true;
-triggerHaptic();
-modalTitle.textContent = 🎉 ${title}!;
-modalBody.textContent = "The countdown has hit zero!";
-modal.style.display = "flex";
-setTimeout(() => modalBox.classList.add('active'), 10);
-}
-return;
-}
-alerted = false;
-const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-dVal.textContent = String(days).padStart(2, '0');
-hVal.textContent = String(hours).padStart(2, '0');
-mVal.textContent = String(minutes).padStart(2, '0');
-wsDays.textContent = days;
-wmDays.textContent = days;
-wmHours.textContent = hours;
-wmMins.textContent = minutes;
-}
-// Attach listeners
-targetInput.addEventListener('change', () => { triggerHaptic(); updateCountdown(); });
-targetInput.addEventListener('input', () => { updateCountdown(); });
-titleInput.addEventListener('input', updateCountdown);
-modalCloseBtn.addEventListener('click', () => {
-triggerHaptic();
-modalBox.classList.remove('active');
-setTimeout(() => modal.style.display = "none", 200);
-});
-// Run core engine loop actively every single second
-setInterval(updateCountdown, 1000);
-updateCountdown();
- </script>
+    const tIn=document.getElementById('target-date'),eIn=document.getElementById('event-title'),dV=document.getElementById('d-val'),hV=document.getElementById('h-val'),mV=document.getElementById('m-val'),wsT=document.getElementById('w-s-title'),wsD=document.getElementById('w-s-days'),wmT=document.getElementById('w-m-title'),wmD=document.getElementById('w-m-days'),wmH=document.getElementById('w-m-hours'),wmM=document.getElementById('w-m-mins'),wmDt=document.getElementById('w-m-date'),md=document.getElementById('completion-modal'),mdB=document.getElementById('modal-box'),mdT=document.getElementById('modal-title'),mdY=document.getElementById('modal-body'),mdC=document.getElementById('modal-close-btn');
+    let al=false;
+    function hpt(){if(navigator.vibrate)navigator.vibrate(15)}
+    const initD=new Date();initD.setDate(initD.getDate()+10);
+    tIn.value=`${initD.getFullYear()}-${String(initD.getMonth()+1).padStart(2,'0')}-${String(initD.getDate()).padStart(2,'0')}T${String(initD.getHours()).padStart(2,'0')}:${String(initD.getMinutes()).padStart(2,'0')}`;
+    function upd(){
+      if(!tIn.value)return;
+      const diff=Date.parse(tIn.value)-Date.now(),ttl=eIn.value||"Milestone";
+      wsT.textContent=ttl;wmT.textContent=ttl;
+      wmDt.textContent=new Date(tIn.value).toLocaleDateString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+      if(diff<=0){
+        dV.textContent=hV.textContent=mV.textContent="00";wsD.textContent=wmD.textContent=wmH.textContent=wmM.textContent="0";
+        if(!al){al=true;hpt();mdT.textContent=`🎉 ${ttl}!`;mdY.textContent="The countdown has hit zero!";md.style.display="flex";setTimeout(()=>mdB.classList.add('active'),10);}
+        return;
+      }
+      al=false;
+      const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000);
+      dV.textContent=String(d).padStart(2,'0');hV.textContent=String(h).padStart(2,'0');mV.textContent=String(m).padStart(2,'0');
+      wsD.textContent=d;wmD.textContent=d;wmH.textContent=h;wmM.textContent=m;
+    }
+    tIn.addEventListener('change',()=>{hpt();upd();});tIn.addEventListener('input',upd);eIn.addEventListener('input',upd);
+    mdC.addEventListener('click',()=>{hpt();mdB.classList.remove('active');setTimeout(()=>md.style.display="none",200);});
+    setInterval(upd,1000);upd();
+  </script>
 </body>
 </html>
