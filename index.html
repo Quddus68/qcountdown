@@ -95,7 +95,7 @@
       letter-spacing: 0.3px;
     }
 
-    input, select {
+    input {
       width: 100%;
       padding: 12px;
       border-radius: 10px;
@@ -109,8 +109,8 @@
 
     .countdown-display {
       display: grid;
-      grid-template-columns: repeat(3, 110px);
-      justify-content: space-between;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
       margin: 24px auto;
       max-width: 360px;
     }
@@ -166,7 +166,7 @@
     .sim-widget {
       background: linear-gradient(145deg, #1d2731, #0c1014);
       color: white;
-      border-radius: 22px; /* iOS standard corner radius */
+      border-radius: 22px;
       position: relative;
       overflow: hidden;
       padding: 16px;
@@ -284,7 +284,7 @@
   <div class="card">
     <div class="input-group">
       <label for="event-title">Event Name</label>
-      <input type="text" id="event-title" value="My Big Milestone" placeholder="E.g., Vacation!">
+      <input type="text" id="event-title" value="My Big Milestone">
     </div>
     <div class="input-group">
       <label for="target-date">Target Date & Time</label>
@@ -359,7 +359,6 @@
     const targetInput = document.getElementById('target-date');
     const titleInput = document.getElementById('event-title');
     
-    // Elements
     const dVal = document.getElementById('d-val');
     const hVal = document.getElementById('h-val');
     const mVal = document.getElementById('m-val');
@@ -370,20 +369,84 @@
     const wmTitle = document.getElementById('w-m-title');
     const wmDays = document.getElementById('w-m-days');
     const wmHours = document.getElementById('w-m-hours');
+    const wmMins = document.getElementById('w-m-mins');
+    const wmDate = document.getElementById('w-m-date');
 
-      // Input listeners with haptics
-    targetInput.addEventListener('input', () => { triggerHaptic(); updateCountdown(); });
-    titleInput.addEventListener('input', updateCountdown);
-
-    modalCloseBtn.addEventListener('click', () => {
-      triggerHaptic();
-      modalBox.classList.remove('active');
-      setTimeout(() => modal.style.display = "none", 200);
-    });
-
-    // Run core engine loop
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-  </script>
+    const modal = document.getElementById('completion-modal');
+const modalBox = document.getElementById('modal-box');
+const modalTitle = document.getElementById('modal-title');
+const modalBody = document.getElementById('modal-body');
+const modalCloseBtn = document.getElementById('modal-close-btn');
+let alerted = false;
+function triggerHaptic() {
+if (navigator.vibrate) {
+navigator.vibrate(15);
+}
+}
+// Set Default Target Date safely to exactly 10 days from right now
+const nowInit = new Date();
+nowInit.setDate(nowInit.getDate() + 10);
+// Format date string perfectly for datetime-local native field (YYYY-MM-DDTHH:MM)
+const year = nowInit.getFullYear();
+const month = String(nowInit.getMonth() + 1).padStart(2, '0');
+const day = String(nowInit.getDate()).padStart(2, '0');
+const hoursStr = String(nowInit.getHours()).padStart(2, '0');
+const minsStr = String(nowInit.getMinutes()).padStart(2, '0');
+targetInput.value = ${year}-${month}-${day}T${hoursStr}:${minsStr};
+function updateCountdown() {
+if (!targetInput.value) return;
+const nowTimestamp = Date.now();
+// Read target parsing strictly to capture direct user selection
+const targetTimestamp = Date.parse(targetInput.value);
+if (isNaN(targetTimestamp)) return;
+const difference = targetTimestamp - nowTimestamp;
+const title = titleInput.value || "Milestone";
+wsTitle.textContent = title;
+wmTitle.textContent = title;
+const d = new Date(targetInput.value);
+wmDate.textContent = d.toLocaleDateString(undefined, {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+if (difference <= 0) {
+dVal.textContent = "00";
+hVal.textContent = "00";
+mVal.textContent = "00";
+wsDays.textContent = "0";
+wmDays.textContent = "0";
+wmHours.textContent = "0";
+wmMins.textContent = "0";
+if (!alerted) {
+alerted = true;
+triggerHaptic();
+modalTitle.textContent = 🎉 ${title}!;
+modalBody.textContent = "The countdown has hit zero!";
+modal.style.display = "flex";
+setTimeout(() => modalBox.classList.add('active'), 10);
+}
+return;
+}
+alerted = false;
+const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+dVal.textContent = String(days).padStart(2, '0');
+hVal.textContent = String(hours).padStart(2, '0');
+mVal.textContent = String(minutes).padStart(2, '0');
+wsDays.textContent = days;
+wmDays.textContent = days;
+wmHours.textContent = hours;
+wmMins.textContent = minutes;
+}
+// Attach listeners
+targetInput.addEventListener('change', () => { triggerHaptic(); updateCountdown(); });
+targetInput.addEventListener('input', () => { updateCountdown(); });
+titleInput.addEventListener('input', updateCountdown);
+modalCloseBtn.addEventListener('click', () => {
+triggerHaptic();
+modalBox.classList.remove('active');
+setTimeout(() => modal.style.display = "none", 200);
+});
+// Run core engine loop actively every single second
+setInterval(updateCountdown, 1000);
+updateCountdown();
+ </script>
 </body>
 </html>
