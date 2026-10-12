@@ -10,25 +10,25 @@
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22url(%23g)%22/><defs><linearGradient id=%22g%22><stop offset=%220%25%22 stop-color=%22%232f80ed%22/><stop offset=%22100%25%22 stop-color=%22%2300c6ff%22/></linearGradient></defs><path d=%22M50 25C36.2 25 25 36.2 25 50s11.2 25 25 25 25-11.2 25-25S63.8 25 50 25zm0 9c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm-2 4v12.5l9.5 5.5 1.5-2.5-8-4.5V38h-3z%22 fill=%22white%22/></svg>">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <style>
-    :root { --bg-color: #f2f2f7; --card-bg: #ffffff; --text-main: #000000; --text-sub: #8e8e93; --accent: #007af5; --accent-rgb: 0, 122, 245; --border: #e5e5ea; }
-    @media (prefers-color-scheme: dark) { :root { --bg-color: #000000; --card-bg: #1c1c1e; --text-main: #ffffff; --text-sub: #8e8e93; --accent: #0a84ff; --accent-rgb: 10, 132, 255; --border: #2c2c2e; } }
+    :root { color-scheme: dark; --bg-color: #0c1014; --card-bg: #1d2731; --card-grad: linear-gradient(145deg, #1d2731, #0c1014); --text-main: #ffffff; --text-sub: #8e8e93; --accent: #0a84ff; --accent-rgb: 10, 132, 255; --border: rgba(255,255,255,0.1); }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
     input { -webkit-user-select: text; user-select: text; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px) 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
     header { width: 100%; max-width: 400px; padding: 20px 0 10px 0; }
     header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
-    .card { background: var(--card-bg); border-radius: 14px; padding: 20px; width: 100%; max-width: 400px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .card { background: var(--card-grad); border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 20px; width: 100%; max-width: 400px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
     .input-group { margin-bottom: 16px; }
     .input-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.3px; }
-    input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-color); color: var(--text-main); font-size: 16px; outline: none; }
-    .countdown-display { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px auto; max-width: 360px; }
+    input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--text-main); font-size: 16px; outline: none; }
+    .countdown-display { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 24px auto; max-width: 360px; }
     .time-block { background: rgba(var(--accent-rgb), 0.1); border-radius: 12px; padding: 16px 8px; text-align: center; border: 1px solid rgba(var(--accent-rgb), 0.15); }
     .time-num { font-size: 32px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
     .time-label { font-size: 12px; color: var(--text-sub); font-weight: 500; margin-top: 4px; }
+    .share-btn { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(var(--accent-rgb), 0.25); background: rgba(var(--accent-rgb), 0.15); color: var(--accent); font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; }
     .section-title { width: 100%; max-width: 400px; font-size: 15px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.3px; }
     .widget-container { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 16px; }
     .widget-row { display: flex; gap: 16px; width: 100%; }
-    .sim-widget { background: linear-gradient(145deg, #1d2731, #0c1014); color: white; border-radius: 22px; position: relative; overflow: hidden; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .sim-widget { background: linear-gradient(145deg, #1d2731, #0c1014); color: white; border-radius: 22px; position: relative; overflow: hidden; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 24px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.06); }
     .sim-widget.small { width: 155px; height: 155px; }
     .sim-widget.medium { flex: 1; height: 155px; }
     .widget-tag { font-size: 11px; font-weight: 600; color: #0a84ff; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -59,7 +59,9 @@
       <div class="time-block"><div class="time-num" id="d-val">00</div><div class="time-label">DAYS</div></div>
       <div class="time-block"><div class="time-num" id="h-val">00</div><div class="time-label">HOURS</div></div>
       <div class="time-block"><div class="time-num" id="m-val">00</div><div class="time-label">MINUTES</div></div>
+      <div class="time-block"><div class="time-num" id="s-val">00</div><div class="time-label">SECONDS</div></div>
     </div>
+    <button class="share-btn" id="share-btn" type="button">Share this countdown</button>
   </div>
   <div class="section-title">Live Widget Preview Simulator</div>
   <div class="widget-container">
@@ -72,10 +74,11 @@
       <div class="sim-widget medium">
         <div>
           <div class="widget-tag" id="w-m-title">Milestone Countdown</div>
-          <div style="display: flex; align-items: baseline; gap: 12px; margin-top: 14px;">
+          <div style="display: flex; align-items: baseline; gap: 8px; margin-top: 14px;">
             <div><span class="widget-main-num" id="w-m-days">0</span><span style="font-size:13px;color:#8e8e93;margin-left:2px">d</span></div>
-            <div><span class="widget-main-num" style="font-size:28px" id="w-m-hours">0</span><span style="font-size:13px;color:#8e8e93;margin-left:2px">h</span></div>
-            <div><span class="widget-main-num" style="font-size:28px" id="w-m-mins">0</span><span style="font-size:13px;color:#8e8e93;margin-left:2px">m</span></div>
+            <div><span class="widget-main-num" style="font-size:22px" id="w-m-hours">0</span><span style="font-size:12px;color:#8e8e93;margin-left:1px">h</span></div>
+            <div><span class="widget-main-num" style="font-size:22px" id="w-m-mins">0</span><span style="font-size:12px;color:#8e8e93;margin-left:1px">m</span></div>
+            <div><span class="widget-main-num" style="font-size:22px" id="w-m-secs">0</span><span style="font-size:12px;color:#8e8e93;margin-left:1px">s</span></div>
           </div>
         </div>
         <div class="widget-subtext" id="w-m-date">Live tracking</div>
@@ -91,7 +94,7 @@
     </div>
   </div>
   <script>
-    const tIn=document.getElementById('target-date'),eIn=document.getElementById('event-title'),dV=document.getElementById('d-val'),hV=document.getElementById('h-val'),mV=document.getElementById('m-val'),wsT=document.getElementById('w-s-title'),wsD=document.getElementById('w-s-days'),wmT=document.getElementById('w-m-title'),wmD=document.getElementById('w-m-days'),wmH=document.getElementById('w-m-hours'),wmM=document.getElementById('w-m-mins'),wmDt=document.getElementById('w-m-date'),md=document.getElementById('completion-modal'),mdB=document.getElementById('modal-box'),mdT=document.getElementById('modal-title'),mdY=document.getElementById('modal-body'),mdC=document.getElementById('modal-close-btn');
+    const tIn=document.getElementById('target-date'),eIn=document.getElementById('event-title'),dV=document.getElementById('d-val'),hV=document.getElementById('h-val'),mV=document.getElementById('m-val'),wsT=document.getElementById('w-s-title'),wsD=document.getElementById('w-s-days'),wmT=document.getElementById('w-m-title'),wmD=document.getElementById('w-m-days'),wmH=document.getElementById('w-m-hours'),wmM=document.getElementById('w-m-mins'),wmDt=document.getElementById('w-m-date'),md=document.getElementById('completion-modal'),mdB=document.getElementById('modal-box'),mdT=document.getElementById('modal-title'),mdY=document.getElementById('modal-body'),mdC=document.getElementById('modal-close-btn'),sV=document.getElementById('s-val'),wmS=document.getElementById('w-m-secs');
     let al=false;
     const KEY='countdown',DKEY='countdown-dismissed';
     function hpt(){if(navigator.vibrate)navigator.vibrate(15)}
@@ -103,6 +106,13 @@
     tIn.value=`${initD.getFullYear()}-${String(initD.getMonth()+1).padStart(2,'0')}-${String(initD.getDate()).padStart(2,'0')}T${String(initD.getHours()).padStart(2,'0')}:${String(initD.getMinutes()).padStart(2,'0')}`;
     // Restore saved values (overrides defaults)
     try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){if(s.t!=null)eIn.value=s.t;if(s.d)tIn.value=s.d;}}catch(e){}
+    // Shared link (?name=...&date=YYYY-MM-DDTHH:MM) overrides saved values, then the URL is cleaned
+    try{
+      const p=new URLSearchParams(location.search),pn=p.get('name'),pd=p.get('date');
+      if(pn!==null)eIn.value=pn.slice(0,60);
+      if(pd&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(pd))tIn.value=pd;
+      if(pn!==null||pd)history.replaceState(null,'',location.pathname);
+    }catch(e){}
 
     function upd(){
       if(!tIn.value)return;
@@ -111,7 +121,7 @@
       wsT.textContent=ttl;wmT.textContent=ttl;
       wmDt.textContent=new Date(tIn.value).toLocaleDateString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
       if(diff<=0){
-        dV.textContent=hV.textContent=mV.textContent="00";wsD.textContent=wmD.textContent=wmH.textContent=wmM.textContent="0";
+        dV.textContent=hV.textContent=mV.textContent=sV.textContent="00";wsD.textContent=wmD.textContent=wmH.textContent=wmM.textContent=wmS.textContent="0";
         if(!al){
           al=true;
           if(getDismissed()!==tIn.value){
@@ -121,12 +131,25 @@
         return;
       }
       al=false;
-      const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000);
-      dV.textContent=String(d).padStart(2,'0');hV.textContent=String(h).padStart(2,'0');mV.textContent=String(m).padStart(2,'0');
-      wsD.textContent=d;wmD.textContent=d;wmH.textContent=h;wmM.textContent=m;
+      const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+      dV.textContent=String(d).padStart(2,'0');hV.textContent=String(h).padStart(2,'0');mV.textContent=String(m).padStart(2,'0');sV.textContent=String(s).padStart(2,'0');
+      wsD.textContent=d;wmD.textContent=d;wmH.textContent=h;wmM.textContent=m;wmS.textContent=s;
     }
     tIn.addEventListener('change',()=>{hpt();upd();});tIn.addEventListener('input',upd);eIn.addEventListener('input',upd);
     mdC.addEventListener('click',()=>{hpt();setDismissed(tIn.value);mdB.classList.remove('active');setTimeout(()=>md.style.display="none",200);});
+    const shB=document.getElementById('share-btn');
+    shB.addEventListener('click',async()=>{
+      hpt();
+      const u=location.href.split(/[?#]/)[0]+'?name='+encodeURIComponent(eIn.value)+'&date='+encodeURIComponent(tIn.value);
+      try{
+        if(navigator.share){await navigator.share({title:eIn.value||'Countdown',url:u});return;}
+        await navigator.clipboard.writeText(u);
+        shB.textContent='Link copied!';setTimeout(()=>shB.textContent='Share this countdown',1800);
+      }catch(e){
+        if(e&&e.name==='AbortError')return;
+        window.prompt('Copy this link:',u);
+      }
+    });
     setInterval(upd,1000);upd();
   </script>
 </body>
