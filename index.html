@@ -7,12 +7,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Countdown">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://w3.org viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22url(%23g)%22/><defs><linearGradient id=%22g%22><stop offset=%220%25%22 stop-color=%22%232f80ed%22/><stop offset=%22100%25%22 stop-color=%22%2300c6ff%22/></linearGradient></defs><path d=%22M50 25C36.2 25 25 36.2 25 50s11.2 25 25 25 25-11.2 25-25S63.8 25 50 25zm0 9c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm-2 4v12.5l9.5 5.5 1.5-2.5-8-4.5V38h-3z%22 fill=%22white%22/></svg>">
-  <link rel="stylesheet" href="https://googleapis.com">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22url(%23g)%22/><defs><linearGradient id=%22g%22><stop offset=%220%25%22 stop-color=%22%232f80ed%22/><stop offset=%22100%25%22 stop-color=%22%2300c6ff%22/></linearGradient></defs><path d=%22M50 25C36.2 25 25 36.2 25 50s11.2 25 25 25 25-11.2 25-25S63.8 25 50 25zm0 9c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm-2 4v12.5l9.5 5.5 1.5-2.5-8-4.5V38h-3z%22 fill=%22white%22/></svg>">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <style>
     :root { --bg-color: #f2f2f7; --card-bg: #ffffff; --text-main: #000000; --text-sub: #8e8e93; --accent: #007af5; --accent-rgb: 0, 122, 245; --border: #e5e5ea; }
     @media (prefers-color-scheme: dark) { :root { --bg-color: #000000; --card-bg: #1c1c1e; --text-main: #ffffff; --text-sub: #8e8e93; --accent: #0a84ff; --accent-rgb: 10, 132, 255; --border: #2c2c2e; } }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
+    input { -webkit-user-select: text; user-select: text; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px) 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
     header { width: 100%; max-width: 400px; padding: 20px 0 10px 0; }
     header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
@@ -92,27 +93,41 @@
   <script>
     const tIn=document.getElementById('target-date'),eIn=document.getElementById('event-title'),dV=document.getElementById('d-val'),hV=document.getElementById('h-val'),mV=document.getElementById('m-val'),wsT=document.getElementById('w-s-title'),wsD=document.getElementById('w-s-days'),wmT=document.getElementById('w-m-title'),wmD=document.getElementById('w-m-days'),wmH=document.getElementById('w-m-hours'),wmM=document.getElementById('w-m-mins'),wmDt=document.getElementById('w-m-date'),md=document.getElementById('completion-modal'),mdB=document.getElementById('modal-box'),mdT=document.getElementById('modal-title'),mdY=document.getElementById('modal-body'),mdC=document.getElementById('modal-close-btn');
     let al=false;
+    const KEY='countdown',DKEY='countdown-dismissed';
     function hpt(){if(navigator.vibrate)navigator.vibrate(15)}
+    function getDismissed(){try{return localStorage.getItem(DKEY)}catch(e){return null}}
+    function setDismissed(v){try{localStorage.setItem(DKEY,v)}catch(e){}}
+
+    // Default: 10 days from now
     const initD=new Date();initD.setDate(initD.getDate()+10);
     tIn.value=`${initD.getFullYear()}-${String(initD.getMonth()+1).padStart(2,'0')}-${String(initD.getDate()).padStart(2,'0')}T${String(initD.getHours()).padStart(2,'0')}:${String(initD.getMinutes()).padStart(2,'0')}`;
+    // Restore saved values (overrides defaults)
+    try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){if(s.t!=null)eIn.value=s.t;if(s.d)tIn.value=s.d;}}catch(e){}
+
     function upd(){
       if(!tIn.value)return;
+      try{localStorage.setItem(KEY,JSON.stringify({t:eIn.value,d:tIn.value}))}catch(e){}
       const diff=Date.parse(tIn.value)-Date.now(),ttl=eIn.value||"Milestone";
       wsT.textContent=ttl;wmT.textContent=ttl;
       wmDt.textContent=new Date(tIn.value).toLocaleDateString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
       if(diff<=0){
         dV.textContent=hV.textContent=mV.textContent="00";wsD.textContent=wmD.textContent=wmH.textContent=wmM.textContent="0";
-        if(!al){al=true;hpt();mdT.textContent=`🎉 ${ttl}!`;mdY.textContent="The countdown has hit zero!";md.style.display="flex";setTimeout(()=>mdB.classList.add('active'),10);}
+        if(!al){
+          al=true;
+          if(getDismissed()!==tIn.value){
+            hpt();mdT.textContent=`${ttl}!`;mdY.textContent="The countdown has hit zero!";md.style.display="flex";setTimeout(()=>mdB.classList.add('active'),10);
+          }
+        }
         return;
       }
       al=false;
       const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000);
       dV.textContent=String(d).padStart(2,'0');hV.textContent=String(h).padStart(2,'0');mV.textContent=String(m).padStart(2,'0');
-      wsD.textContent=d;wmD.textContent=d;wmH.textContent=h;wmM.textContent=m;wmS.textContent=s;
-}
-tIn.addEventListener('change',()=>{hpt();upd();});tIn.addEventListener('input',upd);eIn.addEventListener('input',upd);
-mdC.addEventListener('click',()=>{hpt();mdB.classList.remove('active');setTimeout(()=>md.style.display="none",200);});
-setInterval(upd,1000);upd();
+      wsD.textContent=d;wmD.textContent=d;wmH.textContent=h;wmM.textContent=m;
+    }
+    tIn.addEventListener('change',()=>{hpt();upd();});tIn.addEventListener('input',upd);eIn.addEventListener('input',upd);
+    mdC.addEventListener('click',()=>{hpt();setDismissed(tIn.value);mdB.classList.remove('active');setTimeout(()=>md.style.display="none",200);});
+    setInterval(upd,1000);upd();
   </script>
 </body>
 </html>
