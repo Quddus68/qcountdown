@@ -2,155 +2,416 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Countdown</title>
+  <meta name="theme-color" content="#0c1014">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Countdown">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22url(%23g)%22/><defs><linearGradient id=%22g%22><stop offset=%220%25%22 stop-color=%22%232f80ed%22/><stop offset=%22100%25%22 stop-color=%22%2300c6ff%22/></linearGradient></defs><path d=%22M50 25C36.2 25 25 36.2 25 50s11.2 25 25 25 25-11.2 25-25S63.8 25 50 25zm0 9c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm-2 4v12.5l9.5 5.5 1.5-2.5-8-4.5V38h-3z%22 fill=%22white%22/></svg>">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="icon-192.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <style>
-    :root { color-scheme: dark; --bg-color: #0c1014; --card-bg: #1d2731; --card-grad: linear-gradient(145deg, #1d2731, #0c1014); --text-main: #ffffff; --text-sub: #8e8e93; --accent: #0a84ff; --accent-rgb: 10, 132, 255; --border: rgba(255,255,255,0.1); }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
-    input { -webkit-user-select: text; user-select: text; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px) 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-    header { width: 100%; max-width: 400px; padding: 20px 0 10px 0; }
+    :root { color-scheme: dark; --bg: #0c1014; --grad: linear-gradient(145deg, #1d2731, #0c1014); --text: #ffffff; --sub: #8e8e93; --accent: #0a84ff; --accent-rgb: 10, 132, 255; --border: rgba(255,255,255,0.1); }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+    [hidden] { display: none !important; }
+    input, button { font-family: inherit; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px) 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    header { width: 100%; max-width: 400px; padding: 20px 0 10px 0; display: flex; align-items: center; justify-content: space-between; }
     header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
-    .card { background: var(--card-grad); border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 20px; width: 100%; max-width: 400px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .pill { border: 1px solid rgba(10,132,255,0.3); background: rgba(10,132,255,0.15); color: #0a84ff; font-size: 15px; font-weight: 600; padding: 8px 16px; border-radius: 99px; cursor: pointer; }
+
+    .card { background: var(--grad); border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 20px; width: 100%; max-width: 400px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
     .input-group { margin-bottom: 16px; }
-    .input-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.3px; }
-    input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--text-main); font-size: 16px; outline: none; }
-    .countdown-display { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 24px auto; max-width: 360px; }
-    .time-block { background: rgba(var(--accent-rgb), 0.1); border-radius: 12px; padding: 16px 8px; text-align: center; border: 1px solid rgba(var(--accent-rgb), 0.15); }
+    .input-group > label, .group-label { display: block; font-size: 13px; font-weight: 500; color: var(--sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.3px; }
+    input[type=text], input[type=datetime-local] { -webkit-user-select: text; user-select: text; width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--text); font-size: 16px; outline: none; }
+
+    .emoji-row, .swatch-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .swatch-row { margin-top: 10px; gap: 12px; padding: 4px 4px 2px; }
+    .emoji-btn { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid transparent; background: rgba(255,255,255,0.06); font-size: 20px; line-height: 1; cursor: pointer; }
+    .emoji-btn.on { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.2); }
+    .swatch { width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--c); cursor: pointer; }
+    .swatch.on { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--c); }
+
+    .tz-row { margin-top: 10px; }
+    .check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
+    .check input { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0; }
+    .note { font-size: 12px; color: var(--sub); margin-top: 6px; line-height: 1.4; }
+
+    .status { font-size: 15px; font-weight: 600; text-align: center; margin-top: 4px; }
+    .countdown-display { display: grid; grid-template-columns: repeat(var(--n, 4), 1fr); gap: 8px; margin: 14px auto 8px; max-width: 360px; }
+    .time-block { background: rgba(var(--accent-rgb), 0.1); border-radius: 12px; padding: 16px 4px; text-align: center; border: 1px solid rgba(var(--accent-rgb), 0.15); }
     .time-num { font-size: 32px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
-    .time-label { font-size: 12px; color: var(--text-sub); font-weight: 500; margin-top: 4px; }
-    .share-btn { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(var(--accent-rgb), 0.25); background: rgba(var(--accent-rgb), 0.15); color: var(--accent); font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; }
-    .section-title { width: 100%; max-width: 400px; font-size: 15px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.3px; }
-    .widget-container { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 16px; }
-    .widget-row { display: flex; gap: 16px; width: 100%; }
-    .sim-widget { background: linear-gradient(145deg, #1d2731, #0c1014); color: white; border-radius: 22px; position: relative; overflow: hidden; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 24px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.06); }
-    .sim-widget.small { width: 155px; height: 155px; }
-    .sim-widget.medium { flex: 1; height: 155px; }
-    .widget-tag { font-size: 11px; font-weight: 600; color: #0a84ff; text-transform: uppercase; letter-spacing: 0.5px; }
+    .time-label { font-size: 12px; color: var(--sub); font-weight: 500; margin-top: 4px; }
+    .human { text-align: center; font-size: 13px; color: var(--sub); min-height: 18px; }
+
+    .progress { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; margin-top: 14px; }
+    .progress-fill { height: 100%; width: 0; background: var(--accent); border-radius: 99px; transition: width 0.6s ease; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--sub); margin-top: 6px; }
+
+    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+    .btn { padding: 12px 8px; border-radius: 12px; border: 1px solid rgba(var(--accent-rgb), 0.25); background: rgba(var(--accent-rgb), 0.15); color: var(--accent); font-size: 15px; font-weight: 600; cursor: pointer; }
+    .btn.danger { width: 100%; margin-top: 10px; color: #ff453a; border-color: rgba(255,69,58,0.3); background: rgba(255,69,58,0.1); }
+
+    .section-title { width: 100%; max-width: 400px; font-size: 15px; font-weight: 600; color: var(--sub); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.3px; }
+    .tile-grid { width: 100%; max-width: 400px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .tile { --c: #0a84ff; background: var(--grad); color: #fff; border-radius: 22px; position: relative; overflow: hidden; padding: 16px; height: 155px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 8px 24px rgba(0,0,0,0.15); cursor: pointer; outline: none; }
+    .tile.sel { border-color: var(--c); box-shadow: 0 0 0 1px var(--c), 0 8px 24px rgba(0,0,0,0.15); }
+    .widget-tag { font-size: 11px; font-weight: 600; color: var(--c); text-transform: uppercase; letter-spacing: 0.5px; }
     .widget-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
-    .widget-main-num { font-size: 38px; font-weight: 700; line-height: 1; }
+    .widget-main-num { font-size: 38px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+    .widget-main-num.long { font-size: 26px; }
     .widget-subtext { font-size: 11px; color: #8e8e93; }
-    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
-    .modal { background: var(--card-bg); border-radius: 20px; padding: 30px 24px; text-align: center; width: 100%; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transform: scale(0.9); transition: transform 0.2s ease; }
-    .modal.active { transform: scale(1); }
-    .modal-icon { font-size: 48px; margin-bottom: 14px; }
-    .modal h2 { font-size: 22px; margin-bottom: 8px; }
-    .modal p { color: var(--text-sub); font-size: 15px; margin-bottom: 24px; }
-    .modal-btn { background: var(--accent); color: white; border: none; padding: 12px 28px; border-radius: 12px; font-size: 16px; font-weight: 600; width: 100%; }
+    .tile-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,0.06); }
+    .tile-bar i { display: block; height: 100%; width: 0; background: var(--c); }
   </style>
 </head>
 <body>
-  <header><h1>Countdown</h1></header>
-  <div class="card">
+  <header>
+    <h1>Countdown</h1>
+    <button class="pill" id="new-btn" type="button">+ New</button>
+  </header>
+
+  <div class="card" id="detail">
     <div class="input-group">
-      <label for="event-title">Event Name</label>
-      <input type="text" id="event-title" value="My Big Milestone">
+      <label for="event-title">Event name</label>
+      <input type="text" id="event-title" maxlength="60" autocomplete="off">
     </div>
     <div class="input-group">
-      <label for="target-date">Target Date & Time</label>
+      <span class="group-label">Icon &amp; color</span>
+      <div class="emoji-row" id="emoji-row"></div>
+      <div class="swatch-row" id="swatch-row"></div>
+    </div>
+    <div class="input-group">
+      <label for="target-date">Target date &amp; time</label>
       <input type="datetime-local" id="target-date">
-    </div>
-    <div class="countdown-display">
-      <div class="time-block"><div class="time-num" id="d-val">00</div><div class="time-label">DAYS</div></div>
-      <div class="time-block"><div class="time-num" id="h-val">00</div><div class="time-label">HOURS</div></div>
-      <div class="time-block"><div class="time-num" id="m-val">00</div><div class="time-label">MINUTES</div></div>
-      <div class="time-block"><div class="time-num" id="s-val">00</div><div class="time-label">SECONDS</div></div>
-    </div>
-    <button class="share-btn" id="share-btn" type="button">Share this countdown</button>
-  </div>
-  <div class="section-title">Live Widget Preview Simulator</div>
-  <div class="widget-container">
-    <div class="widget-row">
-      <div class="sim-widget small">
-        <div><div class="widget-tag">Days</div><div class="widget-title" id="w-s-title">Milestone</div></div>
-        <div class="widget-main-num" id="w-s-days">0</div>
-        <div class="widget-subtext">Remaining</div>
-      </div>
-      <div class="sim-widget medium">
-        <div>
-          <div class="widget-tag" id="w-m-title">Milestone Countdown</div>
-          <div style="display: flex; align-items: baseline; gap: 8px; margin-top: 14px;">
-            <div><span class="widget-main-num" id="w-m-days">0</span><span style="font-size:13px;color:#8e8e93;margin-left:2px">d</span></div>
-            <div><span class="widget-main-num" style="font-size:22px" id="w-m-hours">0</span><span style="font-size:12px;color:#8e8e93;margin-left:1px">h</span></div>
-            <div><span class="widget-main-num" style="font-size:22px" id="w-m-mins">0</span><span style="font-size:12px;color:#8e8e93;margin-left:1px">m</span></div>
-            <div><span class="widget-main-num" style="font-size:22px" id="w-m-secs">0</span><span style="font-size:12px;color:#8e8e93;margin-left:1px">s</span></div>
-          </div>
-        </div>
-        <div class="widget-subtext" id="w-m-date">Live tracking</div>
+      <div class="tz-row" id="tz-row">
+        <label class="check"><input type="checkbox" id="tz-lock"><span id="tz-label"></span></label>
+        <div class="note" id="tz-note"></div>
       </div>
     </div>
-  </div>
-  <div class="modal-overlay" id="completion-modal">
-    <div class="modal" id="modal-box">
-      <div class="modal-icon">🎉</div>
-      <h2 id="modal-title">Countdown Completed!</h2>
-      <p id="modal-body">Your target milestone has arrived.</p>
-      <button class="modal-btn" id="modal-close-btn">Awesome</button>
+
+    <div class="status" id="status"></div>
+    <div class="countdown-display" id="cd-display">
+      <div class="time-block" id="b-d"><div class="time-num" id="d-val">00</div><div class="time-label">DAYS</div></div>
+      <div class="time-block" id="b-h"><div class="time-num" id="h-val">00</div><div class="time-label">HOURS</div></div>
+      <div class="time-block" id="b-m"><div class="time-num" id="m-val">00</div><div class="time-label">MINUTES</div></div>
+      <div class="time-block" id="b-s"><div class="time-num" id="s-val">00</div><div class="time-label">SECONDS</div></div>
     </div>
+    <div class="human" id="human"></div>
+    <div class="progress"><div class="progress-fill" id="pfill"></div></div>
+    <div class="progress-label"><span id="p-left"></span><span id="p-pct"></span></div>
+
+    <div class="btn-row">
+      <button class="btn" id="share-btn" type="button">Share link</button>
+      <button class="btn" id="cal-btn" type="button">Add to Calendar</button>
+    </div>
+    <button class="btn danger" id="del-btn" type="button">Delete this countdown</button>
   </div>
+
+  <div class="section-title">Your countdowns</div>
+  <div class="tile-grid" id="tiles"></div>
+
   <script>
-    const tIn=document.getElementById('target-date'),eIn=document.getElementById('event-title'),dV=document.getElementById('d-val'),hV=document.getElementById('h-val'),mV=document.getElementById('m-val'),wsT=document.getElementById('w-s-title'),wsD=document.getElementById('w-s-days'),wmT=document.getElementById('w-m-title'),wmD=document.getElementById('w-m-days'),wmH=document.getElementById('w-m-hours'),wmM=document.getElementById('w-m-mins'),wmDt=document.getElementById('w-m-date'),md=document.getElementById('completion-modal'),mdB=document.getElementById('modal-box'),mdT=document.getElementById('modal-title'),mdY=document.getElementById('modal-body'),mdC=document.getElementById('modal-close-btn'),sV=document.getElementById('s-val'),wmS=document.getElementById('w-m-secs');
-    let al=false;
-    const KEY='countdown',DKEY='countdown-dismissed';
-    function hpt(){if(navigator.vibrate)navigator.vibrate(15)}
-    function getDismissed(){try{return localStorage.getItem(DKEY)}catch(e){return null}}
-    function setDismissed(v){try{localStorage.setItem(DKEY,v)}catch(e){}}
+  (() => {
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const q = (el, sel) => el.querySelector(sel);
+    const KEY = 'countdowns-v2', OLD_KEY = 'countdown';
+    const EMOJIS = ['⏳','🎉','🎂','✈️','🏖️','🎓','💍','🏆','🎄','❤️','🚀','📅'];
+    const COLORS = ['#0a84ff','#30d158','#ff9f0a','#ff375f','#bf5af2','#64d2ff'];
+    const DATE_RE = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
+    const pad = n => String(n).padStart(2, '0');
+    const myTz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; } })();
+    function hpt() { if (navigator.vibrate) navigator.vibrate(15); }
 
-    // Default: 10 days from now
-    const initD=new Date();initD.setDate(initD.getDate()+10);
-    tIn.value=`${initD.getFullYear()}-${String(initD.getMonth()+1).padStart(2,'0')}-${String(initD.getDate()).padStart(2,'0')}T${String(initD.getHours()).padStart(2,'0')}:${String(initD.getMinutes()).padStart(2,'0')}`;
-    // Restore saved values (overrides defaults)
-    try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){if(s.t!=null)eIn.value=s.t;if(s.d)tIn.value=s.d;}}catch(e){}
-    // Shared link (?name=...&date=YYYY-MM-DDTHH:MM) overrides saved values, then the URL is cleaned
-    try{
-      const p=new URLSearchParams(location.search),pn=p.get('name'),pd=p.get('date');
-      if(pn!==null)eIn.value=pn.slice(0,60);
-      if(pd&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(pd))tIn.value=pd;
-      if(pn!==null||pd)history.replaceState(null,'',location.pathname);
-    }catch(e){}
+    /* ---------- time helpers ---------- */
+    function hexRgb(h) { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(','); }
+    function toLocalInput(ts) { const d = new Date(ts); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+    function validTz(tz) { try { new Intl.DateTimeFormat('en-US', { timeZone: tz }); return true; } catch (e) { return false; } }
+    function tzOffset(ts, tz) {
+      const parts = new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).formatToParts(new Date(ts));
+      const o = {}; for (const p of parts) o[p.type] = p.value;
+      return Date.UTC(+o.year, +o.month - 1, +o.day, +o.hour % 24, +o.minute, +o.second) - Math.floor(ts / 1000) * 1000;
+    }
+    function zonedToUtc(str, tz) {
+      const m = DATE_RE.exec(str); if (!m) return NaN;
+      const guess = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
+      const off1 = tzOffset(guess, tz);
+      return guess - tzOffset(guess - off1, tz);
+    }
+    function targetTs(ev) {
+      const m = DATE_RE.exec(ev.date || ''); if (!m) return NaN;
+      if (ev.tz === 'local') return new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]).getTime();
+      return zonedToUtc(ev.date, ev.tz);
+    }
+    function addMonths(d, n) {
+      const r = new Date(d.getTime()), day = r.getDate();
+      r.setDate(1); r.setMonth(r.getMonth() + n);
+      r.setDate(Math.min(day, new Date(r.getFullYear(), r.getMonth() + 1, 0).getDate()));
+      return r;
+    }
+    function human(a, b) { // a < b, local Dates
+      let m = (b.getFullYear() - a.getFullYear()) * 12 + b.getMonth() - a.getMonth();
+      let anchor = addMonths(a, m);
+      if (anchor > b) { m--; anchor = addMonths(a, m); }
+      const days = Math.floor((b - anchor) / 864e5), w = Math.floor(days / 7), dd = days % 7, parts = [];
+      if (m) parts.push(m + (m === 1 ? ' month' : ' months'));
+      if (w) parts.push(w + (w === 1 ? ' week' : ' weeks'));
+      if (dd) parts.push(dd + (dd === 1 ? ' day' : ' days'));
+      return (m ? '≈ ' : '= ') + parts.join(', ');
+    }
+    function compact(diff) {
+      const past = diff < 0, a = Math.abs(diff);
+      const d = Math.floor(a / 864e5), h = Math.floor(a % 864e5 / 36e5), m = Math.floor(a % 36e5 / 6e4), s = Math.floor(a % 6e4 / 1e3);
+      let num, unit = '';
+      if (d >= 1) { num = String(d); unit = d === 1 ? 'day ' : 'days '; }
+      else if (h >= 1) num = h + 'h ' + m + 'm';
+      else num = m + 'm ' + s + 's';
+      return { num, unit: unit + (past ? 'ago' : 'left') };
+    }
+    function fmt(t) {
+      const d = new Date(t), sameYear = d.getFullYear() === new Date().getFullYear();
+      return d.toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: sameYear ? undefined : 'numeric', hour: 'numeric', minute: '2-digit' });
+    }
+    function pctOf(ev, t, now) {
+      if (isNaN(t)) return 0;
+      if (now >= t) return 1;
+      const span = t - ev.created;
+      return span <= 0 ? 0 : Math.min(1, Math.max(0, (now - ev.created) / span));
+    }
 
-    function upd(){
-      if(!tIn.value)return;
-      try{localStorage.setItem(KEY,JSON.stringify({t:eIn.value,d:tIn.value}))}catch(e){}
-      const diff=Date.parse(tIn.value)-Date.now(),ttl=eIn.value||"Milestone";
-      wsT.textContent=ttl;wmT.textContent=ttl;
-      wmDt.textContent=new Date(tIn.value).toLocaleDateString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
-      if(diff<=0){
-        dV.textContent=hV.textContent=mV.textContent=sV.textContent="00";wsD.textContent=wmD.textContent=wmH.textContent=wmM.textContent=wmS.textContent="0";
-        if(!al){
-          al=true;
-          if(getDismissed()!==tIn.value){
-            hpt();mdT.textContent=`${ttl}!`;mdY.textContent="The countdown has hit zero!";md.style.display="flex";setTimeout(()=>mdB.classList.add('active'),10);
-          }
+    /* ---------- calendar (.ics) ---------- */
+    function icsEscape(s) { return s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+    function icsDate(ts) { const d = new Date(ts); return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z'; }
+    function fold(line) {
+      const cps = Array.from(line), out = [];
+      for (let i = 0; i < cps.length; i += 45) out.push((i ? ' ' : '') + cps.slice(i, i + 45).join(''));
+      return out.join('\r\n');
+    }
+    function makeIcs(ev, t, now) {
+      const name = ((ev.emoji + ' ' + (ev.title || 'Countdown')).trim());
+      const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//qcountdown//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+        'BEGIN:VEVENT', 'UID:' + ev.id + '@qcountdown', 'DTSTAMP:' + icsDate(now), 'DTSTART:' + icsDate(t), 'DTEND:' + icsDate(t + 36e5),
+        'SUMMARY:' + icsEscape(name),
+        'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEscape(name), 'TRIGGER:-PT1H', 'END:VALARM',
+        'END:VEVENT', 'END:VCALENDAR'];
+      return lines.map(fold).join('\r\n') + '\r\n';
+    }
+
+    /* ---------- state ---------- */
+    let state = { events: [], sel: null };
+    const uid = () => Math.random().toString(36).slice(2, 8) + Date.now().toString(36);
+    function mk(title, date, o) { return Object.assign({ id: uid(), title, date, tz: 'local', emoji: EMOJIS[0], color: COLORS[0], created: Date.now() }, o || {}); }
+    function defaultDate() { const d = new Date(); d.setDate(d.getDate() + 10); return toLocalInput(d.getTime()); }
+    function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+    function sanitize(e) {
+      return {
+        id: e.id, title: String(e.title || '').slice(0, 60), date: typeof e.date === 'string' ? e.date : '',
+        tz: (e.tz === 'local' || (typeof e.tz === 'string' && validTz(e.tz))) ? e.tz : 'local',
+        emoji: EMOJIS.includes(e.emoji) ? e.emoji : EMOJIS[0], color: COLORS.includes(e.color) ? e.color : COLORS[0],
+        created: Number(e.created) || Date.now()
+      };
+    }
+    function load() {
+      try {
+        const s = JSON.parse(localStorage.getItem(KEY) || 'null');
+        if (s && Array.isArray(s.events)) { state.events = s.events.filter(e => e && typeof e.id === 'string').map(sanitize); state.sel = s.sel; }
+      } catch (e) {}
+      if (!state.events.length) {
+        let ev = null;
+        try { const o = JSON.parse(localStorage.getItem(OLD_KEY) || 'null'); if (o && o.d) ev = mk(String(o.t || 'My Big Milestone').slice(0, 60), o.d); } catch (e) {}
+        state.events.push(ev || mk('My Big Milestone', defaultDate()));
+      }
+      if (!state.events.some(e => e.id === state.sel)) state.sel = state.events[0].id;
+    }
+    const cur = () => state.events.find(e => e.id === state.sel);
+
+    // Shared link: ?name=&date=&tz=&emoji=&color= -> added as a new countdown
+    function importLink() {
+      try {
+        const p = new URLSearchParams(location.search), date = p.get('date');
+        if (p.get('name') === null && !date) return;
+        if (date && DATE_RE.test(date)) {
+          let tz = p.get('tz') || 'local'; if (tz !== 'local' && !validTz(tz)) tz = 'local';
+          const emoji = EMOJIS.includes(p.get('emoji')) ? p.get('emoji') : EMOJIS[0];
+          const color = COLORS.includes(p.get('color')) ? p.get('color') : COLORS[0];
+          const title = (p.get('name') || 'Countdown').slice(0, 60), d = date.slice(0, 16);
+          const dup = state.events.find(e => e.title === title && e.date === d && e.tz === tz);
+          if (dup) state.sel = dup.id;
+          else { const ev = mk(title, d, { tz, emoji, color }); state.events.push(ev); state.sel = ev.id; }
+          save();
         }
+        history.replaceState(null, '', location.pathname);
+      } catch (e) {}
+    }
+
+    /* ---------- tiles ---------- */
+    const tilesEl = $('tiles'); let tileEls = new Map();
+    function buildTiles() {
+      const now = Date.now();
+      const rank = t => isNaN(t) ? 3 : t >= now ? 0 : 1;
+      const order = state.events.slice().sort((a, b) => {
+        const ta = targetTs(a), tb = targetTs(b), ra = rank(ta), rb = rank(tb);
+        if (ra !== rb) return ra - rb; if (ra === 0) return ta - tb; if (ra === 1) return tb - ta; return 0;
+      });
+      tilesEl.textContent = ''; tileEls = new Map();
+      for (const ev of order) {
+        const el = document.createElement('div');
+        el.className = 'tile'; el.setAttribute('role', 'button'); el.tabIndex = 0;
+        el.innerHTML = '<div><div class="widget-tag"><span class="t-emoji"></span> <span class="t-state"></span></div><div class="widget-title"></div></div><div class="widget-main-num"></div><div class="widget-subtext"></div><div class="tile-bar"><i></i></div>';
+        el.addEventListener('click', () => select(ev.id));
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(ev.id); } });
+        tilesEl.appendChild(el); tileEls.set(ev.id, el);
+      }
+    }
+    function select(id) {
+      hpt(); state.sel = id; save(); loadDetail(); tick();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ---------- detail ---------- */
+    function buildPickers() {
+      const er = $('emoji-row'), sr = $('swatch-row');
+      EMOJIS.forEach(e => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'emoji-btn'; b.textContent = e; b.setAttribute('aria-label', 'Icon ' + e);
+        b.addEventListener('click', () => { hpt(); cur().emoji = e; save(); renderPickers(cur()); tick(); });
+        er.appendChild(b);
+      });
+      COLORS.forEach(c => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'swatch'; b.style.setProperty('--c', c); b.setAttribute('aria-label', 'Color ' + c);
+        b.addEventListener('click', () => { hpt(); cur().color = c; save(); renderPickers(cur()); tick(); });
+        sr.appendChild(b);
+      });
+    }
+    function renderPickers(ev) {
+      Array.from($('emoji-row').children).forEach((b, i) => b.classList.toggle('on', EMOJIS[i] === ev.emoji));
+      Array.from($('swatch-row').children).forEach((b, i) => b.classList.toggle('on', COLORS[i] === ev.color));
+    }
+    function renderTz(ev) {
+      const row = $('tz-row');
+      if (!myTz) { row.hidden = true; return; }
+      row.hidden = false;
+      const locked = ev.tz !== 'local', foreign = locked && ev.tz !== myTz;
+      $('tz-lock').checked = locked;
+      $('tz-label').textContent = foreign ? 'Fixed to ' + ev.tz : 'Lock to my time zone (' + myTz + ')';
+      $('tz-note').textContent = foreign ? 'The time above is in ' + ev.tz + '. Uncheck to convert it to your time zone.'
+        : locked ? 'Same moment for everyone. Other people see it in their own time zone.'
+        : 'Anyone you share this with sees this clock time in their own time zone.';
+    }
+    function loadDetail() {
+      const ev = cur();
+      $('event-title').value = ev.title; $('target-date').value = ev.date;
+      renderPickers(ev); renderTz(ev);
+    }
+
+    /* ---------- tick ---------- */
+    function tick() {
+      const now = Date.now();
+      for (const ev of state.events) {
+        const el = tileEls.get(ev.id); if (!el) continue;
+        const t = targetTs(ev), ok = !isNaN(t);
+        el.style.setProperty('--c', ev.color);
+        el.classList.toggle('sel', ev.id === state.sel);
+        q(el, '.t-emoji').textContent = ev.emoji;
+        q(el, '.t-state').textContent = !ok ? 'No date' : t < now ? 'Since' : 'Until';
+        q(el, '.widget-title').textContent = ev.title || 'Untitled';
+        const c = ok ? compact(t - now) : { num: '—', unit: 'pick a date' };
+        const n = q(el, '.widget-main-num'); n.textContent = c.num; n.classList.toggle('long', c.num.length > 3);
+        q(el, '.widget-subtext').textContent = c.unit;
+        q(el, '.tile-bar i').style.width = (pctOf(ev, t, now) * 100) + '%';
+      }
+
+      const ev = cur(), t = targetTs(ev), card = $('detail');
+      card.style.setProperty('--accent', ev.color); card.style.setProperty('--accent-rgb', hexRgb(ev.color));
+      $('p-left').textContent = 'Started ' + new Date(ev.created).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+      if (isNaN(t)) {
+        $('status').textContent = 'Pick a date and time';
+        ['d', 'h', 'm', 's'].forEach(k => { $(k + '-val').textContent = '--'; $('b-' + k).hidden = false; });
+        $('cd-display').style.setProperty('--n', 4);
+        $('human').textContent = ''; $('pfill').style.width = '0%'; $('p-pct').textContent = '';
+        document.title = ev.title || 'Countdown';
         return;
       }
-      al=false;
-      const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
-      dV.textContent=String(d).padStart(2,'0');hV.textContent=String(h).padStart(2,'0');mV.textContent=String(m).padStart(2,'0');sV.textContent=String(s).padStart(2,'0');
-      wsD.textContent=d;wmD.textContent=d;wmH.textContent=h;wmM.textContent=m;wmS.textContent=s;
+      const diff = t - now, past = diff < 0, a = Math.abs(diff);
+      const d = Math.floor(a / 864e5), h = Math.floor(a % 864e5 / 36e5), m = Math.floor(a % 36e5 / 6e4), s = Math.floor(a % 6e4 / 1e3);
+      const showD = d > 0, showH = d > 0 || h > 0;
+      $('b-d').hidden = !showD; $('b-h').hidden = !showH;
+      $('cd-display').style.setProperty('--n', 2 + (showD ? 1 : 0) + (showH ? 1 : 0));
+      $('d-val').textContent = pad(d); $('h-val').textContent = pad(h); $('m-val').textContent = pad(m); $('s-val').textContent = pad(s);
+      const when = fmt(t);
+      $('status').textContent = !past ? 'Until ' + when : a < 864e5 ? '🎉 It\u2019s here! (' + when + ')' : 'Since ' + when;
+      $('human').textContent = d >= 14 ? (past ? human(new Date(t), new Date(now)) : human(new Date(now), new Date(t))) + (past ? ' ago' : '') : '';
+      const pct = pctOf(ev, t, now);
+      $('pfill').style.width = (pct * 100) + '%'; $('p-pct').textContent = Math.floor(pct * 100) + '%';
+      const c = compact(diff);
+      document.title = c.num + ' ' + c.unit + ' · ' + (ev.title || 'Countdown');
     }
-    tIn.addEventListener('change',()=>{hpt();upd();});tIn.addEventListener('input',upd);eIn.addEventListener('input',upd);
-    mdC.addEventListener('click',()=>{hpt();setDismissed(tIn.value);mdB.classList.remove('active');setTimeout(()=>md.style.display="none",200);});
-    const shB=document.getElementById('share-btn');
-    shB.addEventListener('click',async()=>{
-      hpt();
-      const u=location.href.split(/[?#]/)[0]+'?name='+encodeURIComponent(eIn.value)+'&date='+encodeURIComponent(tIn.value);
-      try{
-        if(navigator.share){await navigator.share({title:eIn.value||'Countdown',url:u});return;}
+
+    /* ---------- events ---------- */
+    $('event-title').addEventListener('input', e => { cur().title = e.target.value; save(); tick(); });
+    $('target-date').addEventListener('input', e => { const ev = cur(); ev.date = e.target.value; save(); renderTz(ev); tick(); });
+    $('target-date').addEventListener('change', e => {
+      hpt(); const ev = cur(); ev.date = e.target.value;
+      if (!isNaN(targetTs(ev))) ev.created = Date.now();
+      save(); renderTz(ev); buildTiles(); tick();
+    });
+    $('tz-lock').addEventListener('change', e => {
+      hpt(); const ev = cur();
+      if (e.target.checked) ev.tz = myTz;
+      else { const t = targetTs(ev); if (!isNaN(t)) ev.date = toLocalInput(t); ev.tz = 'local'; $('target-date').value = ev.date; }
+      save(); renderTz(ev); buildTiles(); tick();
+    });
+    $('new-btn').addEventListener('click', () => {
+      hpt(); const ev = mk('New countdown', defaultDate());
+      state.events.push(ev); state.sel = ev.id; save(); buildTiles(); loadDetail(); tick();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const i = $('event-title'); i.focus(); i.select();
+    });
+    $('del-btn').addEventListener('click', () => {
+      const ev = cur();
+      if (!confirm('Delete "' + (ev.title || 'Untitled') + '"?')) return;
+      const i = state.events.indexOf(ev); state.events.splice(i, 1);
+      if (!state.events.length) state.events.push(mk('New countdown', defaultDate()));
+      state.sel = state.events[Math.min(i, state.events.length - 1)].id;
+      save(); buildTiles(); loadDetail(); tick();
+    });
+    const shB = $('share-btn');
+    shB.addEventListener('click', async () => {
+      hpt(); const ev = cur();
+      if (!DATE_RE.test(ev.date)) { alert('Pick a date and time first.'); return; }
+      const p = new URLSearchParams({ name: ev.title, date: ev.date, emoji: ev.emoji, color: ev.color });
+      if (ev.tz !== 'local') p.set('tz', ev.tz);
+      const u = location.href.split(/[?#]/)[0] + '?' + p.toString();
+      try {
+        if (navigator.share) { await navigator.share({ title: ev.title || 'Countdown', url: u }); return; }
         await navigator.clipboard.writeText(u);
-        shB.textContent='Link copied!';setTimeout(()=>shB.textContent='Share this countdown',1800);
-      }catch(e){
-        if(e&&e.name==='AbortError')return;
-        window.prompt('Copy this link:',u);
+        shB.textContent = 'Link copied!'; setTimeout(() => shB.textContent = 'Share link', 1800);
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
+        window.prompt('Copy this link:', u);
       }
     });
-    setInterval(upd,1000);upd();
+    $('cal-btn').addEventListener('click', () => {
+      hpt(); const ev = cur(), t = targetTs(ev);
+      if (isNaN(t)) { alert('Pick a date and time first.'); return; }
+      const blob = new Blob([makeIcs(ev, t, Date.now())], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob), a = document.createElement('a');
+      a.href = url; a.download = ((ev.title || 'countdown').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-') || 'countdown') + '.ics';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
+
+    /* ---------- start ---------- */
+    load(); importLink(); buildPickers(); buildTiles(); loadDetail(); tick();
+    setInterval(tick, 1000);
+    if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  })();
   </script>
 </body>
 </html>
