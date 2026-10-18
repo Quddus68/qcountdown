@@ -14,16 +14,16 @@
   <link rel="icon" href="icon-192.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <style>
-    :root { color-scheme: dark; --bg: #0c1014; --grad: linear-gradient(145deg, #1d2731, #0c1014); --text: #ffffff; --sub: #8e8e93; --accent: #0a84ff; --accent-rgb: 10, 132, 255; --border: rgba(255,255,255,0.1); }
+    :root { --w: 400px; color-scheme: dark; --bg: #0c1014; --grad: linear-gradient(145deg, #1d2731, #0c1014); --text: #ffffff; --sub: #8e8e93; --accent: #0a84ff; --accent-rgb: 10, 132, 255; --border: rgba(255,255,255,0.1); }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
     [hidden] { display: none !important; }
     input, button { font-family: inherit; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px) 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-    header { width: 100%; max-width: 400px; padding: 20px 0 10px 0; display: flex; align-items: center; justify-content: space-between; }
+    header { width: 100%; max-width: var(--w); padding: 20px 0 10px 0; display: flex; align-items: center; justify-content: space-between; }
     header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
     .pill { border: 1px solid rgba(10,132,255,0.3); background: rgba(10,132,255,0.15); color: #0a84ff; font-size: 15px; font-weight: 600; padding: 8px 16px; border-radius: 99px; cursor: pointer; }
 
-    .card { background: var(--grad); border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 20px; width: 100%; max-width: 400px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .card { background: var(--grad); border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 20px; width: 100%; max-width: var(--w); margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
     .input-group { margin-bottom: 16px; }
     .input-group > label, .group-label { display: block; font-size: 13px; font-weight: 500; color: var(--sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.3px; }
     input[type=text], input[type=datetime-local] { -webkit-user-select: text; user-select: text; width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--text); font-size: 16px; outline: none; }
@@ -35,15 +35,31 @@
     .swatch { width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--c); cursor: pointer; }
     .swatch.on { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--c); }
 
-    .tz-row { margin-top: 10px; }
-    .check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
+        .check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
     .check input { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0; }
     .note { font-size: 12px; color: var(--sub); margin-top: 6px; line-height: 1.4; }
 
+    .new-row { width: 100%; max-width: var(--w); margin-top: 18px; text-align: center; }
+    .new-row .pill { max-width: 100%; }
+    .countdown-section { padding: 6px 0 20px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .cd-title { font-size: 22px; font-weight: 700; text-align: center; margin: 2px 0 4px; overflow-wrap: anywhere; line-height: 1.25; }
+    .time-num.three { font-size: clamp(22px, 7vw, 34px); }
+    .editing { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--sub); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 14px; }
+    .editing::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .hint { margin: 0 0 10px; text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 400; color: var(--sub); line-height: 1.35; }
+    .tile-hint { width: 100%; max-width: var(--w); margin: 0 0 12px; font-size: 13px; color: var(--sub); }
+    .save-note { text-align: center; margin-top: 14px; }
+    details.adv { margin-top: 10px; }
+    details.adv summary { font-size: 13px; color: var(--sub); cursor: pointer; padding: 4px 0; list-style: none; }
+    details.adv summary::-webkit-details-marker { display: none; }
+    details.adv summary::before { content: '\25B8  '; }
+    details.adv[open] summary::before { content: '\25BE  '; }
+    details.adv .tz-inner { padding-top: 6px; }
+    @media (min-width: 640px) { :root { --w: 520px; } }
     .status { font-size: 15px; font-weight: 600; text-align: center; margin-top: 4px; }
-    .countdown-display { display: grid; grid-template-columns: repeat(var(--n, 4), 1fr); gap: 8px; margin: 14px auto 8px; max-width: 360px; }
+    .countdown-display { display: grid; grid-template-columns: repeat(var(--n, 4), 1fr); gap: 8px; margin: 14px auto 8px; max-width: 100%; }
     .time-block { background: rgba(var(--accent-rgb), 0.1); border-radius: 12px; padding: 16px 4px; text-align: center; border: 1px solid rgba(var(--accent-rgb), 0.15); }
-    .time-num { font-size: 32px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .time-num { font-size: clamp(26px, 8.5vw, 40px); font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
     .time-label { font-size: 12px; color: var(--sub); font-weight: 500; margin-top: 4px; }
     .human { text-align: center; font-size: 13px; color: var(--sub); min-height: 18px; }
 
@@ -55,8 +71,8 @@
     .btn { padding: 12px 8px; border-radius: 12px; border: 1px solid rgba(var(--accent-rgb), 0.25); background: rgba(var(--accent-rgb), 0.15); color: var(--accent); font-size: 15px; font-weight: 600; cursor: pointer; }
     .btn.danger { width: 100%; margin-top: 10px; color: #ff453a; border-color: rgba(255,69,58,0.3); background: rgba(255,69,58,0.1); }
 
-    .section-title { width: 100%; max-width: 400px; font-size: 15px; font-weight: 600; color: var(--sub); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.3px; }
-    .tile-grid { width: 100%; max-width: 400px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .section-title { width: 100%; max-width: var(--w); font-size: 15px; font-weight: 600; color: var(--sub); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.3px; }
+    .tile-grid { width: 100%; max-width: var(--w); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .tile { --c: #0a84ff; background: var(--grad); color: #fff; border-radius: 22px; position: relative; overflow: hidden; padding: 16px; height: 155px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 8px 24px rgba(0,0,0,0.15); cursor: pointer; outline: none; }
     .tile.sel { border-color: var(--c); box-shadow: 0 0 0 1px var(--c), 0 8px 24px rgba(0,0,0,0.15); }
     .widget-tag { font-size: 11px; font-weight: 600; color: var(--c); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -71,48 +87,60 @@
 <body>
   <header>
     <h1>Q's Countdown Page</h1>
-    <button class="pill" id="new-btn" type="button">+ New</button>
   </header>
 
   <div class="card" id="detail">
+    <div class="editing" id="editing"></div>
     <div class="input-group">
       <label for="event-title">Event name</label>
-      <input type="text" id="event-title" maxlength="60" autocomplete="off">
-    </div>
-    <div class="input-group">
-      <span class="group-label">Icon &amp; color options<br>Brighten up your countdown with an icon or a color!</span>
-      <div class="emoji-row" id="emoji-row"></div>
-      <div class="swatch-row" id="swatch-row"></div>
+      <input type="text" id="event-title" maxlength="60" autocomplete="off" placeholder="e.g. Beach trip">
     </div>
     <div class="input-group">
       <label for="target-date">Target date &amp; time</label>
       <input type="datetime-local" id="target-date">
-      <div class="tz-row" id="tz-row">
-        <label class="check"><input type="checkbox" id="tz-lock"><span id="tz-label"></span></label>
-        <div class="note" id="tz-note"></div>
+      <details class="adv" id="tz-row">
+        <summary>Time zone options</summary>
+        <div class="tz-inner">
+          <label class="check"><input type="checkbox" id="tz-lock"><span id="tz-label"></span></label>
+          <div class="note" id="tz-note"></div>
+        </div>
+      </details>
+    </div>
+    <div class="countdown-section">
+      <div class="cd-title" id="cd-title"></div>
+      <div class="status" id="status"></div>
+      <div class="countdown-display" id="cd-display">
+        <div class="time-block" id="b-d"><div class="time-num" id="d-val">00</div><div class="time-label">DAYS</div></div>
+        <div class="time-block" id="b-h"><div class="time-num" id="h-val">00</div><div class="time-label">HOURS</div></div>
+        <div class="time-block" id="b-m"><div class="time-num" id="m-val">00</div><div class="time-label">MINUTES</div></div>
+        <div class="time-block" id="b-s"><div class="time-num" id="s-val">00</div><div class="time-label">SECONDS</div></div>
       </div>
+      <div class="human" id="human"></div>
+      <div class="progress"><div class="progress-fill" id="pfill"></div></div>
+      <div class="progress-label"><span id="p-left"></span><span id="p-pct"></span></div>
     </div>
 
-    <div class="status" id="status"></div>
-    <div class="countdown-display" id="cd-display">
-      <div class="time-block" id="b-d"><div class="time-num" id="d-val">00</div><div class="time-label">DAYS</div></div>
-      <div class="time-block" id="b-h"><div class="time-num" id="h-val">00</div><div class="time-label">HOURS</div></div>
-      <div class="time-block" id="b-m"><div class="time-num" id="m-val">00</div><div class="time-label">MINUTES</div></div>
-      <div class="time-block" id="b-s"><div class="time-num" id="s-val">00</div><div class="time-label">SECONDS</div></div>
+    <div class="input-group">
+      <span class="group-label">Icon &amp; color options</span>
+      <div class="note hint">Brighten up your countdown with an icon or a color!</div>
+      <div class="emoji-row" id="emoji-row"></div>
+      <div class="swatch-row" id="swatch-row"></div>
     </div>
-    <div class="human" id="human"></div>
-    <div class="progress"><div class="progress-fill" id="pfill"></div></div>
-    <div class="progress-label"><span id="p-left"></span><span id="p-pct"></span></div>
 
     <div class="btn-row">
       <button class="btn" id="share-btn" type="button">Share link</button>
       <button class="btn" id="cal-btn" type="button">Add to Calendar</button>
     </div>
     <button class="btn danger" id="del-btn" type="button">Delete this countdown</button>
+    <div class="note save-note">Changes save automatically on this device.</div>
   </div>
 
   <div class="section-title">Your countdowns</div>
+  <div class="note tile-hint">Tap a countdown to view or edit it.</div>
   <div class="tile-grid" id="tiles"></div>
+  <div class="new-row">
+    <button class="pill" id="new-btn" type="button">Click here to make a new countdown</button>
+  </div>
 
   <script>
   (() => {
@@ -124,6 +152,7 @@
     const COLORS = ['#0a84ff','#30d158','#ff9f0a','#ff375f','#bf5af2','#64d2ff'];
     const DATE_RE = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
     const pad = n => String(n).padStart(2, '0');
+    const DONE_MSG = 'This countdown is now done. I hope that your event worked out the way you wanted it to.';
     const myTz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; } })();
     function hpt() { if (navigator.vibrate) navigator.vibrate(15); }
 
@@ -296,9 +325,10 @@
       row.hidden = false;
       const locked = ev.tz !== 'local', foreign = locked && ev.tz !== myTz;
       $('tz-lock').checked = locked;
-      $('tz-label').textContent = foreign ? 'Fixed to ' + ev.tz : 'Lock to my time zone (' + myTz + ')';
+      $('tz-label').textContent = foreign ? 'Fixed to ' + ev.tz : 'Keep this exact moment for everyone';
+      if (foreign) row.open = true;
       $('tz-note').textContent = foreign ? 'The time above is in ' + ev.tz + '. Uncheck to convert it to your time zone.'
-        : locked ? 'Same moment for everyone. Other people see it in their own time zone.'
+        : locked ? 'Locked to ' + myTz + '. Everyone sees the same moment, shown in their own time zone.'
         : 'Anyone you share this with sees this clock time in their own time zone.';
     }
     function loadDetail() {
@@ -316,15 +346,18 @@
         el.style.setProperty('--c', ev.color);
         el.classList.toggle('sel', ev.id === state.sel);
         q(el, '.t-emoji').textContent = ev.emoji;
-        q(el, '.t-state').textContent = !ok ? 'No date' : t < now ? 'Since' : 'Until';
+        q(el, '.t-state').textContent = !ok ? 'No date' : t <= now ? 'Done' : 'Until';
         q(el, '.widget-title').textContent = ev.title || 'Untitled';
-        const c = ok ? compact(t - now) : { num: '—', unit: 'pick a date' };
+        const c = !ok ? { num: '—', unit: 'pick a date' } : t <= now ? { num: '0', unit: 'countdown done' } : compact(t - now);
         const n = q(el, '.widget-main-num'); n.textContent = c.num; n.classList.toggle('long', c.num.length > 3);
         q(el, '.widget-subtext').textContent = c.unit;
         q(el, '.tile-bar i').style.width = (pctOf(ev, t, now) * 100) + '%';
       }
 
       const ev = cur(), t = targetTs(ev), card = $('detail');
+      $('cd-title').textContent = ev.emoji + ' ' + (ev.title || 'Untitled');
+      const pos = Array.from(tilesEl.children).indexOf(tileEls.get(ev.id));
+      $('editing').textContent = pos >= 0 ? 'Editing countdown ' + (pos + 1) + ' of ' + state.events.length : 'Editing countdown';
       card.style.setProperty('--accent', ev.color); card.style.setProperty('--accent-rgb', hexRgb(ev.color));
       $('p-left').textContent = 'Started ' + new Date(ev.created).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
       if (isNaN(t)) {
@@ -335,15 +368,26 @@
         document.title = ev.title || 'Countdown';
         return;
       }
-      const diff = t - now, past = diff < 0, a = Math.abs(diff);
+      if (t - now <= 0) {
+        ['d', 'h', 'm', 's'].forEach(k => { $(k + '-val').textContent = '00'; $('b-' + k).hidden = false; });
+        $('d-val').classList.remove('three');
+        $('cd-display').style.setProperty('--n', 4);
+        $('status').textContent = DONE_MSG;
+        $('human').textContent = '';
+        $('pfill').style.width = '100%'; $('p-pct').textContent = '100%';
+        document.title = 'Done \u00b7 ' + (ev.title || 'Countdown');
+        return;
+      }
+      const diff = t - now, a = diff;
       const d = Math.floor(a / 864e5), h = Math.floor(a % 864e5 / 36e5), m = Math.floor(a % 36e5 / 6e4), s = Math.floor(a % 6e4 / 1e3);
       const showD = d > 0, showH = d > 0 || h > 0;
       $('b-d').hidden = !showD; $('b-h').hidden = !showH;
       $('cd-display').style.setProperty('--n', 2 + (showD ? 1 : 0) + (showH ? 1 : 0));
+      $('d-val').classList.toggle('three', d >= 100);
       $('d-val').textContent = pad(d); $('h-val').textContent = pad(h); $('m-val').textContent = pad(m); $('s-val').textContent = pad(s);
       const when = fmt(t);
-      $('status').textContent = !past ? 'Until ' + when : a < 864e5 ? '🎉 It\u2019s here! (' + when + ')' : 'Since ' + when;
-      $('human').textContent = d >= 14 ? (past ? human(new Date(t), new Date(now)) : human(new Date(now), new Date(t))) + (past ? ' ago' : '') : '';
+      $('status').textContent = 'Until ' + when;
+      $('human').textContent = d >= 14 ? human(new Date(now), new Date(t)) : '';
       const pct = pctOf(ev, t, now);
       $('pfill').style.width = (pct * 100) + '%'; $('p-pct').textContent = Math.floor(pct * 100) + '%';
       const c = compact(diff);
