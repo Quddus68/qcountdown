@@ -40,6 +40,10 @@
     .check input { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0; }
     .note { font-size: 12px; color: var(--sub); margin-top: 6px; line-height: 1.4; }
 
+    .ico { width: 1.15em; height: 1.15em; vertical-align: -0.22em; object-fit: contain; }
+    .emoji-btn .ico { width: 28px; height: 28px; vertical-align: middle; }
+    .widget-tag .ico { width: 1.7em; height: 1.7em; vertical-align: -0.45em; }
+    .cd-title .ico { width: 1.3em; height: 1.3em; vertical-align: -0.28em; }
     .new-row { width: 100%; max-width: var(--w); margin-top: 18px; text-align: center; }
     .new-row .pill { max-width: 100%; }
     .countdown-section { padding: 6px 0 20px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
@@ -92,6 +96,20 @@
   </header>
 
   <div class="card" id="detail">
+    <div class="countdown-section">
+      <div class="cd-title" id="cd-title"><span id="cd-icon"></span> <span id="cd-text"></span></div>
+      <div class="status" id="status"></div>
+      <div class="countdown-display" id="cd-display">
+        <div class="time-block" id="b-d"><div class="time-num" id="d-val">00</div><div class="time-label">DAYS</div></div>
+        <div class="time-block" id="b-h"><div class="time-num" id="h-val">00</div><div class="time-label">HOURS</div></div>
+        <div class="time-block" id="b-m"><div class="time-num" id="m-val">00</div><div class="time-label">MINUTES</div></div>
+        <div class="time-block" id="b-s"><div class="time-num" id="s-val">00</div><div class="time-label">SECONDS</div></div>
+      </div>
+      <div class="human" id="human"></div>
+      <div class="progress"><div class="progress-fill" id="pfill"></div></div>
+      <div class="progress-label"><span id="p-left"></span><span id="p-pct"></span></div>
+    </div>
+
     <div class="editing" id="editing"></div>
     <div class="input-group">
       <label for="event-title">Event name</label>
@@ -108,20 +126,6 @@
         </div>
       </details>
     </div>
-    <div class="countdown-section">
-      <div class="cd-title" id="cd-title"></div>
-      <div class="status" id="status"></div>
-      <div class="countdown-display" id="cd-display">
-        <div class="time-block" id="b-d"><div class="time-num" id="d-val">00</div><div class="time-label">DAYS</div></div>
-        <div class="time-block" id="b-h"><div class="time-num" id="h-val">00</div><div class="time-label">HOURS</div></div>
-        <div class="time-block" id="b-m"><div class="time-num" id="m-val">00</div><div class="time-label">MINUTES</div></div>
-        <div class="time-block" id="b-s"><div class="time-num" id="s-val">00</div><div class="time-label">SECONDS</div></div>
-      </div>
-      <div class="human" id="human"></div>
-      <div class="progress"><div class="progress-fill" id="pfill"></div></div>
-      <div class="progress-label"><span id="p-left"></span><span id="p-pct"></span></div>
-    </div>
-
     <div class="input-group">
       <span class="group-label">Icon &amp; color options</span>
       <div class="note hint">Brighten up your countdown with an icon or a color!</div>
@@ -150,10 +154,23 @@
     const $ = id => document.getElementById(id);
     const q = (el, sel) => el.querySelector(sel);
     const KEY = 'countdowns-v2', OLD_KEY = 'countdown';
-    const EMOJIS = ['⏳','🎉','🎂','✈️','🏖️','🎓','💍','🏆','🎄','❤️','🚀','📅','🏒'];
+    const EMOJIS = ['⏳','🎉','🎂','✈️','🏖️','🎓','💍','🏆','🏒','img:canadiens.svg','🎄','❤️','🚀','📅'];
     const COLORS = ['#0a84ff','#30d158','#ff9f0a','#ff375f','#bf5af2','#64d2ff'];
     const DATE_RE = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
     const pad = n => String(n).padStart(2, '0');
+    // Icons are emoji, or 'img:<file>' for an image file that sits next to index.html (only names in EMOJIS are ever loaded).
+    const FALLBACK_ICON = '🏒';
+    const isImg = e => typeof e === 'string' && e.startsWith('img:');
+    const iconText = e => isImg(e) ? FALLBACK_ICON : e;
+    function setIcon(el, e) {
+      if (el.dataset.icon === e) return;
+      el.dataset.icon = e; el.textContent = '';
+      if (!isImg(e)) { el.textContent = e; return; }
+      const img = document.createElement('img');
+      img.className = 'ico'; img.alt = ''; img.decoding = 'async'; img.src = e.slice(4);
+      img.onerror = () => { el.textContent = FALLBACK_ICON; };
+      el.appendChild(img);
+    }
     const DONE_MSG = 'This countdown is now done. I hope that your event worked out the way you wanted it to.';
     const myTz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; } })();
     function hpt() { if (navigator.vibrate) navigator.vibrate(15); }
@@ -223,7 +240,7 @@
       return out.join('\r\n');
     }
     function makeIcs(ev, t, now) {
-      const name = ((ev.emoji + ' ' + (ev.title || 'Countdown')).trim());
+      const name = ((iconText(ev.emoji) + ' ' + (ev.title || 'Countdown')).trim());
       const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//qcountdown//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
         'BEGIN:VEVENT', 'UID:' + ev.id + '@qcountdown', 'DTSTAMP:' + icsDate(now), 'DTSTART:' + icsDate(t), 'DTEND:' + icsDate(t + 36e5),
         'SUMMARY:' + icsEscape(name),
@@ -307,7 +324,7 @@
     function buildPickers() {
       const er = $('emoji-row'), sr = $('swatch-row');
       EMOJIS.forEach(e => {
-        const b = document.createElement('button'); b.type = 'button'; b.className = 'emoji-btn'; b.textContent = e; b.setAttribute('aria-label', 'Icon ' + e);
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'emoji-btn'; setIcon(b, e); b.setAttribute('aria-label', 'Icon ' + (isImg(e) ? e.slice(4) : e));
         b.addEventListener('click', () => { hpt(); cur().emoji = e; save(); renderPickers(cur()); tick(); });
         er.appendChild(b);
       });
@@ -347,7 +364,7 @@
         const t = targetTs(ev), ok = !isNaN(t);
         el.style.setProperty('--c', ev.color);
         el.classList.toggle('sel', ev.id === state.sel);
-        q(el, '.t-emoji').textContent = ev.emoji;
+        setIcon(q(el, '.t-emoji'), ev.emoji);
         q(el, '.t-state').textContent = !ok ? 'No date' : t <= now ? 'Done' : 'Until';
         q(el, '.widget-title').textContent = ev.title || 'Untitled';
         const c = !ok ? { num: '—', unit: 'pick a date' } : t <= now ? { num: '0', unit: 'countdown done' } : compact(t - now);
@@ -357,7 +374,7 @@
       }
 
       const ev = cur(), t = targetTs(ev), card = $('detail');
-      $('cd-title').textContent = ev.emoji + ' ' + (ev.title || 'Untitled');
+      setIcon($('cd-icon'), ev.emoji); $('cd-text').textContent = ev.title || 'Untitled';
       const pos = Array.from(tilesEl.children).indexOf(tileEls.get(ev.id));
       $('editing').textContent = pos >= 0 ? 'Editing countdown ' + (pos + 1) + ' of ' + state.events.length : 'Editing countdown';
       card.style.setProperty('--accent', ev.color); card.style.setProperty('--accent-rgb', hexRgb(ev.color));
