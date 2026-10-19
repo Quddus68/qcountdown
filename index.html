@@ -21,7 +21,7 @@
     body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px) 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
     header { width: 100%; max-width: var(--w); padding: 20px 0 10px 0; display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
     header .logo { width: 44px; height: 44px; flex-shrink: 0; }
-    header h1 { font-size: clamp(22px, 7vw, 28px); line-height: 1.15; font-weight: 700; letter-spacing: -0.5px; }
+    header h1 { font-size: clamp(18px, 5.8vw, 28px); line-height: 1.15; font-weight: 700; letter-spacing: -0.5px; }
     .pill { border: 1px solid rgba(10,132,255,0.3); background: rgba(10,132,255,0.15); color: #0a84ff; font-size: 15px; font-weight: 600; padding: 8px 16px; border-radius: 99px; cursor: pointer; }
 
     .card { background: var(--grad); border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 20px; width: 100%; max-width: var(--w); margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
@@ -87,12 +87,40 @@
     .widget-subtext { font-size: 11px; color: #8e8e93; }
     .tile-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,0.06); }
     .tile-bar i { display: block; height: 100%; width: 0; background: var(--c); }
+
+    header { position: relative; }
+    .menu-btn { margin-left: auto; flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .menu-btn[aria-expanded="true"] { background: rgba(255,255,255,0.14); }
+    .menu-btn svg { width: 22px; height: 22px; display: block; }
+    .menu-panel { position: absolute; right: 0; top: calc(100% - 2px); min-width: 190px; background: #1d2731; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 6px; box-shadow: 0 12px 32px rgba(0,0,0,0.5); z-index: 50; }
+    .menu-panel button { display: block; width: 100%; text-align: left; background: none; border: none; color: #fff; font-size: 16px; font-weight: 500; padding: 12px 14px; border-radius: 9px; cursor: pointer; }
+    .menu-panel button:hover, .menu-panel button:focus-visible { background: rgba(255,255,255,0.1); outline: none; }
+    .menu-btn:focus-visible, .sheet-x:focus-visible, .sheet-done:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .sheet-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.65); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px; }
+    .sheet { width: 100%; max-width: 520px; max-height: min(86vh, 720px); background: linear-gradient(145deg, #1d2731, #0c1014); border: 1px solid rgba(255,255,255,0.1); border-radius: 22px; display: flex; flex-direction: column; box-shadow: 0 20px 48px rgba(0,0,0,0.5); outline: none; }
+    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .sheet-head h2 { font-size: 20px; font-weight: 700; }
+    .sheet-x { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(255,255,255,0.08); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+    .sheet-body { padding: 8px 20px 4px; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; user-select: text; -webkit-user-select: text; font-size: 15px; line-height: 1.5; color: #d6d9de; }
+    .sheet-body h3 { font-size: 15px; font-weight: 700; color: #fff; margin: 16px 0 4px; }
+    .sheet-body p, .sheet-body ol { margin: 0 0 6px; }
+    .sheet-body ol { padding-left: 20px; }
+    .sheet-body b { color: #fff; font-weight: 600; }
+    .sheet-foot { padding: 12px 20px 18px; }
+    .sheet-done { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(10,132,255,0.25); background: rgba(10,132,255,0.15); color: #0a84ff; font-size: 16px; font-weight: 600; cursor: pointer; }
   </style>
 </head>
 <body>
   <header>
     <svg class="logo" viewBox="0 0 512 512" width="44" height="44" role="img" aria-label="Q's Countdown logo" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5a4d"/><stop offset="1" stop-color="#d1121f"/></linearGradient></defs><circle cx="256" cy="256" r="256" fill="url(#lg)"/><circle cx="240" cy="240" r="148" fill="none" stroke="#fff" stroke-width="28"/><line x1="310.7" y1="310.7" x2="378.6" y2="378.6" stroke="#ffffff" stroke-width="30" stroke-linecap="round" opacity="1"/><path d="M304.3,294.0 A84,84 0 1 1 304.3,186.0" fill="none" stroke="#ffffff" stroke-width="20" stroke-linecap="round"/><line x1="240.0" y1="132.0" x2="240.0" y2="116.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><line x1="294.0" y1="146.5" x2="302.0" y2="132.6" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="333.5" y1="186.0" x2="347.4" y2="178.0" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="348.0" y1="240.0" x2="364.0" y2="240.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><line x1="333.5" y1="294.0" x2="347.4" y2="302.0" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="294.0" y1="333.5" x2="302.0" y2="347.4" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="240.0" y1="348.0" x2="240.0" y2="364.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><line x1="186.0" y1="333.5" x2="178.0" y2="347.4" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="146.5" y1="294.0" x2="132.6" y2="302.0" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="132.0" y1="240.0" x2="116.0" y2="240.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><line x1="146.5" y1="186.0" x2="132.6" y2="178.0" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="186.0" y1="146.5" x2="178.0" y2="132.6" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="240.0" y1="240.0" x2="240.0" y2="190.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><line x1="240.0" y1="240.0" x2="269.4" y2="223.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><circle cx="240" cy="240" r="9.0" fill="#ffffff"/></svg>
     <h1>Q's Countdown Page</h1>
+    <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="menu-panel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <div class="menu-panel" id="menu-panel" role="menu" hidden>
+      <button type="button" role="menuitem" data-open="instructions">Instructions</button>
+      <button type="button" role="menuitem" data-open="about">About</button>
+    </div>
   </header>
 
   <div class="card" id="detail">
@@ -147,6 +175,48 @@
   <div class="new-row">
     <button class="pill" id="new-btn" type="button">Click here to make a new countdown</button>
   </div>
+
+  <div class="sheet-overlay" id="sheet" hidden>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1">
+      <div class="sheet-head"><h2 id="sheet-title"></h2><button class="sheet-x" id="sheet-x" type="button" aria-label="Close">&times;</button></div>
+      <div class="sheet-body" id="sheet-body"></div>
+      <div class="sheet-foot"><button class="sheet-done" id="sheet-done" type="button">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Menu pages: edit the text here. -->
+  <template id="tpl-instructions">
+    <h3>Make a countdown</h3>
+    <ol>
+      <li>Type a name in <b>Event name</b>.</li>
+      <li>Pick a day and time in <b>Target date &amp; time</b>.</li>
+      <li>The countdown at the top updates every second. There is nothing to save: changes are kept automatically on this device.</li>
+    </ol>
+    <h3>Add more countdowns</h3>
+    <p>Tap <b>Click here to make a new countdown</b> under your list. Each one shows up as a tile under <b>Your countdowns</b>. Tap a tile to view or edit it. The label above <b>Event name</b> tells you which one you are editing.</p>
+    <h3>Icons and colors</h3>
+    <p>Under <b>Icon &amp; color options</b>, pick an icon and a color. They appear on the countdown and on its tile.</p>
+    <h3>Time zones</h3>
+    <p>Normally a time like 9:00 AM means 9:00 AM wherever the person looking at it is. To make it one exact moment for everyone, open <b>Time zone options</b> and tick <b>Keep this exact moment for everyone</b>.</p>
+    <h3>Share link</h3>
+    <p>Makes a link to this countdown. Whoever opens it gets their own copy, which they can change without affecting yours.</p>
+    <h3>Add to Calendar</h3>
+    <p>Downloads a calendar file with a reminder one hour before. Open it to add the event to your calendar app.</p>
+    <h3>When the time is up</h3>
+    <p>The numbers stop at zero and a message appears.</p>
+    <h3>Deleting</h3>
+    <p><b>Delete this countdown</b> removes it from this device only, and it can't be undone.</p>
+    <h3>Add it to your Home Screen</h3>
+    <p>On iPhone, open the page in Safari, tap the Share button, then <b>Add to Home Screen</b>. On Android, use your browser's menu and choose <b>Add to Home screen</b> or <b>Install app</b>.</p>
+    <h3>Good to know</h3>
+    <p>Your countdowns are saved in the browser on this device. They don't sync to other devices, and clearing your browser's website data deletes them.</p>
+  </template>
+  <template id="tpl-about">
+    <h3>Q's Countdown Page</h3>
+    <p>A simple, free countdown timer for the days you are looking forward to: trips, birthdays, games, anything with a date.</p>
+    <p>There is no account or sign-up. Your countdowns are stored only in your own browser, and the page doesn't send your event names or dates anywhere.</p>
+    <p>It works on phones, tablets and computers, and you can add it to your Home Screen so it opens like an app.</p>
+  </template>
 
   <script>
   (() => {
@@ -467,6 +537,42 @@
       setTimeout(() => URL.revokeObjectURL(url), 4000);
     });
     document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
+
+    /* ---------- menu and info pages ---------- */
+    (function () {
+      const btn = $('menu-btn'), panel = $('menu-panel'), sheet = $('sheet'), body = $('sheet-body'), title = $('sheet-title'), closeBtn = $('sheet-x');
+      const TITLES = { instructions: 'Instructions', about: 'About' };
+      let lastFocus = null;
+      function menuOpen(open) {
+        panel.hidden = !open; btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) { const f = panel.querySelector('button'); if (f) f.focus(); }
+      }
+      function openSheet(name) {
+        const tpl = document.getElementById('tpl-' + name); if (!tpl) return;
+        title.textContent = TITLES[name] || ''; body.textContent = ''; body.appendChild(tpl.content.cloneNode(true)); body.scrollTop = 0;
+        menuOpen(false); lastFocus = btn;
+        sheet.hidden = false; document.body.style.overflow = 'hidden';
+        sheet.querySelector('.sheet').focus();
+      }
+      function closeSheet() {
+        if (sheet.hidden) return;
+        sheet.hidden = true; document.body.style.overflow = '';
+        if (lastFocus) lastFocus.focus();
+      }
+      btn.addEventListener('click', e => { e.stopPropagation(); hpt(); menuOpen(panel.hidden); });
+      panel.addEventListener('click', e => { const b = e.target.closest('[data-open]'); if (b) { hpt(); openSheet(b.dataset.open); } });
+      document.addEventListener('click', e => { if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) menuOpen(false); });
+      $('sheet-x').addEventListener('click', closeSheet); $('sheet-done').addEventListener('click', closeSheet);
+      sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { if (!sheet.hidden) closeSheet(); else if (!panel.hidden) { menuOpen(false); btn.focus(); } }
+        else if (e.key === 'Tab' && !sheet.hidden) { // keep keyboard focus inside the open page
+          const f = Array.from(sheet.querySelectorAll('button')); if (!f.length) return;
+          const i = f.indexOf(document.activeElement), next = e.shiftKey ? (i <= 0 ? f.length - 1 : i - 1) : (i === f.length - 1 ? 0 : i + 1);
+          e.preventDefault(); f[next].focus();
+        }
+      });
+    })();
 
     /* ---------- start ---------- */
     load(); importLink(); buildPickers(); buildTiles(); loadDetail(); tick();
