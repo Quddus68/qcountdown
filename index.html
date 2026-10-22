@@ -94,6 +94,8 @@
     .menu-btn svg { width: 22px; height: 22px; display: block; }
     .menu-panel { position: absolute; right: 0; top: calc(100% - 2px); min-width: 190px; background: #1d2731; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 6px; box-shadow: 0 12px 32px rgba(0,0,0,0.5); z-index: 50; }
     .menu-panel button { display: block; width: 100%; text-align: left; background: none; border: none; color: #fff; font-size: 16px; font-weight: 500; padding: 12px 14px; border-radius: 9px; cursor: pointer; }
+    .menu-link { display: block; text-align: left; color: #fff; text-decoration: none; font-size: 16px; font-weight: 500; padding: 12px 14px; border-radius: 9px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 4px; }
+    .menu-link:hover, .menu-link:focus-visible { background: rgba(255,255,255,0.1); outline: none; }
     .menu-panel button:hover, .menu-panel button:focus-visible { background: rgba(255,255,255,0.1); outline: none; }
     .menu-btn:focus-visible, .sheet-x:focus-visible, .sheet-done:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .sheet-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.65); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px; }
@@ -118,6 +120,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
     <div class="menu-panel" id="menu-panel" role="menu" hidden>
+      <a class="menu-link" role="menuitem" href="canadiens.html">Canadiens schedule</a>
       <button type="button" role="menuitem" data-open="instructions">Instructions</button>
       <button type="button" role="menuitem" data-open="about">About</button>
     </div>
@@ -198,6 +201,8 @@
     <p>Under <b>Icon &amp; color options</b>, pick an icon and a color. They appear on the countdown and on its tile.</p>
     <h3>Time zones</h3>
     <p>Normally a time like 9:00 AM means 9:00 AM wherever the person looking at it is. To make it one exact moment for everyone, open <b>Time zone options</b> and tick <b>Keep this exact moment for everyone</b>.</p>
+    <h3>Canadiens schedule</h3>
+    <p>Open the menu and choose <b>Canadiens schedule</b> for a separate page with every 2026-27 game as a countdown. The next game is shown automatically. Tap <b>Add to my countdowns</b> to keep a game here as a tile.</p>
     <h3>Share link</h3>
     <p>Makes a link to this countdown. Whoever opens it gets their own copy, which they can change without affecting yours.</p>
     <h3>Add to Calendar</h3>
@@ -545,7 +550,7 @@
       let lastFocus = null;
       function menuOpen(open) {
         panel.hidden = !open; btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        if (open) { const f = panel.querySelector('button'); if (f) f.focus(); }
+        if (open) { const f = panel.querySelector('a,button'); if (f) f.focus(); }
       }
       function openSheet(name) {
         const tpl = document.getElementById('tpl-' + name); if (!tpl) return;

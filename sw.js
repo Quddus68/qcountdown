@@ -1,7 +1,7 @@
 // Network-first service worker: always tries the network (bypassing the HTTP cache)
 // so updates show up right away, and falls back to the saved copy when offline.
-const CACHE = 'qcountdown-v3';
-const ASSETS = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
+const CACHE = 'qcountdown-v5';
+const ASSETS = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'canadiens.html', 'canadiens.svg', 'habs-apple-touch-icon.png', 'Canadiens-2026-27-schedule.ics'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Q's Canadiens Countdown</title>
+  <meta name="description" content="Countdown to the next Montreal Canadiens game, with the full 2026-27 schedule. An unofficial fan page.">
+  <meta name="theme-color" content="#0a0f1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Habs Countdown">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="habs-apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="logos/montreal-canadiens.svg">
+  <style>
+    :root { --w: 440px; color-scheme: dark; --bg: #0a0f1a; --card: linear-gradient(150deg, #17233a, #0c1322); --text: #fff; --sub: #98a2b3; --red: #e8283f; --red-rgb: 232, 40, 63; --blue: #4d8fe0; --border: rgba(255,255,255,0.1); }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    [hidden] { display: none !important; }
+    button { font-family: inherit; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 28px); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    @media (min-width: 640px) { :root { --w: 560px; } }
+    .wrap { width: 100%; max-width: var(--w); }
+    header { padding: 18px 0 12px; display: flex; align-items: center; gap: 12px; }
+    header img { width: 44px; height: 44px; object-fit: contain; flex-shrink: 0; background: #fff; border-radius: 12px; padding: 4px; }
+    header h1 { font-size: clamp(18px, 5.6vw, 26px); line-height: 1.15; font-weight: 700; letter-spacing: -0.4px; flex: 1; min-width: 0; }
+    .back { flex-shrink: 0; font-size: 14px; font-weight: 600; color: var(--blue); text-decoration: none; border: 1px solid rgba(77,143,224,0.35); background: rgba(77,143,224,0.12); padding: 9px 12px; border-radius: 99px; white-space: nowrap; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+    .card { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 22px; padding: 20px 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); margin-bottom: 16px; }
+    .live { background: linear-gradient(90deg, #b3122a, #e8283f); border-radius: 16px; padding: 12px 14px; margin-bottom: 14px; font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 10px; }
+    .live::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #fff; flex-shrink: 0; }
+    .tag { font-size: 12px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--red); text-align: center; }
+    .matchup { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin: 14px 0 10px; }
+    .side { text-align: center; min-width: 0; }
+    .chip { width: clamp(76px, 24vw, 104px); height: clamp(76px, 24vw, 104px); margin: 0 auto 6px; background: #fff; border-radius: 22px; display: flex; align-items: center; justify-content: center; padding: 10px; }
+    .chip img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+    .chip .abbr { color: #0a0f1a; font-weight: 800; font-size: 20px; }
+    .side .nm { font-size: 14px; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
+    .side .role { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--sub); margin-top: 3px; }
+    .at { font-size: 15px; font-weight: 700; color: var(--sub); }
+    .when { text-align: center; font-size: 16px; font-weight: 600; margin-top: 4px; }
+    .when-sub, .bcast { text-align: center; font-size: 13px; color: var(--sub); margin-top: 3px; }
+    .bcast b { color: #fff; font-weight: 600; }
+    .cd { display: grid; grid-template-columns: repeat(var(--n, 4), 1fr); gap: 8px; margin: 16px 0 6px; }
+    .blk { background: rgba(var(--red-rgb), 0.12); border: 1px solid rgba(var(--red-rgb), 0.22); border-radius: 12px; padding: 14px 2px; text-align: center; }
+    .num { font-size: clamp(26px, 8.5vw, 40px); font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.4px; color: var(--sub); margin-top: 4px; }
+    .started { text-align: center; font-size: 15px; font-weight: 600; margin: 16px 0 6px; padding: 14px 10px; border-radius: 12px; background: rgba(255,255,255,0.06); }
+    .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .btn { padding: 13px 8px; border-radius: 12px; border: 1px solid rgba(var(--red-rgb), 0.4); background: rgba(var(--red-rgb), 0.16); color: #ff8b99; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .btn.alt { border-color: rgba(77,143,224,0.4); background: rgba(77,143,224,0.14); color: #9cc3f5; }
+    .msg { text-align: center; font-size: 13px; color: var(--sub); margin-top: 10px; min-height: 17px; }
+    .msg a { color: var(--blue); }
+    .back-next { display: block; margin: 12px auto 0; background: none; border: none; color: var(--blue); font-size: 14px; font-weight: 600; cursor: pointer; padding: 8px; }
+    .season-over { text-align: center; padding: 10px 4px; }
+    .season-over .chip { margin-bottom: 12px; }
+    .season-over p { font-size: 16px; line-height: 1.4; }
+
+    .season { margin-bottom: 14px; }
+    .season-top { display: flex; justify-content: space-between; font-size: 13px; color: var(--sub); margin-bottom: 6px; }
+    .bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+    .bar i { display: block; height: 100%; width: 0; background: var(--red); border-radius: 99px; }
+
+    .filters { display: flex; gap: 8px; margin-bottom: 8px; overflow-x: auto; padding-bottom: 4px; }
+    .fchip { flex-shrink: 0; padding: 9px 14px; border-radius: 99px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #d0d5dd; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .fchip[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; }
+    .month { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sub); margin: 18px 0 6px; }
+    .row { width: 100%; display: grid; grid-template-columns: 52px 44px 1fr auto; align-items: center; gap: 10px; text-align: left; color: #fff; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; }
+    .row.sel { border-color: var(--red); box-shadow: 0 0 0 1px var(--red); }
+    .row.past { opacity: 0.5; }
+    .row.next { background: rgba(var(--red-rgb), 0.12); }
+    .r-date { font-size: 12px; line-height: 1.2; color: var(--sub); text-align: center; }
+    .r-date b { display: block; font-size: 18px; color: #fff; font-weight: 700; }
+    .r-logo { width: 44px; height: 44px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 4px; }
+    .r-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .r-logo .abbr { font-size: 12px; font-weight: 800; color: #0a0f1a; }
+    .r-main { min-width: 0; }
+    .r-team { font-size: 15px; font-weight: 600; line-height: 1.25; }
+    .r-team small { color: var(--sub); font-weight: 500; font-size: 13px; }
+    .r-time { font-size: 13px; color: var(--sub); margin-top: 2px; }
+    .r-bc { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 99px; background: rgba(77,143,224,0.16); color: #9cc3f5; white-space: nowrap; }
+    .empty { text-align: center; color: var(--sub); padding: 22px 8px; font-size: 14px; }
+    .dl { text-align: center; margin-top: 18px; font-size: 14px; }
+    .dl a { color: var(--blue); }
+    .foot { margin-top: 22px; font-size: 12px; line-height: 1.5; color: var(--sub); text-align: center; }
+    .err { text-align: center; line-height: 1.45; }
+    .err p { margin-bottom: 14px; }
+    @media (max-width: 360px) { .row { grid-template-columns: 44px 40px 1fr; } .r-bc { display: none; } .r-logo { width: 40px; height: 40px; } }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="logos/montreal-canadiens.svg" alt="">
+    <h1>Q's Canadiens Countdown</h1>
+    <a class="back" href="index.html">&larr; Countdowns</a>
+  </header>
+
+  <main id="app" aria-busy="true">
+    <div class="card"><p class="msg" id="loading">Loading the schedule&hellip;</p></div>
+  </main>
+
+  <p class="foot">Unofficial fan page, not affiliated with or endorsed by the NHL or the Montreal Canadiens. Team names and logos are trademarks of their owners. Broadcasters listed are the English-language broadcasters for the Montreal market; what you can watch depends on where you live. Times are shown in your own time zone. &ldquo;Game on&rdquo; is estimated from an assumed game length of about 2&frac12; hours.</p>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const ICS_URL = 'Canadiens-2026-27-schedule.ics';
+  const HOME_TEAM = 'Montreal Canadiens';
+  const ET = 'America/Toronto';
+  const PNG_LOGOS = { 'seattle-kraken': 1, 'utah-mammoth': 1 };
+  const ABBR = { 'Anaheim Ducks':'ANA','Boston Bruins':'BOS','Buffalo Sabres':'BUF','Calgary Flames':'CGY','Carolina Hurricanes':'CAR','Chicago Blackhawks':'CHI','Colorado Avalanche':'COL','Columbus Blue Jackets':'CBJ','Dallas Stars':'DAL','Detroit Red Wings':'DET','Edmonton Oilers':'EDM','Florida Panthers':'FLA','Los Angeles Kings':'LAK','Minnesota Wild':'MIN','Montreal Canadiens':'MTL','Nashville Predators':'NSH','New Jersey Devils':'NJD','New York Islanders':'NYI','New York Rangers':'NYR','Ottawa Senators':'OTT','Philadelphia Flyers':'PHI','Pittsburgh Penguins':'PIT','San Jose Sharks':'SJS','Seattle Kraken':'SEA','St. Louis Blues':'STL','Tampa Bay Lightning':'TBL','Toronto Maple Leafs':'TOR','Utah Mammoth':'UTA','Vancouver Canucks':'VAN','Vegas Golden Knights':'VGK','Washington Capitals':'WSH','Winnipeg Jets':'WPG' };
+  const pad = n => String(n).padStart(2, '0');
+  const KEY = 'countdowns-v2';
+  const LIVE_FALLBACK_MS = 150 * 6e4; // used if an event has no DTEND
+
+  let games = [], filter = 'upcoming', selectedId = null, lastSig = '', tickEls = null;
+
+  /* ---------- schedule file ---------- */
+  function unescapeIcs(s) { return s.replace(/\\n/gi, '\n').replace(/\\([,;\\])/g, '$1'); }
+  function parseDt(v) {
+    const m = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/.exec(v || '');
+    return m ? Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]) : NaN;
+  }
+  function parseIcs(text) {
+    const unfolded = text.replace(/\r?\n[ \t]/g, '');
+    const out = [];
+    for (const block of unfolded.split('BEGIN:VEVENT').slice(1)) {
+      const body = block.split('END:VEVENT')[0], f = {};
+      for (const line of body.split(/\r?\n/)) {
+        const i = line.indexOf(':'); if (i < 1) continue;
+        const key = line.slice(0, i).split(';')[0].toUpperCase();
+        if (!(key in f)) f[key] = unescapeIcs(line.slice(i + 1)).trim();
+      }
+      const start = parseDt(f['DTSTART']); if (isNaN(start)) continue;
+      let end = parseDt(f['DTEND']); if (isNaN(end)) end = start + LIVE_FALLBACK_MS;
+      let visitor = f['X-VISITOR'], home = f['X-HOME'];
+      const sm = /^(.+?) at (.+)$/.exec(f['SUMMARY'] || '');
+      if ((!visitor || !home) && sm) { visitor = visitor || sm[1]; home = home || sm[2]; }
+      if (!visitor || !home) continue;
+      let bc = f['X-BROADCASTER-EN'];
+      if (!bc) { const dm = /Broadcaster \(EN\):\s*([^\n]+)/.exec(f['DESCRIPTION'] || ''); bc = dm ? dm[1].trim() : ''; }
+      out.push({ uid: f['UID'] || ('g' + start), start, end, visitor, home, bc });
+    }
+    return out.sort((a, b) => a.start - b.start);
+  }
+
+  /* ---------- helpers ---------- */
+  const slug = n => n.toLowerCase().replace(/\./g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const opponent = g => g.visitor === HOME_TEAM ? g.home : g.visitor;
+  const isHome = g => g.home === HOME_TEAM;
+  const shortName = n => n === HOME_TEAM ? 'Canadiens' : n;
+  function abbr(n) { return ABBR[n] || n.split(' ').map(w => w[0]).join('').slice(0, 3).toUpperCase(); }
+  function logoBox(cls, team) {
+    const box = document.createElement('div'); box.className = cls;
+    const s = slug(team), img = document.createElement('img');
+    img.alt = team + ' logo'; img.decoding = 'async'; if (cls === 'r-logo') img.loading = 'lazy';
+    img.src = 'logos/' + s + (PNG_LOGOS[s] ? '.png' : '.svg');
+    img.onerror = () => { box.textContent = ''; const a = document.createElement('span'); a.className = 'abbr'; a.textContent = abbr(team); box.appendChild(a); };
+    box.appendChild(img); return box;
+  }
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  const fmt = (ts, opts, tz) => new Intl.DateTimeFormat(undefined, Object.assign({}, opts, tz ? { timeZone: tz } : {})).format(new Date(ts));
+  const DATE_OPTS = { weekday: 'long', month: 'long', day: 'numeric' };
+  const TIME_OPTS = { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' };
+  function etWallClock(ts) {
+    const p = {}; for (const x of new Intl.DateTimeFormat('en-US', { timeZone: ET, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).formatToParts(new Date(ts))) p[x.type] = x.value;
+    return `${p.year}-${p.month}-${p.day}T${pad(+p.hour % 24)}:${p.minute}`;
+  }
+  const isLive = (g, now) => now >= g.start && now < g.end;
+  const isOver = (g, now) => now >= g.end;
+  const nextGame = now => games.find(g => g.start > now) || null;
+  const liveGame = now => games.find(g => isLive(g, now)) || null;
+
+  /* ---------- calendar & my countdowns ---------- */
+  function icsEscape(s) { return s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+  function icsDate(ts) { const d = new Date(ts); return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z'; }
+  function fold(line) { const cps = Array.from(line), o = []; for (let i = 0; i < cps.length; i += 45) o.push((i ? ' ' : '') + cps.slice(i, i + 45).join('')); return o.join('\r\n'); }
+  function titleOf(g) { return `${shortName(g.visitor)} at ${shortName(g.home)}`; }
+  function downloadIcs(g) {
+    const name = '\u{1F3D2} ' + titleOf(g);
+    const desc = `Visitor: ${g.visitor}\nHome: ${g.home}` + (g.bc ? `\nEnglish broadcast: ${g.bc}` : '');
+    const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//qcountdown//Canadiens game//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+      'BEGIN:VEVENT', 'UID:' + g.uid, 'DTSTAMP:' + icsDate(Date.now()), 'DTSTART:' + icsDate(g.start), 'DTEND:' + icsDate(g.end),
+      'SUMMARY:' + icsEscape(name), 'DESCRIPTION:' + icsEscape(desc),
+      'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEscape(name), 'TRIGGER:-PT1H', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'];
+    const blob = new Blob([lines.map(fold).join('\r\n') + '\r\n'], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = slug(titleOf(g)) + '.ics'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  }
+  function readState() {
+    try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && Array.isArray(s.events)) return s; } catch (e) {}
+    return { events: [], sel: null };
+  }
+  function inMyCountdowns(g) { return readState().events.some(e => e && e.id === 'nhl-' + g.uid); }
+  function addToMine(g) {
+    try {
+      const s = readState(), id = 'nhl-' + g.uid;
+      if (!s.events.some(e => e && e.id === id)) {
+        s.events.push({ id, title: titleOf(g).slice(0, 60), date: etWallClock(g.start), tz: ET, emoji: 'img:canadiens.svg', color: '#ff375f', created: Date.now() });
+      }
+      s.sel = id;
+      localStorage.setItem(KEY, JSON.stringify(s));
+      return true;
+    } catch (e) { return false; }
+  }
+
+  /* ---------- rendering ---------- */
+  const app = $('app');
+  function pieces(diff) {
+    const t = Math.max(0, diff), d = Math.floor(t / 864e5), h = Math.floor(t % 864e5 / 36e5), m = Math.floor(t % 36e5 / 6e4), s = Math.floor(t % 6e4 / 1e3);
+    return { d, h, m, s };
+  }
+  function renderHero(now) {
+    const box = el('section', 'card'); box.setAttribute('aria-label', 'Game countdown');
+    const live = liveGame(now);
+    if (live) { const b = el('div', 'live', 'Game on! ' + titleOf(live)); b.setAttribute('role', 'status'); box.appendChild(b); }
+    const next = nextGame(now);
+    let g = games.find(x => x.uid === selectedId) || next;
+    if (!g) {
+      const w = el('div', 'season-over'); w.appendChild(logoBox('chip', HOME_TEAM));
+      w.appendChild(el('p', '', 'That\u2019s the end of the 2026-27 regular season. Thanks for following along. See you next season!'));
+      box.appendChild(w); tickEls = null; return box;
+    }
+    const isSel = g !== next;
+    const tag = isSel ? (isOver(g, now) || isLive(g, now) ? 'Selected game' : 'Selected game') : (g === games[0] ? 'Season opener' : 'Next game');
+    box.appendChild(el('div', 'tag', `${tag} \u00b7 Game ${games.indexOf(g) + 1} of ${games.length}`));
+    const mu = el('div', 'matchup');
+    for (const [team, role] of [[g.visitor, 'Visitor'], [null, null], [g.home, 'Home']]) {
+      if (!team) { mu.appendChild(el('div', 'at', 'at')); continue; }
+      const side = el('div', 'side'); side.appendChild(logoBox('chip', team));
+      side.appendChild(el('div', 'nm', team)); side.appendChild(el('div', 'role', role)); mu.appendChild(side);
+    }
+    box.appendChild(mu);
+    box.appendChild(el('div', 'when', fmt(g.start, DATE_OPTS) + ' \u00b7 ' + fmt(g.start, TIME_OPTS)));
+    const mine = fmt(g.start, Object.assign({}, DATE_OPTS, TIME_OPTS)), et = fmt(g.start, Object.assign({}, DATE_OPTS, TIME_OPTS), ET);
+    if (mine !== et) box.appendChild(el('div', 'when-sub', 'In Montreal: ' + fmt(g.start, { weekday: 'short', month: 'short', day: 'numeric' }, ET) + ' \u00b7 ' + fmt(g.start, TIME_OPTS, ET)));
+    if (g.bc) { const b = el('div', 'bcast', 'English broadcast: '); b.appendChild(el('b', '', g.bc)); box.appendChild(b); }
+
+    tickEls = null;
+    if (now >= g.start) {
+      box.appendChild(el('div', 'started', isLive(g, now) ? 'This game is on right now.' : 'This game has already been played.'));
+    } else {
+      const cd = el('div', 'cd'); cd.setAttribute('role', 'timer'); cd.setAttribute('aria-label', 'Time until puck drop');
+      tickEls = { g, cd, vals: {} };
+      for (const [k, label] of [['d', 'DAYS'], ['h', 'HOURS'], ['m', 'MINUTES'], ['s', 'SECONDS']]) {
+        const b = el('div', 'blk'), n = el('div', 'num', '00'); b.appendChild(n); b.appendChild(el('div', 'lbl', label));
+        cd.appendChild(b); tickEls.vals[k] = { n, b };
+      }
+      box.appendChild(cd);
+    }
+    const btns = el('div', 'btns');
+    const add = el('button', 'btn', inMyCountdowns(g) ? 'In my countdowns \u2713' : 'Add to my countdowns'); add.type = 'button';
+    const cal = el('button', 'btn alt', 'Add to Calendar'); cal.type = 'button';
+    btns.appendChild(add); btns.appendChild(cal); box.appendChild(btns);
+    const msg = el('div', 'msg'); msg.setAttribute('role', 'status'); box.appendChild(msg);
+    add.addEventListener('click', () => {
+      const had = inMyCountdowns(g), ok = addToMine(g);
+      msg.textContent = '';
+      if (!ok) { msg.textContent = 'Could not save here. Your browser may be blocking storage.'; return; }
+      add.textContent = 'In my countdowns \u2713';
+      msg.appendChild(document.createTextNode(had ? 'Already in your countdowns. ' : 'Added. '));
+      const a = el('a', '', 'Open it'); a.href = 'index.html'; msg.appendChild(a);
+    });
+    cal.addEventListener('click', () => { downloadIcs(g); msg.textContent = 'Calendar file downloaded. Open it to add the game.'; });
+    if (isSel) {
+      const back = el('button', 'back-next', next ? '\u2190 Back to the next game' : '\u2190 Back'); back.type = 'button';
+      back.addEventListener('click', () => { selectedId = null; render(true); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      box.appendChild(back);
+    }
+    return box;
+  }
+  function tick() {
+    if (!tickEls) return;
+    const now = Date.now(), g = tickEls.g;
+    if (now >= g.start) { render(true); return; }
+    const p = pieces(g.start - now), v = tickEls.vals;
+    const showD = p.d > 0, showH = showD || p.h > 0;
+    v.d.b.hidden = !showD; v.h.b.hidden = !showH;
+    tickEls.cd.style.setProperty('--n', 2 + (showD ? 1 : 0) + (showH ? 1 : 0));
+    v.d.n.textContent = String(p.d); v.h.n.textContent = pad(p.h); v.m.n.textContent = pad(p.m); v.s.n.textContent = pad(p.s);
+  }
+  function renderSeason(now) {
+    const played = games.filter(g => isOver(g, now)).length, box = el('section', 'season');
+    const top = el('div', 'season-top'); top.appendChild(el('span', '', `${played} of ${games.length} games played`));
+    const left = games.length - played; top.appendChild(el('span', '', left + ' to go'));
+    const bar = el('div', 'bar'), i = document.createElement('i'); i.style.width = (games.length ? played / games.length * 100 : 0) + '%'; bar.appendChild(i);
+    box.appendChild(top); box.appendChild(bar); return box;
+  }
+  function renderFilters() {
+    const f = el('div', 'filters'); f.setAttribute('role', 'group'); f.setAttribute('aria-label', 'Filter games');
+    for (const [k, label] of [['upcoming', 'Upcoming'], ['home', 'Home'], ['away', 'Away'], ['played', 'Played']]) {
+      const b = el('button', 'fchip', label); b.type = 'button'; b.setAttribute('aria-pressed', String(filter === k));
+      b.addEventListener('click', () => { filter = k; render(true); }); f.appendChild(b);
+    }
+    return f;
+  }
+  function renderList(now) {
+    const wrap = el('section'); wrap.setAttribute('aria-label', 'Schedule');
+    const list = games.filter(g => filter === 'upcoming' ? !isOver(g, now) : filter === 'home' ? isHome(g) : filter === 'away' ? !isHome(g) : isOver(g, now));
+    if (!list.length) { wrap.appendChild(el('div', 'empty', filter === 'played' ? 'No games played yet.' : 'No games to show here.')); return wrap; }
+    const next = nextGame(now); let lastMonth = '';
+    for (const g of list) {
+      const month = fmt(g.start, { month: 'long', year: 'numeric' });
+      if (month !== lastMonth) { wrap.appendChild(el('h2', 'month', month)); lastMonth = month; }
+      const opp = opponent(g), r = el('button', 'row'); r.type = 'button';
+      if (g.uid === selectedId) r.classList.add('sel');
+      if (isOver(g, now)) r.classList.add('past');
+      if (next && g === next && !selectedId) r.classList.add('next');
+      const d = el('div', 'r-date', fmt(g.start, { weekday: 'short' })); d.appendChild(el('b', '', fmt(g.start, { day: 'numeric' }))); r.appendChild(d);
+      r.appendChild(logoBox('r-logo', opp));
+      const main = el('div', 'r-main'), t = el('div', 'r-team', isHome(g) ? 'vs ' : 'at '); t.appendChild(document.createTextNode(opp)); main.appendChild(t);
+      main.appendChild(el('div', 'r-time', fmt(g.start, TIME_OPTS) + (isHome(g) ? ' \u00b7 Home' : ' \u00b7 Away'))); r.appendChild(main);
+      if (g.bc) r.appendChild(el('div', 'r-bc', g.bc));
+      r.setAttribute('aria-label', `${titleOf(g)}, ${fmt(g.start, DATE_OPTS)} ${fmt(g.start, TIME_OPTS)}`);
+      r.addEventListener('click', () => { selectedId = g.uid; render(true); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      wrap.appendChild(r);
+    }
+    return wrap;
+  }
+  function render(force) {
+    const now = Date.now(), nx = nextGame(now), lv = liveGame(now);
+    const played = games.filter(g => isOver(g, now)).length;
+    const sig = [nx && nx.uid, lv && lv.uid, played, selectedId, filter].join('|');
+    if (!force && sig === lastSig) return;
+    lastSig = sig;
+    app.textContent = ''; app.setAttribute('aria-busy', 'false');
+    app.appendChild(renderHero(now)); app.appendChild(renderSeason(now)); app.appendChild(renderFilters()); app.appendChild(renderList(now));
+    const dl = el('p', 'dl'); const a = el('a', '', 'Download the whole schedule (.ics)'); a.href = ICS_URL; a.setAttribute('download', ''); dl.appendChild(a);
+    dl.appendChild(document.createElement('br')); dl.appendChild(el('span', 'msg', 'Opens in your calendar app.')); app.appendChild(dl);
+    tick();
+  }
+  function showError() {
+    app.textContent = ''; app.setAttribute('aria-busy', 'false');
+    const c = el('div', 'card err');
+    c.appendChild(el('p', '', 'The schedule could not be loaded. Check your connection, and make sure the file ' + ICS_URL + ' is in the same folder as this page.'));
+    const b = el('button', 'btn', 'Try again'); b.type = 'button'; b.addEventListener('click', start); c.appendChild(b); app.appendChild(c);
+  }
+  async function start() {
+    app.setAttribute('aria-busy', 'true');
+    try {
+      const res = await fetch(ICS_URL, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      games = parseIcs(await res.text());
+      if (!games.length) throw new Error('no games');
+    } catch (e) { showError(); return; }
+    lastSig = ''; render(true);
+  }
+
+  setInterval(() => { if (!games.length) return; render(false); tick(); }, 1000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && games.length) { render(false); tick(); } });
+  start();
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+</script>
+</body>
+</html>

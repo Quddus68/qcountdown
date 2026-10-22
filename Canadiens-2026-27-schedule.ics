@@ -1,0 +1,1100 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//qcountdown//Canadiens schedule//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Montreal Canadiens 2026-27
+X-WR-TIMEZONE:America/Toronto
+BEGIN:VEVENT
+UID:20260929-montreal-canadiens-at-toronto-maple-leafs@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20260929T230000Z
+DTEND:20260930T013000Z
+SUMMARY:Montreal Canadiens at Toronto Maple Leafs
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Toronto Maple Leafs\nBroadca
+ ster (EN): Sportsnet\nStart time: Tue Sep 29\, 2026 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Toronto Maple Leafs
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261003-montreal-canadiens-at-pittsburgh-penguins@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261003T230000Z
+DTEND:20261004T013000Z
+SUMMARY:Montreal Canadiens at Pittsburgh Penguins
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Pittsburgh Penguins\nBroadca
+ ster (EN): Sportsnet\nStart time: Sat Oct 3\, 2026 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Pittsburgh Penguins
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261006-carolina-hurricanes-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261006T230000Z
+DTEND:20261007T013000Z
+SUMMARY:Carolina Hurricanes at Montreal Canadiens
+DESCRIPTION:Visitor: Carolina Hurricanes\nHome: Montreal Canadiens\nBroadca
+ ster (EN): TSN2\nStart time: Tue Oct 6\, 2026 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Carolina Hurricanes
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261008-nashville-predators-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261008T230000Z
+DTEND:20261009T013000Z
+SUMMARY:Nashville Predators at Montreal Canadiens
+DESCRIPTION:Visitor: Nashville Predators\nHome: Montreal Canadiens\nBroadca
+ ster (EN): TSN2\nStart time: Thu Oct 8\, 2026 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Nashville Predators
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261010-detroit-red-wings-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261010T230000Z
+DTEND:20261011T013000Z
+SUMMARY:Detroit Red Wings at Montreal Canadiens
+DESCRIPTION:Visitor: Detroit Red Wings\nHome: Montreal Canadiens\nBroadcast
+ er (EN): Sportsnet\nStart time: Sat Oct 10\, 2026 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Detroit Red Wings
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261013-buffalo-sabres-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261013T223000Z
+DTEND:20261014T010000Z
+SUMMARY:Buffalo Sabres at Montreal Canadiens
+DESCRIPTION:Visitor: Buffalo Sabres\nHome: Montreal Canadiens\nBroadcaster 
+ (EN): TSN2\nStart time: Tue Oct 13\, 2026 6:30 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Buffalo Sabres
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261014-montreal-canadiens-at-washington-capitals@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261014T233000Z
+DTEND:20261015T020000Z
+SUMMARY:Montreal Canadiens at Washington Capitals
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Washington Capitals\nBroadca
+ ster (EN): Prime Video\nStart time: Wed Oct 14\, 2026 7:30 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Washington Capitals
+X-BROADCASTER-EN:Prime Video
+END:VEVENT
+BEGIN:VEVENT
+UID:20261017-buffalo-sabres-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261017T230000Z
+DTEND:20261018T013000Z
+SUMMARY:Buffalo Sabres at Montreal Canadiens
+DESCRIPTION:Visitor: Buffalo Sabres\nHome: Montreal Canadiens\nBroadcaster 
+ (EN): Sportsnet\nStart time: Sat Oct 17\, 2026 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Buffalo Sabres
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261020-san-jose-sharks-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261020T230000Z
+DTEND:20261021T013000Z
+SUMMARY:San Jose Sharks at Montreal Canadiens
+DESCRIPTION:Visitor: San Jose Sharks\nHome: Montreal Canadiens\nBroadcaster
+  (EN): TSN2\nStart time: Tue Oct 20\, 2026 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:San Jose Sharks
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261023-montreal-canadiens-at-chicago-blackhawks@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261024T000000Z
+DTEND:20261024T023000Z
+SUMMARY:Montreal Canadiens at Chicago Blackhawks
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Chicago Blackhawks\nBroadcas
+ ter (EN): TSN2\nStart time: Fri Oct 23\, 2026 8:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Chicago Blackhawks
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261025-montreal-canadiens-at-winnipeg-jets@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261025T230000Z
+DTEND:20261026T013000Z
+SUMMARY:Montreal Canadiens at Winnipeg Jets
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Winnipeg Jets\nBroadcaster (
+ EN): Sportsnet\nStart time: Sun Oct 25\, 2026 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Winnipeg Jets
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261027-montreal-canadiens-at-st-louis-blues@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261028T000000Z
+DTEND:20261028T023000Z
+SUMMARY:Montreal Canadiens at St. Louis Blues
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: St. Louis Blues\nBroadcaster
+  (EN): TSN2\nStart time: Tue Oct 27\, 2026 8:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:St. Louis Blues
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261029-montreal-canadiens-at-dallas-stars@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261030T000000Z
+DTEND:20261030T023000Z
+SUMMARY:Montreal Canadiens at Dallas Stars
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Dallas Stars\nBroadcaster (E
+ N): TSN2\nStart time: Thu Oct 29\, 2026 8:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Dallas Stars
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261031-pittsburgh-penguins-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261031T230000Z
+DTEND:20261101T013000Z
+SUMMARY:Pittsburgh Penguins at Montreal Canadiens
+DESCRIPTION:Visitor: Pittsburgh Penguins\nHome: Montreal Canadiens\nBroadca
+ ster (EN): Sportsnet\nStart time: Sat Oct 31\, 2026 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Pittsburgh Penguins
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261103-winnipeg-jets-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261104T000000Z
+DTEND:20261104T023000Z
+SUMMARY:Winnipeg Jets at Montreal Canadiens
+DESCRIPTION:Visitor: Winnipeg Jets\nHome: Montreal Canadiens\nBroadcaster (
+ EN): TSN2\nStart time: Tue Nov 3\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Winnipeg Jets
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261105-utah-mammoth-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261106T000000Z
+DTEND:20261106T023000Z
+SUMMARY:Utah Mammoth at Montreal Canadiens
+DESCRIPTION:Visitor: Utah Mammoth\nHome: Montreal Canadiens\nBroadcaster (E
+ N): TSN2\nStart time: Thu Nov 5\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Utah Mammoth
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261107-montreal-canadiens-at-toronto-maple-leafs@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261108T000000Z
+DTEND:20261108T023000Z
+SUMMARY:Montreal Canadiens at Toronto Maple Leafs
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Toronto Maple Leafs\nBroadca
+ ster (EN): Sportsnet\nStart time: Sat Nov 7\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Toronto Maple Leafs
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261110-minnesota-wild-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261111T000000Z
+DTEND:20261111T023000Z
+SUMMARY:Minnesota Wild at Montreal Canadiens
+DESCRIPTION:Visitor: Minnesota Wild\nHome: Montreal Canadiens\nBroadcaster 
+ (EN): TSN2\nStart time: Tue Nov 10\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Minnesota Wild
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261112-montreal-canadiens-at-boston-bruins@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261113T000000Z
+DTEND:20261113T023000Z
+SUMMARY:Montreal Canadiens at Boston Bruins
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Boston Bruins\nBroadcaster (
+ EN): TSN2\nStart time: Thu Nov 12\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Boston Bruins
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261114-colorado-avalanche-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261115T000000Z
+DTEND:20261115T023000Z
+SUMMARY:Colorado Avalanche at Montreal Canadiens
+DESCRIPTION:Visitor: Colorado Avalanche\nHome: Montreal Canadiens\nBroadcas
+ ter (EN): Sportsnet\nStart time: Sat Nov 14\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Colorado Avalanche
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261116-montreal-canadiens-at-new-york-rangers@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261117T003000Z
+DTEND:20261117T030000Z
+SUMMARY:Montreal Canadiens at New York Rangers
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: New York Rangers\nBroadcaste
+ r (EN): Sportsnet+\nStart time: Mon Nov 16\, 2026 7:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:New York Rangers
+X-BROADCASTER-EN:Sportsnet+
+END:VEVENT
+BEGIN:VEVENT
+UID:20261118-montreal-canadiens-at-new-jersey-devils@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261119T003000Z
+DTEND:20261119T030000Z
+SUMMARY:Montreal Canadiens at New Jersey Devils
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: New Jersey Devils\nBroadcast
+ er (EN): Prime Video\nStart time: Wed Nov 18\, 2026 7:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:New Jersey Devils
+X-BROADCASTER-EN:Prime Video
+END:VEVENT
+BEGIN:VEVENT
+UID:20261119-montreal-canadiens-at-carolina-hurricanes@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261120T000000Z
+DTEND:20261120T023000Z
+SUMMARY:Montreal Canadiens at Carolina Hurricanes
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Carolina Hurricanes\nBroadca
+ ster (EN): TSN2\nStart time: Thu Nov 19\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Carolina Hurricanes
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261121-philadelphia-flyers-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261122T000000Z
+DTEND:20261122T023000Z
+SUMMARY:Philadelphia Flyers at Montreal Canadiens
+DESCRIPTION:Visitor: Philadelphia Flyers\nHome: Montreal Canadiens\nBroadca
+ ster (EN): Sportsnet\nStart time: Sat Nov 21\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Philadelphia Flyers
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261123-los-angeles-kings-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261124T003000Z
+DTEND:20261124T030000Z
+SUMMARY:Los Angeles Kings at Montreal Canadiens
+DESCRIPTION:Visitor: Los Angeles Kings\nHome: Montreal Canadiens\nBroadcast
+ er (EN): Sportsnet+\nStart time: Mon Nov 23\, 2026 7:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Los Angeles Kings
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet+
+END:VEVENT
+BEGIN:VEVENT
+UID:20261125-montreal-canadiens-at-colorado-avalanche@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261126T023000Z
+DTEND:20261126T050000Z
+SUMMARY:Montreal Canadiens at Colorado Avalanche
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Colorado Avalanche\nBroadcas
+ ter (EN): TSN2\nStart time: Wed Nov 25\, 2026 9:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Colorado Avalanche
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261128-montreal-canadiens-at-vegas-golden-knights@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261128T210000Z
+DTEND:20261128T233000Z
+SUMMARY:Montreal Canadiens at Vegas Golden Knights
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Vegas Golden Knights\nBroadc
+ aster (EN): TSN2\nStart time: Sat Nov 28\, 2026 4:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Vegas Golden Knights
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261130-montreal-canadiens-at-utah-mammoth@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261201T023000Z
+DTEND:20261201T050000Z
+SUMMARY:Montreal Canadiens at Utah Mammoth
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Utah Mammoth\nBroadcaster (E
+ N): TSN2\nStart time: Mon Nov 30\, 2026 9:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Utah Mammoth
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261202-tampa-bay-lightning-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261203T003000Z
+DTEND:20261203T030000Z
+SUMMARY:Tampa Bay Lightning at Montreal Canadiens
+DESCRIPTION:Visitor: Tampa Bay Lightning\nHome: Montreal Canadiens\nBroadca
+ ster (EN): Prime Video\nStart time: Wed Dec 2\, 2026 7:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Tampa Bay Lightning
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Prime Video
+END:VEVENT
+BEGIN:VEVENT
+UID:20261205-florida-panthers-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261205T180000Z
+DTEND:20261205T203000Z
+SUMMARY:Florida Panthers at Montreal Canadiens
+DESCRIPTION:Visitor: Florida Panthers\nHome: Montreal Canadiens\nBroadcaste
+ r (EN): TSN2\nStart time: Sat Dec 5\, 2026 1:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Florida Panthers
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261206-ottawa-senators-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261207T000000Z
+DTEND:20261207T023000Z
+SUMMARY:Ottawa Senators at Montreal Canadiens
+DESCRIPTION:Visitor: Ottawa Senators\nHome: Montreal Canadiens\nBroadcaster
+  (EN): TSN2\nStart time: Sun Dec 6\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Ottawa Senators
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261208-vegas-golden-knights-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261209T000000Z
+DTEND:20261209T023000Z
+SUMMARY:Vegas Golden Knights at Montreal Canadiens
+DESCRIPTION:Visitor: Vegas Golden Knights\nHome: Montreal Canadiens\nBroadc
+ aster (EN): TSN2\nStart time: Tue Dec 8\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Vegas Golden Knights
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261210-anaheim-ducks-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261211T000000Z
+DTEND:20261211T023000Z
+SUMMARY:Anaheim Ducks at Montreal Canadiens
+DESCRIPTION:Visitor: Anaheim Ducks\nHome: Montreal Canadiens\nBroadcaster (
+ EN): TSN2\nStart time: Thu Dec 10\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Anaheim Ducks
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261212-montreal-canadiens-at-columbus-blue-jackets@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261212T180000Z
+DTEND:20261212T203000Z
+SUMMARY:Montreal Canadiens at Columbus Blue Jackets
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Columbus Blue Jackets\nBroad
+ caster (EN): TSN2\nStart time: Sat Dec 12\, 2026 1:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Columbus Blue Jackets
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261214-edmonton-oilers-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261215T003000Z
+DTEND:20261215T030000Z
+SUMMARY:Edmonton Oilers at Montreal Canadiens
+DESCRIPTION:Visitor: Edmonton Oilers\nHome: Montreal Canadiens\nBroadcaster
+  (EN): Sportsnet+\nStart time: Mon Dec 14\, 2026 7:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Edmonton Oilers
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet+
+END:VEVENT
+BEGIN:VEVENT
+UID:20261218-montreal-canadiens-at-buffalo-sabres@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261219T003000Z
+DTEND:20261219T030000Z
+SUMMARY:Montreal Canadiens at Buffalo Sabres
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Buffalo Sabres\nBroadcaster 
+ (EN): TSN2\nStart time: Fri Dec 18\, 2026 7:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Buffalo Sabres
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261219-montreal-canadiens-at-minnesota-wild@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261220T000000Z
+DTEND:20261220T023000Z
+SUMMARY:Montreal Canadiens at Minnesota Wild
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Minnesota Wild\nBroadcaster 
+ (EN): Sportsnet\nStart time: Sat Dec 19\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Minnesota Wild
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261222-montreal-canadiens-at-columbus-blue-jackets@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261223T000000Z
+DTEND:20261223T023000Z
+SUMMARY:Montreal Canadiens at Columbus Blue Jackets
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Columbus Blue Jackets\nBroad
+ caster (EN): TSN2\nStart time: Tue Dec 22\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Columbus Blue Jackets
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261226-toronto-maple-leafs-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261227T000000Z
+DTEND:20261227T023000Z
+SUMMARY:Toronto Maple Leafs at Montreal Canadiens
+DESCRIPTION:Visitor: Toronto Maple Leafs\nHome: Montreal Canadiens\nBroadca
+ ster (EN): Sportsnet\nStart time: Sat Dec 26\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Toronto Maple Leafs
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20261227-dallas-stars-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261228T000000Z
+DTEND:20261228T023000Z
+SUMMARY:Dallas Stars at Montreal Canadiens
+DESCRIPTION:Visitor: Dallas Stars\nHome: Montreal Canadiens\nBroadcaster (E
+ N): TSN2\nStart time: Sun Dec 27\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Dallas Stars
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261229-columbus-blue-jackets-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261230T000000Z
+DTEND:20261230T023000Z
+SUMMARY:Columbus Blue Jackets at Montreal Canadiens
+DESCRIPTION:Visitor: Columbus Blue Jackets\nHome: Montreal Canadiens\nBroad
+ caster (EN): TSN2\nStart time: Tue Dec 29\, 2026 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Columbus Blue Jackets
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20261231-montreal-canadiens-at-tampa-bay-lightning@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20261231T190000Z
+DTEND:20261231T213000Z
+SUMMARY:Montreal Canadiens at Tampa Bay Lightning
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Tampa Bay Lightning\nBroadca
+ ster (EN): TSN2\nStart time: Thu Dec 31\, 2026 2:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Tampa Bay Lightning
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270102-montreal-canadiens-at-florida-panthers@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270102T180000Z
+DTEND:20270102T203000Z
+SUMMARY:Montreal Canadiens at Florida Panthers
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Florida Panthers\nBroadcaste
+ r (EN): TSN2\nStart time: Sat Jan 2\, 2027 1:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Florida Panthers
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270104-chicago-blackhawks-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270105T003000Z
+DTEND:20270105T030000Z
+SUMMARY:Chicago Blackhawks at Montreal Canadiens
+DESCRIPTION:Visitor: Chicago Blackhawks\nHome: Montreal Canadiens\nBroadcas
+ ter (EN): Sportsnet+\nStart time: Mon Jan 4\, 2027 7:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Chicago Blackhawks
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet+
+END:VEVENT
+BEGIN:VEVENT
+UID:20270106-boston-bruins-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270107T003000Z
+DTEND:20270107T030000Z
+SUMMARY:Boston Bruins at Montreal Canadiens
+DESCRIPTION:Visitor: Boston Bruins\nHome: Montreal Canadiens\nBroadcaster (
+ EN): Prime Video\nStart time: Wed Jan 6\, 2027 7:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Boston Bruins
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Prime Video
+END:VEVENT
+BEGIN:VEVENT
+UID:20270109-pittsburgh-penguins-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270110T000000Z
+DTEND:20270110T023000Z
+SUMMARY:Pittsburgh Penguins at Montreal Canadiens
+DESCRIPTION:Visitor: Pittsburgh Penguins\nHome: Montreal Canadiens\nBroadca
+ ster (EN): Sportsnet\nStart time: Sat Jan 9\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Pittsburgh Penguins
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20270113-new-jersey-devils-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270114T000000Z
+DTEND:20270114T023000Z
+SUMMARY:New Jersey Devils at Montreal Canadiens
+DESCRIPTION:Visitor: New Jersey Devils\nHome: Montreal Canadiens\nBroadcast
+ er (EN): Prime Video\nStart time: Wed Jan 13\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:New Jersey Devils
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Prime Video
+END:VEVENT
+BEGIN:VEVENT
+UID:20270114-montreal-canadiens-at-nashville-predators@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270115T010000Z
+DTEND:20270115T033000Z
+SUMMARY:Montreal Canadiens at Nashville Predators
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Nashville Predators\nBroadca
+ ster (EN): TSN2\nStart time: Thu Jan 14\, 2027 8:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Nashville Predators
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270116-montreal-canadiens-at-philadelphia-flyers@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270117T000000Z
+DTEND:20270117T023000Z
+SUMMARY:Montreal Canadiens at Philadelphia Flyers
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Philadelphia Flyers\nBroadca
+ ster (EN): Sportsnet\nStart time: Sat Jan 16\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Philadelphia Flyers
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20270118-montreal-canadiens-at-buffalo-sabres@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270118T190000Z
+DTEND:20270118T213000Z
+SUMMARY:Montreal Canadiens at Buffalo Sabres
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Buffalo Sabres\nBroadcaster 
+ (EN): TSN2\nStart time: Mon Jan 18\, 2027 2:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Buffalo Sabres
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270119-montreal-canadiens-at-washington-capitals@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270120T000000Z
+DTEND:20270120T023000Z
+SUMMARY:Montreal Canadiens at Washington Capitals
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Washington Capitals\nBroadca
+ ster (EN): TSN2\nStart time: Tue Jan 19\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Washington Capitals
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270121-st-louis-blues-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270122T000000Z
+DTEND:20270122T023000Z
+SUMMARY:St. Louis Blues at Montreal Canadiens
+DESCRIPTION:Visitor: St. Louis Blues\nHome: Montreal Canadiens\nBroadcaster
+  (EN): TSN2\nStart time: Thu Jan 21\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:St. Louis Blues
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270123-calgary-flames-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270124T000000Z
+DTEND:20270124T023000Z
+SUMMARY:Calgary Flames at Montreal Canadiens
+DESCRIPTION:Visitor: Calgary Flames\nHome: Montreal Canadiens\nBroadcaster 
+ (EN): Sportsnet\nStart time: Sat Jan 23\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Calgary Flames
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20270126-carolina-hurricanes-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270127T000000Z
+DTEND:20270127T023000Z
+SUMMARY:Carolina Hurricanes at Montreal Canadiens
+DESCRIPTION:Visitor: Carolina Hurricanes\nHome: Montreal Canadiens\nBroadca
+ ster (EN): TSN2\nStart time: Tue Jan 26\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Carolina Hurricanes
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270128-montreal-canadiens-at-calgary-flames@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270129T010000Z
+DTEND:20270129T033000Z
+SUMMARY:Montreal Canadiens at Calgary Flames
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Calgary Flames\nBroadcaster 
+ (EN): TSN2\nStart time: Thu Jan 28\, 2027 8:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Calgary Flames
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270130-montreal-canadiens-at-edmonton-oilers@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270131T000000Z
+DTEND:20270131T023000Z
+SUMMARY:Montreal Canadiens at Edmonton Oilers
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Edmonton Oilers\nBroadcaster
+  (EN): Sportsnet\nStart time: Sat Jan 30\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Edmonton Oilers
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20270201-montreal-canadiens-at-vancouver-canucks@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270202T013000Z
+DTEND:20270202T040000Z
+SUMMARY:Montreal Canadiens at Vancouver Canucks
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Vancouver Canucks\nBroadcast
+ er (EN): Sportsnet+\nStart time: Mon Feb 1\, 2027 8:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Vancouver Canucks
+X-BROADCASTER-EN:Sportsnet+
+END:VEVENT
+BEGIN:VEVENT
+UID:20270203-montreal-canadiens-at-seattle-kraken@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270204T024000Z
+DTEND:20270204T051000Z
+SUMMARY:Montreal Canadiens at Seattle Kraken
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Seattle Kraken\nBroadcaster 
+ (EN): TSN2\nStart time: Wed Feb 3\, 2027 9:40 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Seattle Kraken
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270213-washington-capitals-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270213T180000Z
+DTEND:20270213T203000Z
+SUMMARY:Washington Capitals at Montreal Canadiens
+DESCRIPTION:Visitor: Washington Capitals\nHome: Montreal Canadiens\nBroadca
+ ster (EN): TSN2\nStart time: Sat Feb 13\, 2027 1:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Washington Capitals
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270214-new-york-rangers-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270214T180000Z
+DTEND:20270214T203000Z
+SUMMARY:New York Rangers at Montreal Canadiens
+DESCRIPTION:Visitor: New York Rangers\nHome: Montreal Canadiens\nBroadcaste
+ r (EN): TSN2\nStart time: Sun Feb 14\, 2027 1:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:New York Rangers
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270218-montreal-canadiens-at-detroit-red-wings@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270219T000000Z
+DTEND:20270219T023000Z
+SUMMARY:Montreal Canadiens at Detroit Red Wings
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Detroit Red Wings\nBroadcast
+ er (EN): TSN2\nStart time: Thu Feb 18\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Detroit Red Wings
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270220-new-york-islanders-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270221T000000Z
+DTEND:20270221T023000Z
+SUMMARY:New York Islanders at Montreal Canadiens
+DESCRIPTION:Visitor: New York Islanders\nHome: Montreal Canadiens\nBroadcas
+ ter (EN): Sportsnet\nStart time: Sat Feb 20\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:New York Islanders
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20270222-montreal-canadiens-at-philadelphia-flyers@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270222T190000Z
+DTEND:20270222T213000Z
+SUMMARY:Montreal Canadiens at Philadelphia Flyers
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Philadelphia Flyers\nBroadca
+ ster (EN): TSN2\nStart time: Mon Feb 22\, 2027 2:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Philadelphia Flyers
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270224-montreal-canadiens-at-los-angeles-kings@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270225T030000Z
+DTEND:20270225T053000Z
+SUMMARY:Montreal Canadiens at Los Angeles Kings
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Los Angeles Kings\nBroadcast
+ er (EN): TSN2\nStart time: Wed Feb 24\, 2027 10:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Los Angeles Kings
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270227-montreal-canadiens-at-anaheim-ducks@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270228T000000Z
+DTEND:20270228T023000Z
+SUMMARY:Montreal Canadiens at Anaheim Ducks
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Anaheim Ducks\nBroadcaster (
+ EN): Sportsnet\nStart time: Sat Feb 27\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Anaheim Ducks
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20270301-montreal-canadiens-at-san-jose-sharks@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270302T030000Z
+DTEND:20270302T053000Z
+SUMMARY:Montreal Canadiens at San Jose Sharks
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: San Jose Sharks\nBroadcaster
+  (EN): TSN2\nStart time: Mon Mar 1\, 2027 10:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:San Jose Sharks
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270304-seattle-kraken-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270305T000000Z
+DTEND:20270305T023000Z
+SUMMARY:Seattle Kraken at Montreal Canadiens
+DESCRIPTION:Visitor: Seattle Kraken\nHome: Montreal Canadiens\nBroadcaster 
+ (EN): TSN2\nStart time: Thu Mar 4\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Seattle Kraken
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270306-vancouver-canucks-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270307T000000Z
+DTEND:20270307T023000Z
+SUMMARY:Vancouver Canucks at Montreal Canadiens
+DESCRIPTION:Visitor: Vancouver Canucks\nHome: Montreal Canadiens\nBroadcast
+ er (EN): Sportsnet\nStart time: Sat Mar 6\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Vancouver Canucks
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20270309-montreal-canadiens-at-new-york-islanders@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270310T000000Z
+DTEND:20270310T023000Z
+SUMMARY:Montreal Canadiens at New York Islanders
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: New York Islanders\nBroadcas
+ ter (EN): TSN2\nStart time: Tue Mar 9\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:New York Islanders
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270310-boston-bruins-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270311T003000Z
+DTEND:20270311T030000Z
+SUMMARY:Boston Bruins at Montreal Canadiens
+DESCRIPTION:Visitor: Boston Bruins\nHome: Montreal Canadiens\nBroadcaster (
+ EN): Prime Video\nStart time: Wed Mar 10\, 2027 7:30 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Boston Bruins
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Prime Video
+END:VEVENT
+BEGIN:VEVENT
+UID:20270313-montreal-canadiens-at-ottawa-senators@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270314T000000Z
+DTEND:20270314T023000Z
+SUMMARY:Montreal Canadiens at Ottawa Senators
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Ottawa Senators\nBroadcaster
+  (EN): Sportsnet\nStart time: Sat Mar 13\, 2027 7:00 PM EST
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Ottawa Senators
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20270316-florida-panthers-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270316T230000Z
+DTEND:20270317T013000Z
+SUMMARY:Florida Panthers at Montreal Canadiens
+DESCRIPTION:Visitor: Florida Panthers\nHome: Montreal Canadiens\nBroadcaste
+ r (EN): TSN2\nStart time: Tue Mar 16\, 2027 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Florida Panthers
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270318-tampa-bay-lightning-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270318T230000Z
+DTEND:20270319T013000Z
+SUMMARY:Tampa Bay Lightning at Montreal Canadiens
+DESCRIPTION:Visitor: Tampa Bay Lightning\nHome: Montreal Canadiens\nBroadca
+ ster (EN): TSN2\nStart time: Thu Mar 18\, 2027 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Tampa Bay Lightning
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270320-montreal-canadiens-at-detroit-red-wings@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270320T163000Z
+DTEND:20270320T190000Z
+SUMMARY:Montreal Canadiens at Detroit Red Wings
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Detroit Red Wings\nBroadcast
+ er (EN): TSN2\nStart time: Sat Mar 20\, 2027 12:30 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Detroit Red Wings
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270322-toronto-maple-leafs-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270322T233000Z
+DTEND:20270323T020000Z
+SUMMARY:Toronto Maple Leafs at Montreal Canadiens
+DESCRIPTION:Visitor: Toronto Maple Leafs\nHome: Montreal Canadiens\nBroadca
+ ster (EN): Sportsnet+\nStart time: Mon Mar 22\, 2027 7:30 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Toronto Maple Leafs
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet+
+END:VEVENT
+BEGIN:VEVENT
+UID:20270324-ottawa-senators-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270324T233000Z
+DTEND:20270325T020000Z
+SUMMARY:Ottawa Senators at Montreal Canadiens
+DESCRIPTION:Visitor: Ottawa Senators\nHome: Montreal Canadiens\nBroadcaster
+  (EN): Prime Video\nStart time: Wed Mar 24\, 2027 7:30 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Ottawa Senators
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Prime Video
+END:VEVENT
+BEGIN:VEVENT
+UID:20270327-new-jersey-devils-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270327T230000Z
+DTEND:20270328T013000Z
+SUMMARY:New Jersey Devils at Montreal Canadiens
+DESCRIPTION:Visitor: New Jersey Devils\nHome: Montreal Canadiens\nBroadcast
+ er (EN): Sportsnet\nStart time: Sat Mar 27\, 2027 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:New Jersey Devils
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+BEGIN:VEVENT
+UID:20270328-detroit-red-wings-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270328T220000Z
+DTEND:20270329T003000Z
+SUMMARY:Detroit Red Wings at Montreal Canadiens
+DESCRIPTION:Visitor: Detroit Red Wings\nHome: Montreal Canadiens\nBroadcast
+ er (EN): TSN2\nStart time: Sun Mar 28\, 2027 6:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Detroit Red Wings
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270330-montreal-canadiens-at-boston-bruins@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270330T230000Z
+DTEND:20270331T013000Z
+SUMMARY:Montreal Canadiens at Boston Bruins
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Boston Bruins\nBroadcaster (
+ EN): TSN2\nStart time: Tue Mar 30\, 2027 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Boston Bruins
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270401-new-york-rangers-at-montreal-canadiens@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270401T230000Z
+DTEND:20270402T013000Z
+SUMMARY:New York Rangers at Montreal Canadiens
+DESCRIPTION:Visitor: New York Rangers\nHome: Montreal Canadiens\nBroadcaste
+ r (EN): TSN2\nStart time: Thu Apr 1\, 2027 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:New York Rangers
+X-HOME:Montreal Canadiens
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270404-montreal-canadiens-at-new-york-islanders@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270404T233000Z
+DTEND:20270405T020000Z
+SUMMARY:Montreal Canadiens at New York Islanders
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: New York Islanders\nBroadcas
+ ter (EN): TSN2\nStart time: Sun Apr 4\, 2027 7:30 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:New York Islanders
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270406-montreal-canadiens-at-florida-panthers@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270406T231500Z
+DTEND:20270407T014500Z
+SUMMARY:Montreal Canadiens at Florida Panthers
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Florida Panthers\nBroadcaste
+ r (EN): TSN2\nStart time: Tue Apr 6\, 2027 7:15 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Florida Panthers
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270408-montreal-canadiens-at-tampa-bay-lightning@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270408T230000Z
+DTEND:20270409T013000Z
+SUMMARY:Montreal Canadiens at Tampa Bay Lightning
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Tampa Bay Lightning\nBroadca
+ ster (EN): TSN2\nStart time: Thu Apr 8\, 2027 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Tampa Bay Lightning
+X-BROADCASTER-EN:TSN2
+END:VEVENT
+BEGIN:VEVENT
+UID:20270410-montreal-canadiens-at-ottawa-senators@qcountdown
+DTSTAMP:20261021T003542Z
+DTSTART:20270410T230000Z
+DTEND:20270411T013000Z
+SUMMARY:Montreal Canadiens at Ottawa Senators
+DESCRIPTION:Visitor: Montreal Canadiens\nHome: Ottawa Senators\nBroadcaster
+  (EN): Sportsnet\nStart time: Sat Apr 10\, 2027 7:00 PM EDT
+CATEGORIES:Regular season
+X-VISITOR:Montreal Canadiens
+X-HOME:Ottawa Senators
+X-BROADCASTER-EN:Sportsnet
+END:VEVENT
+END:VCALENDAR
