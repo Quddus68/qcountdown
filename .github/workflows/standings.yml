@@ -14,15 +14,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Download standings
         run: |
-          curl -fsS --retry 3 -o standings.tmp https://api-web.nhle.com/v1/standings/now
-          python3 -c "import json; d=json.load(open('standings.tmp')); assert len(d['standings'])>=20; print(len(d['standings']), 'teams')"
+          code=$(curl -sS -L --retry 3 --max-time 30 -o standings.tmp -w '%{http_code}' \
+            -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36' \
+            -H 'Accept: application/json' \
+            https://api-web.nhle.com/v1/standings/now) || code="curl-failed"
+          echo "NHL answered: $code"
+          echo "First 300 characters of the answer:"
+          head -c 300 standings.tmp || true
+          echo
+          if [ "$code" != "200" ]; then echo "STOP: the NHL did not answer with 200."; exit 1; fi
+          python3 - <<'PY'
+          import json
+          d = json.load(open('standings.tmp'))
+          teams = d.get('standings', [])
+          print('Teams found:', len(teams))
+          if teams:
+              print('Fields of first team:', sorted(teams[0].keys()))
+          assert len(teams) >= 20, 'fewer than 20 teams in the answer'
+          PY
           mv standings.tmp standings.json
+
       - name: Save if changed
         run: |
           git config user.name "standings-bot"
           git config user.email "actions@users.noreply.github.com"
           git add standings.json
-          git diff --cached --quiet || (git commit -m "Update standings" && git push)
-
+          git diff --cached --quiet && echo "No change to save" || (git commit -m "Update standings" && git push)
