@@ -120,9 +120,10 @@
   const KEY = 'countdowns-v2';
   const LIVE_FALLBACK_MS = 150 * 6e4; // used if an event has no DTEND
 
+  const STANDINGS_FILE = 'standings.json';
   const STANDINGS_URL = 'https://api-web.nhle.com/v1/standings/now';
   const PREVIEW = /[?&]standings(=|&|$)/.test(location.search); // add ?standings to the page address to preview any day
-  let standings = null, standingsAt = 0, standingsTry = 0, standingsBusy = false, standingsErr = '';
+  let standings = null, standingsAt = 0, standingsTry = 0, standingsBusy = false, standingsErr = '', standingsAsOf = 0;
   let games = [], filter = 'upcoming', selectedId = null, lastSig = '', tickEls = null;
 
   /* ---------- schedule file ---------- */
@@ -219,23 +220,35 @@
   const ordinal = n => { const v = n % 100; return n + (['th', 'st', 'nd', 'rd'][(v - 20) % 10] || ['th', 'st', 'nd', 'rd'][v] || 'th'); };
   const dayKey = t => fmt(t, { year: 'numeric', month: 'numeric', day: 'numeric' });
   const isGameDay = (g, now) => PREVIEW || dayKey(g.start) === dayKey(now) || isLive(g, now);
+  function parseStandings(data) {
+    const m = {};
+    for (const t of ((data && data.standings) || [])) {
+      const ab = t.teamAbbrev && t.teamAbbrev.default;
+      if (!ab || ![t.wins, t.losses, t.otLosses, t.points].every(Number.isFinite)) continue;
+      m[ab] = { w: t.wins, l: t.losses, o: t.otLosses, pts: t.points, gp: t.gamesPlayed, div: t.divisionName, seq: t.divisionSequence };
+    }
+    if (Object.keys(m).length < 20) throw new Error('unexpected data');
+    return m;
+  }
+  async function getJson(url) {
+    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 8000);
+    try { const res = await fetch(url, { signal: ctl.signal, cache: 'no-cache' }); if (!res.ok) throw new Error('HTTP ' + res.status); return await res.json(); }
+    finally { clearTimeout(timer); }
+  }
   async function ensureStandings() {
     const now = Date.now();
     if (standingsBusy || (standings && now - standingsAt < 6e5) || (!standings && now - standingsTry < 3e5)) return;
-    standingsBusy = true; standingsTry = now;
-    try {
-      const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 8000);
-      const res = await fetch(STANDINGS_URL, { signal: ctl.signal }); clearTimeout(timer);
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json(), m = {};
-      for (const t of (data.standings || [])) {
-        const ab = t.teamAbbrev && t.teamAbbrev.default;
-        if (!ab || ![t.wins, t.losses, t.otLosses, t.points].every(Number.isFinite)) continue;
-        m[ab] = { w: t.wins, l: t.losses, o: t.otLosses, pts: t.points, gp: t.gamesPlayed, div: t.divisionName, seq: t.divisionSequence };
-      }
-      if (Object.keys(m).length < 20) throw new Error('unexpected data');
-      standings = m; standingsAt = Date.now(); standingsBusy = false; lastSig = ''; render(true);
-    } catch (e) { standingsBusy = false; standingsErr = String((e && e.message) || e); if (PREVIEW) { lastSig = ''; render(true); } }
+    standingsBusy = true; standingsTry = now; const errs = [];
+    // 1) the daily copy saved next to this page by GitHub; 2) the NHL's own feed (some browsers/networks block it)
+    for (const [label, url] of [['saved file', STANDINGS_FILE], ['NHL feed', STANDINGS_URL]]) {
+      try {
+        const data = await getJson(url);
+        standings = parseStandings(data); standingsAt = Date.now(); standingsAsOf = Date.parse(data.standingsDateTimeUtc || data.standingsDate || '') || 0;
+        standingsBusy = false; standingsErr = ''; lastSig = ''; render(true); return;
+      } catch (e) { errs.push(label + ': ' + String((e && e.message) || e)); }
+    }
+    standingsBusy = false; standingsErr = errs.join('; ');
+    if (PREVIEW) { lastSig = ''; render(true); }
   }
   function standingLines(team) {
     const r = standings && standings[abbr(team)]; if (!r) return null;
@@ -277,7 +290,7 @@
     }
     box.appendChild(mu);
     if (showStand && !standings && PREVIEW) box.appendChild(el('div', 'rec-note', standingsErr ? 'Preview: standings could not be loaded (' + standingsErr + ').' : 'Preview: loading standings\u2026'));
-    if (showStand && standings) box.appendChild(el('div', 'rec-note', 'Standings: wins-losses-overtime losses, points. The NHL no longer has ties.'));
+    if (showStand && standings) box.appendChild(el('div', 'rec-note', (standingsAsOf ? 'Standings as of ' + fmt(standingsAsOf, { month: 'short', day: 'numeric' }) + ': ' : 'Standings: ') + 'wins-losses-overtime losses, points. The NHL no longer has ties.'));
     box.appendChild(el('div', 'when', fmt(g.start, DATE_OPTS) + ' \u00b7 ' + fmt(g.start, TIME_OPTS)));
     const mine = fmt(g.start, Object.assign({}, DATE_OPTS, TIME_OPTS)), et = fmt(g.start, Object.assign({}, DATE_OPTS, TIME_OPTS), ET);
     if (mine !== et) box.appendChild(el('div', 'when-sub', 'In Montreal: ' + fmt(g.start, { weekday: 'short', month: 'short', day: 'numeric' }, ET) + ' \u00b7 ' + fmt(g.start, TIME_OPTS, ET)));
