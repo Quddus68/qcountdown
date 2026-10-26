@@ -122,7 +122,7 @@
 
   const STANDINGS_URL = 'https://api-web.nhle.com/v1/standings/now';
   const PREVIEW = /[?&]standings(=|&|$)/.test(location.search); // add ?standings to the page address to preview any day
-  let standings = null, standingsAt = 0, standingsTry = 0, standingsBusy = false;
+  let standings = null, standingsAt = 0, standingsTry = 0, standingsBusy = false, standingsErr = '';
   let games = [], filter = 'upcoming', selectedId = null, lastSig = '', tickEls = null;
 
   /* ---------- schedule file ---------- */
@@ -235,7 +235,7 @@
       }
       if (Object.keys(m).length < 20) throw new Error('unexpected data');
       standings = m; standingsAt = Date.now(); standingsBusy = false; lastSig = ''; render(true);
-    } catch (e) { standingsBusy = false; }
+    } catch (e) { standingsBusy = false; standingsErr = String((e && e.message) || e); if (PREVIEW) { lastSig = ''; render(true); } }
   }
   function standingLines(team) {
     const r = standings && standings[abbr(team)]; if (!r) return null;
@@ -276,6 +276,7 @@
       mu.appendChild(side);
     }
     box.appendChild(mu);
+    if (showStand && !standings && PREVIEW) box.appendChild(el('div', 'rec-note', standingsErr ? 'Preview: standings could not be loaded (' + standingsErr + ').' : 'Preview: loading standings\u2026'));
     if (showStand && standings) box.appendChild(el('div', 'rec-note', 'Standings: wins-losses-overtime losses, points. The NHL no longer has ties.'));
     box.appendChild(el('div', 'when', fmt(g.start, DATE_OPTS) + ' \u00b7 ' + fmt(g.start, TIME_OPTS)));
     const mine = fmt(g.start, Object.assign({}, DATE_OPTS, TIME_OPTS)), et = fmt(g.start, Object.assign({}, DATE_OPTS, TIME_OPTS), ET);
