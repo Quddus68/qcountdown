@@ -38,6 +38,9 @@
     .chip .abbr { color: #0a0f1a; font-weight: 800; font-size: 20px; }
     .side .nm { font-size: 14px; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
     .side .role { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--sub); margin-top: 3px; }
+    .rec { font-size: 16px; font-weight: 700; margin-top: 8px; font-variant-numeric: tabular-nums; }
+    .rank { font-size: 12px; color: var(--sub); margin-top: 2px; line-height: 1.25; }
+    .rec-note { text-align: center; font-size: 11px; color: var(--sub); margin-top: 4px; }
     .at { font-size: 15px; font-weight: 700; color: var(--sub); }
     .when { text-align: center; font-size: 16px; font-weight: 600; margin-top: 4px; }
     .when-sub, .bcast { text-align: center; font-size: 13px; color: var(--sub); margin-top: 3px; }
@@ -117,6 +120,9 @@
   const KEY = 'countdowns-v2';
   const LIVE_FALLBACK_MS = 150 * 6e4; // used if an event has no DTEND
 
+  const STANDINGS_URL = 'https://api-web.nhle.com/v1/standings/now';
+  const PREVIEW = /[?&]standings(=|&|$)/.test(location.search); // add ?standings to the page address to preview any day
+  let standings = null, standingsAt = 0, standingsTry = 0, standingsBusy = false;
   let games = [], filter = 'upcoming', selectedId = null, lastSig = '', tickEls = null;
 
   /* ---------- schedule file ---------- */
@@ -209,6 +215,36 @@
     } catch (e) { return false; }
   }
 
+  /* ---------- standings (shown on game day) ---------- */
+  const ordinal = n => { const v = n % 100; return n + (['th', 'st', 'nd', 'rd'][(v - 20) % 10] || ['th', 'st', 'nd', 'rd'][v] || 'th'); };
+  const dayKey = t => fmt(t, { year: 'numeric', month: 'numeric', day: 'numeric' });
+  const isGameDay = (g, now) => PREVIEW || dayKey(g.start) === dayKey(now) || isLive(g, now);
+  async function ensureStandings() {
+    const now = Date.now();
+    if (standingsBusy || (standings && now - standingsAt < 6e5) || (!standings && now - standingsTry < 3e5)) return;
+    standingsBusy = true; standingsTry = now;
+    try {
+      const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 8000);
+      const res = await fetch(STANDINGS_URL, { signal: ctl.signal }); clearTimeout(timer);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json(), m = {};
+      for (const t of (data.standings || [])) {
+        const ab = t.teamAbbrev && t.teamAbbrev.default;
+        if (!ab || ![t.wins, t.losses, t.otLosses, t.points].every(Number.isFinite)) continue;
+        m[ab] = { w: t.wins, l: t.losses, o: t.otLosses, pts: t.points, gp: t.gamesPlayed, div: t.divisionName, seq: t.divisionSequence };
+      }
+      if (Object.keys(m).length < 20) throw new Error('unexpected data');
+      standings = m; standingsAt = Date.now(); standingsBusy = false; lastSig = ''; render(true);
+    } catch (e) { standingsBusy = false; }
+  }
+  function standingLines(team) {
+    const r = standings && standings[abbr(team)]; if (!r) return null;
+    const box = document.createDocumentFragment();
+    box.appendChild(el('div', 'rec', `${r.w}-${r.l}-${r.o} \u00b7 ${r.pts} pts`));
+    if (r.gp > 0 && r.seq && r.div) box.appendChild(el('div', 'rank', `${ordinal(r.seq)} in ${r.div}`));
+    return box;
+  }
+
   /* ---------- rendering ---------- */
   const app = $('app');
   function pieces(diff) {
@@ -229,13 +265,18 @@
     const isSel = g !== next;
     const tag = isSel ? (isOver(g, now) || isLive(g, now) ? 'Selected game' : 'Selected game') : (g === games[0] ? 'Season opener' : 'Next game');
     box.appendChild(el('div', 'tag', `${tag} \u00b7 Game ${games.indexOf(g) + 1} of ${games.length}`));
+    const showStand = isGameDay(g, now);
+    if (showStand) ensureStandings();
     const mu = el('div', 'matchup');
     for (const [team, role] of [[g.visitor, 'Visitor'], [null, null], [g.home, 'Home']]) {
       if (!team) { mu.appendChild(el('div', 'at', 'at')); continue; }
       const side = el('div', 'side'); side.appendChild(logoBox('chip', team));
-      side.appendChild(el('div', 'nm', team)); side.appendChild(el('div', 'role', role)); mu.appendChild(side);
+      side.appendChild(el('div', 'nm', team)); side.appendChild(el('div', 'role', role));
+      if (showStand) { const sl = standingLines(team); if (sl) side.appendChild(sl); }
+      mu.appendChild(side);
     }
     box.appendChild(mu);
+    if (showStand && standings) box.appendChild(el('div', 'rec-note', 'Standings: wins-losses-overtime losses, points. The NHL no longer has ties.'));
     box.appendChild(el('div', 'when', fmt(g.start, DATE_OPTS) + ' \u00b7 ' + fmt(g.start, TIME_OPTS)));
     const mine = fmt(g.start, Object.assign({}, DATE_OPTS, TIME_OPTS)), et = fmt(g.start, Object.assign({}, DATE_OPTS, TIME_OPTS), ET);
     if (mine !== et) box.appendChild(el('div', 'when-sub', 'In Montreal: ' + fmt(g.start, { weekday: 'short', month: 'short', day: 'numeric' }, ET) + ' \u00b7 ' + fmt(g.start, TIME_OPTS, ET)));
@@ -351,7 +392,7 @@
     lastSig = ''; render(true);
   }
 
-  setInterval(() => { if (!games.length) return; render(false); tick(); }, 1000);
+  setInterval(() => { if (!games.length) return; render(false); tick(); if (tickEls && isGameDay(tickEls.g, Date.now())) ensureStandings(); }, 1000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden && games.length) { render(false); tick(); } });
   start();
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
