@@ -218,8 +218,7 @@
 
   /* ---------- standings (shown on game day) ---------- */
   const ordinal = n => { const v = n % 100; return n + (['th', 'st', 'nd', 'rd'][(v - 20) % 10] || ['th', 'st', 'nd', 'rd'][v] || 'th'); };
-  const dayKey = t => fmt(t, { year: 'numeric', month: 'numeric', day: 'numeric' });
-  const isGameDay = (g, now) => PREVIEW || dayKey(g.start) === dayKey(now) || isLive(g, now);
+  const isGameDay = () => true; // standings are shown for whichever game is on the tile
   function parseStandings(data) {
     const m = {};
     for (const t of ((data && data.standings) || [])) {
