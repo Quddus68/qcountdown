@@ -83,6 +83,35 @@
     .r-team small { color: var(--sub); font-weight: 500; font-size: 13px; }
     .r-time { font-size: 13px; color: var(--sub); margin-top: 2px; }
     .r-bc { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 99px; background: rgba(77,143,224,0.16); color: #9cc3f5; white-space: nowrap; }
+    .stand-btn { width: 100%; margin-bottom: 14px; padding: 13px 14px; border-radius: 14px; border: 1px solid rgba(77,143,224,0.4); background: rgba(77,143,224,0.14); color: #9cc3f5; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; z-index: 40; }
+    .overlay.open { opacity: 1; visibility: visible; }
+    .panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(100%, 520px); background: #0c1322; border-left: 1px solid var(--border); box-shadow: -10px 0 30px rgba(0,0,0,0.4); transform: translateX(100%); visibility: hidden; transition: transform .28s ease, visibility .28s; z-index: 41; display: flex; flex-direction: column; padding-top: env(safe-area-inset-top); touch-action: pan-y; }
+    .panel.open { transform: none; visibility: visible; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 16px 10px; }
+    .panel-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+    .x { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; flex-shrink: 0; }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 16px 10px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,0.06); }
+    .seg button { padding: 11px 8px; border-radius: 10px; border: none; background: none; color: #d0d5dd; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .seg button[aria-pressed="true"] { background: var(--red); color: #fff; }
+    .panel-body { flex: 1; overflow-y: auto; padding: 0 12px calc(env(safe-area-inset-bottom) + 20px); overscroll-behavior: contain; }
+    .st { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+    .st th { position: sticky; top: 0; background: #0c1322; z-index: 1; font-size: 11px; font-weight: 700; color: var(--sub); text-align: center; padding: 8px 2px; border-bottom: 1px solid var(--border); }
+    .st td { text-align: center; padding: 6px 2px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .st th.tm, .st td.tm { text-align: left; }
+    .st td.n { color: var(--sub); width: 22px; }
+    .st td.pts { font-weight: 700; }
+    .st td.tm { display: flex; align-items: center; gap: 8px; font-weight: 600; min-width: 0; }
+    .t-logo { width: 28px; height: 28px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 3px; flex-shrink: 0; }
+    .t-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .t-logo .abbr { font-size: 9px; font-weight: 800; color: #0a0f1a; }
+    .st tr.me td { background: rgba(var(--red-rgb), 0.18); }
+    .st tr.opp td { background: rgba(77,143,224,0.16); }
+    .stk-W { color: #5fd38d; font-weight: 600; } .stk-L { color: #ff7d8c; font-weight: 600; } .stk-OT { color: #f5b95a; font-weight: 600; }
+    .legend { font-size: 12px; color: var(--sub); line-height: 1.5; margin: 12px 4px 0; }
+    .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+    @media (prefers-reduced-motion: reduce) { .panel, .overlay { transition: none; } }
+    @media (max-width: 360px) { .st { font-size: 12px; } .t-logo { width: 24px; height: 24px; } .st td.tm { gap: 5px; } }
     .empty { text-align: center; color: var(--sub); padding: 22px 8px; font-size: 14px; }
     .dl { text-align: center; margin-top: 18px; font-size: 14px; }
     .dl a { color: var(--blue); }
@@ -106,6 +135,16 @@
 
   <p class="foot">Unofficial fan page, not affiliated with or endorsed by the NHL or the Montreal Canadiens. Team names and logos are trademarks of their owners. Broadcasters listed are the English-language broadcasters for the Montreal market; what you can watch depends on where you live. Times are shown in your own time zone. &ldquo;Game on&rdquo; is estimated from an assumed game length of about 2&frac12; hours.</p>
 </div>
+
+<div class="overlay" id="st-overlay"></div>
+<aside class="panel" id="st-panel" role="dialog" aria-modal="true" aria-labelledby="st-title" aria-hidden="true">
+  <div class="panel-head"><h2 id="st-title">Conference standings</h2><button type="button" class="x" id="st-close" aria-label="Close standings">&times;</button></div>
+  <div class="seg" role="group" aria-label="Conference">
+    <button type="button" id="st-east" aria-pressed="true">Eastern</button>
+    <button type="button" id="st-west" aria-pressed="false">Western</button>
+  </div>
+  <div class="panel-body" id="st-body"></div>
+</aside>
 
 <script>
 (() => {
@@ -224,7 +263,7 @@
     for (const t of ((data && data.standings) || [])) {
       const ab = t.teamAbbrev && t.teamAbbrev.default;
       if (!ab || ![t.wins, t.losses, t.otLosses, t.points].every(Number.isFinite)) continue;
-      m[ab] = { w: t.wins, l: t.losses, o: t.otLosses, pts: t.points, gp: t.gamesPlayed, div: t.divisionName, seq: t.divisionSequence };
+      m[ab] = { w: t.wins, l: t.losses, o: t.otLosses, pts: t.points, gp: t.gamesPlayed, div: t.divisionName, seq: t.divisionSequence, conf: t.conferenceName, cseq: t.conferenceSequence, stk: t.streakCode ? t.streakCode + (t.streakCount || '') : '' };
     }
     if (Object.keys(m).length < 20) throw new Error('unexpected data');
     return m;
@@ -243,10 +282,10 @@
       try {
         const data = await getJson(url);
         standings = parseStandings(data); standingsAt = Date.now(); standingsAsOf = Date.parse(data.standingsDateTimeUtc || data.standingsDate || '') || 0;
-        standingsBusy = false; standingsErr = ''; lastSig = ''; render(true); return;
+        standingsBusy = false; standingsErr = ''; lastSig = ''; render(true); renderStandPanel(); return;
       } catch (e) { errs.push(label + ': ' + String((e && e.message) || e)); }
     }
-    standingsBusy = false; standingsErr = errs.join('; ');
+    standingsBusy = false; standingsErr = errs.join('; '); renderStandPanel();
     if (PREVIEW) { lastSig = ''; render(true); }
   }
   function standingLines(team) {
@@ -256,6 +295,72 @@
     if (r.gp > 0 && r.seq && r.div) box.appendChild(el('div', 'rank', `${ordinal(r.seq)} in ${r.div}`));
     return box;
   }
+
+  /* ---------- conference standings panel ---------- */
+  const ABBR_TO_NAME = Object.fromEntries(Object.entries(ABBR).map(([n, a]) => [a, n]));
+  const panel = $('st-panel'), overlay = $('st-overlay'), stBody = $('st-body');
+  let panelOpen = false, conf = 'Eastern', opener = null, scrollY0 = 0;
+  function stCell(tag, cls, text) { const c = document.createElement(tag); if (cls) c.className = cls; c.textContent = text; return c; }
+  function renderStandPanel() {
+    $('st-east').setAttribute('aria-pressed', String(conf === 'Eastern')); $('st-west').setAttribute('aria-pressed', String(conf === 'Western'));
+    stBody.textContent = '';
+    if (!standings) {
+      stBody.appendChild(el('div', 'empty', standingsErr ? 'The standings are not available right now. Please try again later.' : 'Loading standings\u2026'));
+      if (panelOpen) ensureStandings(); return;
+    }
+    const rows = Object.entries(standings).filter(([, r]) => r.conf === conf && Number.isFinite(r.cseq)).sort((a, b) => a[1].cseq - b[1].cseq);
+    const nx = nextGame(Date.now()), oppAb = nx ? abbr(opponent(nx)) : '', meAb = abbr(HOME_TEAM);
+    const table = document.createElement('table'); table.className = 'st';
+    const cap = document.createElement('caption'); cap.className = 'sr'; cap.textContent = conf + ' Conference standings'; cap.style.cssText = 'position:absolute;left:-9999px';
+    table.appendChild(cap);
+    const hr = document.createElement('tr');
+    for (const [h, cls, full] of [['#', '', 'Rank'], ['Team', 'tm', 'Team'], ['GP', '', 'Games played'], ['W', '', 'Wins'], ['L', '', 'Losses'], ['OT', '', 'Overtime losses'], ['PTS', '', 'Points'], ['STK', '', 'Streak']]) {
+      const th = stCell('th', cls, h); th.scope = 'col'; th.title = full; hr.appendChild(th);
+    }
+    const thead = document.createElement('thead'); thead.appendChild(hr); table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    rows.forEach(([ab, r], i) => {
+      const tr = document.createElement('tr'); if (ab === meAb) tr.className = 'me'; else if (ab === oppAb) tr.className = 'opp';
+      tr.appendChild(stCell('td', 'n', String(i + 1)));
+      const tm = document.createElement('td'); tm.className = 'tm'; tm.appendChild(logoBox('t-logo', ABBR_TO_NAME[ab] || ab)); tm.appendChild(document.createTextNode(ab)); tr.appendChild(tm);
+      tr.appendChild(stCell('td', '', String(r.gp))); tr.appendChild(stCell('td', '', String(r.w))); tr.appendChild(stCell('td', '', String(r.l))); tr.appendChild(stCell('td', '', String(r.o)));
+      tr.appendChild(stCell('td', 'pts', String(r.pts)));
+      const k = r.stk ? r.stk.replace(/\d+$/, '') : ''; tr.appendChild(stCell('td', k ? 'stk-' + k : '', r.stk || '\u2013'));
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody); stBody.appendChild(table);
+    const lg = el('p', 'legend');
+    const a = document.createElement('i'); a.style.background = 'rgba(232,40,63,0.55)'; lg.appendChild(a); lg.appendChild(document.createTextNode('Canadiens  '));
+    if (oppAb && rows.some(([ab]) => ab === oppAb)) { const b = document.createElement('i'); b.style.background = 'rgba(77,143,224,0.6)'; lg.appendChild(b); lg.appendChild(document.createTextNode('Next opponent  ')); }
+    lg.appendChild(document.createElement('br'));
+    lg.appendChild(document.createTextNode((standingsAsOf ? 'As of ' + fmt(standingsAsOf, { month: 'short', day: 'numeric' }) + '. ' : '') + 'GP games played, W wins, L losses, OT overtime losses, PTS points, STK current streak.'));
+    stBody.appendChild(lg);
+  }
+  function focusables() { return [...panel.querySelectorAll('button')].filter(b => !b.disabled); }
+  function openPanel(from) {
+    if (panelOpen) return; panelOpen = true; opener = from || null;
+    scrollY0 = window.scrollY; document.body.style.overflow = 'hidden';
+    renderStandPanel(); ensureStandings();
+    overlay.classList.add('open'); panel.classList.add('open'); panel.setAttribute('aria-hidden', 'false');
+    setTimeout(() => $('st-close').focus(), 50);
+  }
+  function closePanel() {
+    if (!panelOpen) return; panelOpen = false;
+    overlay.classList.remove('open'); panel.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); document.body.style.overflow = '';
+    if (opener && document.body.contains(opener)) opener.focus();
+  }
+  $('st-close').addEventListener('click', closePanel); overlay.addEventListener('click', closePanel);
+  $('st-east').addEventListener('click', () => { conf = 'Eastern'; renderStandPanel(); });
+  $('st-west').addEventListener('click', () => { conf = 'Western'; renderStandPanel(); });
+  document.addEventListener('keydown', e => {
+    if (!panelOpen) return;
+    if (e.key === 'Escape') { closePanel(); return; }
+    if (e.key === 'Tab') { const f = focusables(), first = f[0], last = f[f.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } }
+  });
+  // swipe right to close
+  let tx = 0, ty = 0;
+  panel.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  panel.addEventListener('touchend', e => { const t = e.changedTouches[0], dx = t.clientX - tx, dy = Math.abs(t.clientY - ty); if (dx > 70 && dy < 50) closePanel(); }, { passive: true });
 
   /* ---------- rendering ---------- */
   const app = $('app');
@@ -383,7 +488,9 @@
     if (!force && sig === lastSig) return;
     lastSig = sig;
     app.textContent = ''; app.setAttribute('aria-busy', 'false');
-    app.appendChild(renderHero(now)); app.appendChild(renderSeason(now)); app.appendChild(renderFilters()); app.appendChild(renderList(now));
+    app.appendChild(renderHero(now)); app.appendChild(renderSeason(now));
+    const sb = el('button', 'stand-btn'); sb.type = 'button'; sb.appendChild(el('span', '', 'Conference standings')); sb.appendChild(el('span', '', '\u25b8'));
+    sb.addEventListener('click', () => openPanel(sb)); app.appendChild(sb); app.appendChild(renderFilters()); app.appendChild(renderList(now));
     const dl = el('p', 'dl'); const a = el('a', '', 'Download the whole schedule (.ics)'); a.href = ICS_URL; a.setAttribute('download', ''); dl.appendChild(a);
     dl.appendChild(document.createElement('br')); dl.appendChild(el('span', 'msg', 'Opens in your calendar app.')); app.appendChild(dl);
     tick();
