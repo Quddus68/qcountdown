@@ -94,6 +94,7 @@
     .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 16px 10px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,0.06); }
     .seg button { padding: 11px 8px; border-radius: 10px; border: none; background: none; color: #d0d5dd; font-size: 15px; font-weight: 600; cursor: pointer; }
     .seg button[aria-pressed="true"] { background: var(--red); color: #fff; }
+    .div-h { font-size: 14px; font-weight: 700; margin: 16px 4px 4px; color: #fff; }
     .panel-body { flex: 1; overflow-y: auto; padding: 0 12px calc(env(safe-area-inset-bottom) + 20px); overscroll-behavior: contain; }
     .st { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
     .st th { position: sticky; top: 0; background: #0c1322; z-index: 1; font-size: 11px; font-weight: 700; color: var(--sub); text-align: center; padding: 8px 2px; border-bottom: 1px solid var(--border); }
@@ -142,6 +143,10 @@
   <div class="seg" role="group" aria-label="Conference">
     <button type="button" id="st-east" aria-pressed="true">Eastern</button>
     <button type="button" id="st-west" aria-pressed="false">Western</button>
+  </div>
+  <div class="seg" role="group" aria-label="View">
+    <button type="button" id="st-view-conf" aria-pressed="true">Conference</button>
+    <button type="button" id="st-view-div" aria-pressed="false">Divisions</button>
   </div>
   <div class="panel-body" id="st-body"></div>
 </aside>
@@ -299,9 +304,10 @@
   /* ---------- conference standings panel ---------- */
   const ABBR_TO_NAME = Object.fromEntries(Object.entries(ABBR).map(([n, a]) => [a, n]));
   const panel = $('st-panel'), overlay = $('st-overlay'), stBody = $('st-body');
-  let panelOpen = false, conf = 'Eastern', opener = null, scrollY0 = 0;
+  let panelOpen = false, view = 'conf', conf = 'Eastern', opener = null, scrollY0 = 0;
   function stCell(tag, cls, text) { const c = document.createElement(tag); if (cls) c.className = cls; c.textContent = text; return c; }
   function renderStandPanel() {
+    $('st-view-conf').setAttribute('aria-pressed', String(view === 'conf')); $('st-view-div').setAttribute('aria-pressed', String(view === 'div'));
     $('st-east').setAttribute('aria-pressed', String(conf === 'Eastern')); $('st-west').setAttribute('aria-pressed', String(conf === 'Western'));
     stBody.textContent = '';
     if (!standings) {
@@ -310,8 +316,9 @@
     }
     const rows = Object.entries(standings).filter(([, r]) => r.conf === conf && Number.isFinite(r.cseq)).sort((a, b) => a[1].cseq - b[1].cseq);
     const nx = nextGame(Date.now()), oppAb = nx ? abbr(opponent(nx)) : '', meAb = abbr(HOME_TEAM);
+    const buildTable = (list, label) => {
     const table = document.createElement('table'); table.className = 'st';
-    const cap = document.createElement('caption'); cap.className = 'sr'; cap.textContent = conf + ' Conference standings'; cap.style.cssText = 'position:absolute;left:-9999px';
+    const cap = document.createElement('caption'); cap.className = 'sr'; cap.textContent = label; cap.style.cssText = 'position:absolute;left:-9999px';
     table.appendChild(cap);
     const hr = document.createElement('tr');
     for (const [h, cls, full] of [['#', '', 'Rank'], ['Team', 'tm', 'Team'], ['GP', '', 'Games played'], ['W', '', 'Wins'], ['L', '', 'Losses'], ['OT', '', 'Overtime losses'], ['PTS', '', 'Points'], ['STK', '', 'Streak']]) {
@@ -319,7 +326,7 @@
     }
     const thead = document.createElement('thead'); thead.appendChild(hr); table.appendChild(thead);
     const tbody = document.createElement('tbody');
-    rows.forEach(([ab, r], i) => {
+    list.forEach(([ab, r], i) => {
       const tr = document.createElement('tr'); if (ab === meAb) tr.className = 'me'; else if (ab === oppAb) tr.className = 'opp';
       tr.appendChild(stCell('td', 'n', String(i + 1)));
       const tm = document.createElement('td'); tm.className = 'tm'; tm.appendChild(logoBox('t-logo', ABBR_TO_NAME[ab] || ab)); tm.appendChild(document.createTextNode(ab)); tr.appendChild(tm);
@@ -328,7 +335,16 @@
       const k = r.stk ? r.stk.replace(/\d+$/, '') : ''; tr.appendChild(stCell('td', k ? 'stk-' + k : '', r.stk || '\u2013'));
       tbody.appendChild(tr);
     });
-    table.appendChild(tbody); stBody.appendChild(table);
+    table.appendChild(tbody); return table;
+    };
+    if (view === 'conf') stBody.appendChild(buildTable(rows, conf + ' Conference standings'));
+    else {
+      const divs = [...new Set(rows.map(([, r]) => r.div).filter(Boolean))].sort();
+      for (const dv of divs) {
+        const list = rows.filter(([, r]) => r.div === dv).sort((x, y) => x[1].seq - y[1].seq);
+        stBody.appendChild(el('h3', 'div-h', dv + ' Division')); stBody.appendChild(buildTable(list, dv + ' Division standings'));
+      }
+    }
     const lg = el('p', 'legend');
     const a = document.createElement('i'); a.style.background = 'rgba(232,40,63,0.55)'; lg.appendChild(a); lg.appendChild(document.createTextNode('Canadiens  '));
     if (oppAb && rows.some(([ab]) => ab === oppAb)) { const b = document.createElement('i'); b.style.background = 'rgba(77,143,224,0.6)'; lg.appendChild(b); lg.appendChild(document.createTextNode('Next opponent  ')); }
@@ -350,6 +366,8 @@
     if (opener && document.body.contains(opener)) opener.focus();
   }
   $('st-close').addEventListener('click', closePanel); overlay.addEventListener('click', closePanel);
+  $('st-view-conf').addEventListener('click', () => { view = 'conf'; renderStandPanel(); });
+  $('st-view-div').addEventListener('click', () => { view = 'div'; renderStandPanel(); });
   $('st-east').addEventListener('click', () => { conf = 'Eastern'; renderStandPanel(); });
   $('st-west').addEventListener('click', () => { conf = 'Western'; renderStandPanel(); });
   document.addEventListener('keydown', e => {
