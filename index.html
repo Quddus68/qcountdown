@@ -3,589 +3,542 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Countdown</title>
-  <meta name="theme-color" content="#0c1014">
+  <title>Q's Canadiens Countdown</title>
+  <meta name="description" content="Countdown to the next Montreal Canadiens game, with the full 2026-27 schedule. An unofficial fan page.">
+  <meta name="theme-color" content="#0a0f1a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Countdown">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="icon-192.png">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <meta name="apple-mobile-web-app-title" content="Habs Countdown">
+  <link rel="manifest" href="manifest-habs.webmanifest">
+  <script>
+    // Old shared countdown links (?name=...&date=...) used to open the main address; send them to the countdown page.
+    if (/[?&](name|date)=/.test(location.search)) location.replace('countdowns.html' + location.search + location.hash);
+  </script>
+  <link rel="apple-touch-icon" href="habs-apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="logos/montreal-canadiens.svg">
   <style>
-    :root { --w: 400px; color-scheme: dark; --bg: #0c1014; --grad: linear-gradient(145deg, #1d2731, #0c1014); --text: #ffffff; --sub: #8e8e93; --accent: #0a84ff; --accent-rgb: 10, 132, 255; --border: rgba(255,255,255,0.1); }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+    :root { --w: 440px; color-scheme: dark; --bg: #0a0f1a; --card: linear-gradient(150deg, #17233a, #0c1322); --text: #fff; --sub: #98a2b3; --red: #e8283f; --red-rgb: 232, 40, 63; --blue: #4d8fe0; --border: rgba(255,255,255,0.1); }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     [hidden] { display: none !important; }
-    input, button { font-family: inherit; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px) 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-    header { width: 100%; max-width: var(--w); padding: 20px 0 10px 0; display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
-    header .logo { width: 44px; height: 44px; flex-shrink: 0; }
-    header h1 { font-size: clamp(18px, 5.8vw, 28px); line-height: 1.15; font-weight: 700; letter-spacing: -0.5px; }
-    .pill { border: 1px solid rgba(10,132,255,0.3); background: rgba(10,132,255,0.15); color: #0a84ff; font-size: 15px; font-weight: 600; padding: 8px 16px; border-radius: 99px; cursor: pointer; }
+    button { font-family: inherit; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 28px); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    @media (min-width: 640px) { :root { --w: 560px; } }
+    .wrap { width: 100%; max-width: var(--w); }
+    header { padding: 18px 0 12px; display: flex; align-items: center; gap: 12px; }
+    header img { width: 44px; height: 44px; object-fit: contain; flex-shrink: 0; background: #fff; border-radius: 12px; padding: 4px; }
+    header h1 { font-size: clamp(18px, 5.6vw, 26px); line-height: 1.15; font-weight: 700; letter-spacing: -0.4px; flex: 1; min-width: 0; }
+    .back { flex-shrink: 0; font-size: 14px; font-weight: 600; color: var(--blue); text-decoration: none; border: 1px solid rgba(77,143,224,0.35); background: rgba(77,143,224,0.12); padding: 9px 12px; border-radius: 99px; white-space: nowrap; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 
-    .card { background: var(--grad); border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 20px; width: 100%; max-width: var(--w); margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-    .input-group { margin-bottom: 16px; }
-    .input-group > label, .group-label { display: block; font-size: 13px; font-weight: 500; color: var(--sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.3px; }
-    input[type=text], input[type=datetime-local] { -webkit-user-select: text; user-select: text; width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--text); font-size: 16px; outline: none; }
+    .card { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 22px; padding: 20px 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); margin-bottom: 16px; }
+    .live { background: linear-gradient(90deg, #b3122a, #e8283f); border-radius: 16px; padding: 12px 14px; margin-bottom: 14px; font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 10px; }
+    .live::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #fff; flex-shrink: 0; }
+    .tag { font-size: 12px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--red); text-align: center; }
+    .matchup { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin: 14px 0 10px; }
+    .side { text-align: center; min-width: 0; }
+    .chip { width: clamp(76px, 24vw, 104px); height: clamp(76px, 24vw, 104px); margin: 0 auto 6px; background: #fff; border-radius: 22px; display: flex; align-items: center; justify-content: center; padding: 10px; }
+    .chip img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+    .chip .abbr { color: #0a0f1a; font-weight: 800; font-size: 20px; }
+    .side .nm { font-size: 14px; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
+    .side .role { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--sub); margin-top: 3px; }
+    .rec { font-size: 16px; font-weight: 700; margin-top: 8px; font-variant-numeric: tabular-nums; }
+    .rank { font-size: 12px; color: var(--sub); margin-top: 2px; line-height: 1.25; }
+    .rec-note { text-align: center; font-size: 11px; color: var(--sub); margin-top: 4px; }
+    .at { font-size: 15px; font-weight: 700; color: var(--sub); }
+    .when { text-align: center; font-size: 16px; font-weight: 600; margin-top: 4px; }
+    .when-sub, .bcast { text-align: center; font-size: 13px; color: var(--sub); margin-top: 3px; }
+    .bcast b { color: #fff; font-weight: 600; }
+    .cd { display: grid; grid-template-columns: repeat(var(--n, 4), 1fr); gap: 8px; margin: 16px 0 6px; }
+    .blk { background: rgba(var(--red-rgb), 0.12); border: 1px solid rgba(var(--red-rgb), 0.22); border-radius: 12px; padding: 14px 2px; text-align: center; }
+    .num { font-size: clamp(26px, 8.5vw, 40px); font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.4px; color: var(--sub); margin-top: 4px; }
+    .started { text-align: center; font-size: 15px; font-weight: 600; margin: 16px 0 6px; padding: 14px 10px; border-radius: 12px; background: rgba(255,255,255,0.06); }
+    .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .btn { padding: 13px 8px; border-radius: 12px; border: 1px solid rgba(var(--red-rgb), 0.4); background: rgba(var(--red-rgb), 0.16); color: #ff8b99; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .btn.alt { border-color: rgba(77,143,224,0.4); background: rgba(77,143,224,0.14); color: #9cc3f5; }
+    .msg { text-align: center; font-size: 13px; color: var(--sub); margin-top: 10px; min-height: 17px; }
+    .msg a { color: var(--blue); }
+    .back-next { display: block; margin: 12px auto 0; background: none; border: none; color: var(--blue); font-size: 14px; font-weight: 600; cursor: pointer; padding: 8px; }
+    .season-over { text-align: center; padding: 10px 4px; }
+    .season-over .chip { margin-bottom: 12px; }
+    .season-over p { font-size: 16px; line-height: 1.4; }
 
-    .emoji-row, .swatch-row { display: flex; flex-wrap: wrap; gap: 8px; }
-    .swatch-row { margin-top: 10px; gap: 12px; padding: 4px 4px 2px; }
-    .emoji-btn { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid transparent; background: rgba(255,255,255,0.06); font-size: 20px; line-height: 1; cursor: pointer; }
-    .emoji-btn.on { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.2); }
-    .swatch { width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--c); cursor: pointer; }
-    .swatch.on { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--c); }
+    .season { margin-bottom: 14px; }
+    .season-top { display: flex; justify-content: space-between; font-size: 13px; color: var(--sub); margin-bottom: 6px; }
+    .bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+    .bar i { display: block; height: 100%; width: 0; background: var(--red); border-radius: 99px; }
 
-        .check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
-    .check input { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0; }
-    .note { font-size: 12px; color: var(--sub); margin-top: 6px; line-height: 1.4; }
-
-    .ico { width: 1.15em; height: 1.15em; vertical-align: -0.22em; object-fit: contain; }
-    .emoji-btn .ico { width: 28px; height: 28px; vertical-align: middle; }
-    .widget-tag .ico { width: 1.7em; height: 1.7em; vertical-align: -0.45em; }
-    .cd-title .ico { width: 1.3em; height: 1.3em; vertical-align: -0.28em; }
-    .new-row { width: 100%; max-width: var(--w); margin-top: 18px; text-align: center; }
-    .new-row .pill { max-width: 100%; }
-    .countdown-section { padding: 6px 0 20px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-    .cd-title { font-size: 22px; font-weight: 700; text-align: center; margin: 2px 0 4px; overflow-wrap: anywhere; line-height: 1.25; }
-    .time-num.three { font-size: clamp(22px, 7vw, 34px); }
-    .editing { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--sub); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 14px; }
-    .editing::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-    .hint { margin: 0 0 10px; text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 400; color: var(--sub); line-height: 1.35; }
-    .tile-hint { width: 100%; max-width: var(--w); margin: 0 0 12px; font-size: 13px; color: var(--sub); }
-    .save-note { text-align: center; margin-top: 14px; }
-    details.adv { margin-top: 10px; }
-    details.adv summary { font-size: 13px; color: var(--sub); cursor: pointer; padding: 4px 0; list-style: none; }
-    details.adv summary::-webkit-details-marker { display: none; }
-    details.adv summary::before { content: '\25B8  '; }
-    details.adv[open] summary::before { content: '\25BE  '; }
-    details.adv .tz-inner { padding-top: 6px; }
-    @media (min-width: 640px) { :root { --w: 520px; } }
-    .status { font-size: 15px; font-weight: 600; text-align: center; margin-top: 4px; }
-    .countdown-display { display: grid; grid-template-columns: repeat(var(--n, 4), 1fr); gap: 8px; margin: 14px auto 8px; max-width: 100%; }
-    .time-block { background: rgba(var(--accent-rgb), 0.1); border-radius: 12px; padding: 16px 4px; text-align: center; border: 1px solid rgba(var(--accent-rgb), 0.15); }
-    .time-num { font-size: clamp(26px, 8.5vw, 40px); font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
-    .time-label { font-size: 12px; color: var(--sub); font-weight: 500; margin-top: 4px; }
-    .human { text-align: center; font-size: 13px; color: var(--sub); min-height: 18px; }
-
-    .progress { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; margin-top: 14px; }
-    .progress-fill { height: 100%; width: 0; background: var(--accent); border-radius: 99px; transition: width 0.6s ease; }
-    .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--sub); margin-top: 6px; }
-
-    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
-    .btn { padding: 12px 8px; border-radius: 12px; border: 1px solid rgba(var(--accent-rgb), 0.25); background: rgba(var(--accent-rgb), 0.15); color: var(--accent); font-size: 15px; font-weight: 600; cursor: pointer; }
-    .btn.danger { width: 100%; margin-top: 10px; color: #ff453a; border-color: rgba(255,69,58,0.3); background: rgba(255,69,58,0.1); }
-
-    .section-title { width: 100%; max-width: var(--w); font-size: 15px; font-weight: 600; color: var(--sub); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.3px; }
-    .tile-grid { width: 100%; max-width: var(--w); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .tile { --c: #0a84ff; background: var(--grad); color: #fff; border-radius: 22px; position: relative; overflow: hidden; padding: 16px; height: 155px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 8px 24px rgba(0,0,0,0.15); cursor: pointer; outline: none; }
-    .tile.sel { border-color: var(--c); box-shadow: 0 0 0 1px var(--c), 0 8px 24px rgba(0,0,0,0.15); }
-    .widget-tag { font-size: 11px; font-weight: 600; color: var(--c); text-transform: uppercase; letter-spacing: 0.5px; }
-    .widget-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
-    .widget-main-num { font-size: 38px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
-    .widget-main-num.long { font-size: 26px; }
-    .widget-subtext { font-size: 11px; color: #8e8e93; }
-    .tile-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,0.06); }
-    .tile-bar i { display: block; height: 100%; width: 0; background: var(--c); }
-
-    header { position: relative; }
-    .menu-btn { margin-left: auto; flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-    .menu-btn[aria-expanded="true"] { background: rgba(255,255,255,0.14); }
-    .menu-btn svg { width: 22px; height: 22px; display: block; }
-    .menu-panel { position: absolute; right: 0; top: calc(100% - 2px); min-width: 190px; background: #1d2731; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 6px; box-shadow: 0 12px 32px rgba(0,0,0,0.5); z-index: 50; }
-    .menu-panel button { display: block; width: 100%; text-align: left; background: none; border: none; color: #fff; font-size: 16px; font-weight: 500; padding: 12px 14px; border-radius: 9px; cursor: pointer; }
-    .menu-link { display: block; text-align: left; color: #fff; text-decoration: none; font-size: 16px; font-weight: 500; padding: 12px 14px; border-radius: 9px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 4px; }
-    .menu-link:hover, .menu-link:focus-visible { background: rgba(255,255,255,0.1); outline: none; }
-    .menu-panel button:hover, .menu-panel button:focus-visible { background: rgba(255,255,255,0.1); outline: none; }
-    .menu-btn:focus-visible, .sheet-x:focus-visible, .sheet-done:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .sheet-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.65); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px; }
-    .sheet { width: 100%; max-width: 520px; max-height: min(86vh, 720px); background: linear-gradient(145deg, #1d2731, #0c1014); border: 1px solid rgba(255,255,255,0.1); border-radius: 22px; display: flex; flex-direction: column; box-shadow: 0 20px 48px rgba(0,0,0,0.5); outline: none; }
-    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-    .sheet-head h2 { font-size: 20px; font-weight: 700; }
-    .sheet-x { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(255,255,255,0.08); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
-    .sheet-body { padding: 8px 20px 4px; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; user-select: text; -webkit-user-select: text; font-size: 15px; line-height: 1.5; color: #d6d9de; }
-    .sheet-body h3 { font-size: 15px; font-weight: 700; color: #fff; margin: 16px 0 4px; }
-    .sheet-body p, .sheet-body ol { margin: 0 0 6px; }
-    .sheet-body ol { padding-left: 20px; }
-    .sheet-body b { color: #fff; font-weight: 600; }
-    .sheet-foot { padding: 12px 20px 18px; }
-    .sheet-done { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(10,132,255,0.25); background: rgba(10,132,255,0.15); color: #0a84ff; font-size: 16px; font-weight: 600; cursor: pointer; }
+    .filters { display: flex; gap: 8px; margin-bottom: 8px; overflow-x: auto; padding-bottom: 4px; }
+    .fchip { flex-shrink: 0; padding: 9px 14px; border-radius: 99px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #d0d5dd; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .fchip[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; }
+    .month { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sub); margin: 18px 0 6px; }
+    .row { width: 100%; display: grid; grid-template-columns: 52px 44px 1fr auto; align-items: center; gap: 10px; text-align: left; color: #fff; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; }
+    .row.sel { border-color: var(--red); box-shadow: 0 0 0 1px var(--red); }
+    .row.past { opacity: 0.5; }
+    .row.next { background: rgba(var(--red-rgb), 0.12); }
+    .r-date { font-size: 12px; line-height: 1.2; color: var(--sub); text-align: center; }
+    .r-date b { display: block; font-size: 18px; color: #fff; font-weight: 700; }
+    .r-logo { width: 44px; height: 44px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 4px; }
+    .r-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .r-logo .abbr { font-size: 12px; font-weight: 800; color: #0a0f1a; }
+    .r-main { min-width: 0; }
+    .r-team { font-size: 15px; font-weight: 600; line-height: 1.25; }
+    .r-team small { color: var(--sub); font-weight: 500; font-size: 13px; }
+    .r-time { font-size: 13px; color: var(--sub); margin-top: 2px; }
+    .r-bc { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 99px; background: rgba(77,143,224,0.16); color: #9cc3f5; white-space: nowrap; }
+    .stand-btn { width: 100%; margin-bottom: 14px; padding: 13px 14px; border-radius: 14px; border: 1px solid rgba(77,143,224,0.4); background: rgba(77,143,224,0.14); color: #9cc3f5; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; z-index: 40; }
+    .overlay.open { opacity: 1; visibility: visible; }
+    .panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(100%, 520px); background: #0c1322; border-left: 1px solid var(--border); box-shadow: -10px 0 30px rgba(0,0,0,0.4); transform: translateX(100%); visibility: hidden; transition: transform .28s ease, visibility .28s; z-index: 41; display: flex; flex-direction: column; padding-top: env(safe-area-inset-top); touch-action: pan-y; }
+    .panel.open { transform: none; visibility: visible; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 16px 10px; }
+    .panel-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+    .x { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; flex-shrink: 0; }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 16px 10px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,0.06); }
+    .seg button { padding: 11px 8px; border-radius: 10px; border: none; background: none; color: #d0d5dd; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .seg button[aria-pressed="true"] { background: var(--red); color: #fff; }
+    .div-h { font-size: 14px; font-weight: 700; margin: 16px 4px 4px; color: #fff; }
+    .panel-body { flex: 1; overflow-y: auto; padding: 0 12px calc(env(safe-area-inset-bottom) + 20px); overscroll-behavior: contain; }
+    .st { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+    .st th { position: sticky; top: 0; background: #0c1322; z-index: 1; font-size: 11px; font-weight: 700; color: var(--sub); text-align: center; padding: 8px 2px; border-bottom: 1px solid var(--border); }
+    .st td { text-align: center; padding: 6px 2px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .st th.tm, .st td.tm { text-align: left; }
+    .st td.n { color: var(--sub); width: 22px; }
+    .st td.pts { font-weight: 700; }
+    .st td.tm { display: flex; align-items: center; gap: 8px; font-weight: 600; min-width: 0; }
+    .t-logo { width: 28px; height: 28px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 3px; flex-shrink: 0; }
+    .t-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .t-logo .abbr { font-size: 9px; font-weight: 800; color: #0a0f1a; }
+    .st tr.me td { background: rgba(var(--red-rgb), 0.18); }
+    .st tr.opp td { background: rgba(77,143,224,0.16); }
+    .stk-W { color: #5fd38d; font-weight: 600; } .stk-L { color: #ff7d8c; font-weight: 600; } .stk-OT { color: #f5b95a; font-weight: 600; }
+    .legend { font-size: 12px; color: var(--sub); line-height: 1.5; margin: 12px 4px 0; }
+    .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+    @media (prefers-reduced-motion: reduce) { .panel, .overlay { transition: none; } }
+    @media (max-width: 360px) { .st { font-size: 12px; } .t-logo { width: 24px; height: 24px; } .st td.tm { gap: 5px; } }
+    .empty { text-align: center; color: var(--sub); padding: 22px 8px; font-size: 14px; }
+    .dl { text-align: center; margin-top: 18px; font-size: 14px; }
+    .dl a { color: var(--blue); }
+    .foot { margin-top: 22px; font-size: 12px; line-height: 1.5; color: var(--sub); text-align: center; }
+    .err { text-align: center; line-height: 1.45; }
+    .err p { margin-bottom: 14px; }
+    @media (max-width: 360px) { .row { grid-template-columns: 44px 40px 1fr; } .r-bc { display: none; } .r-logo { width: 40px; height: 40px; } }
   </style>
 </head>
 <body>
+<div class="wrap">
   <header>
-    <svg class="logo" viewBox="0 0 512 512" width="44" height="44" role="img" aria-label="Q's Countdown logo" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5a4d"/><stop offset="1" stop-color="#d1121f"/></linearGradient></defs><circle cx="256" cy="256" r="256" fill="url(#lg)"/><circle cx="240" cy="240" r="148" fill="none" stroke="#fff" stroke-width="28"/><line x1="310.7" y1="310.7" x2="378.6" y2="378.6" stroke="#ffffff" stroke-width="30" stroke-linecap="round" opacity="1"/><path d="M304.3,294.0 A84,84 0 1 1 304.3,186.0" fill="none" stroke="#ffffff" stroke-width="20" stroke-linecap="round"/><line x1="240.0" y1="132.0" x2="240.0" y2="116.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><line x1="294.0" y1="146.5" x2="302.0" y2="132.6" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="333.5" y1="186.0" x2="347.4" y2="178.0" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="348.0" y1="240.0" x2="364.0" y2="240.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><line x1="333.5" y1="294.0" x2="347.4" y2="302.0" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="294.0" y1="333.5" x2="302.0" y2="347.4" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="240.0" y1="348.0" x2="240.0" y2="364.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><line x1="186.0" y1="333.5" x2="178.0" y2="347.4" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="146.5" y1="294.0" x2="132.6" y2="302.0" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="132.0" y1="240.0" x2="116.0" y2="240.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><line x1="146.5" y1="186.0" x2="132.6" y2="178.0" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="186.0" y1="146.5" x2="178.0" y2="132.6" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="1"/><line x1="240.0" y1="240.0" x2="240.0" y2="190.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><line x1="240.0" y1="240.0" x2="269.4" y2="223.0" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="1"/><circle cx="240" cy="240" r="9.0" fill="#ffffff"/></svg>
-    <h1>Q's Countdown Page</h1>
-    <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="menu-panel">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-    </button>
-    <div class="menu-panel" id="menu-panel" role="menu" hidden>
-      <a class="menu-link" role="menuitem" href="canadiens.html">Canadiens schedule</a>
-      <button type="button" role="menuitem" data-open="instructions">Instructions</button>
-      <button type="button" role="menuitem" data-open="about">About</button>
-    </div>
+    <img src="logos/montreal-canadiens.svg" alt="">
+    <h1>Q's Canadiens Countdown</h1>
+    <a class="back" href="countdowns.html">My countdowns</a>
   </header>
 
-  <div class="card" id="detail">
-    <div class="countdown-section">
-      <div class="cd-title" id="cd-title"><span id="cd-icon"></span> <span id="cd-text"></span></div>
-      <div class="status" id="status"></div>
-      <div class="countdown-display" id="cd-display">
-        <div class="time-block" id="b-d"><div class="time-num" id="d-val">00</div><div class="time-label">DAYS</div></div>
-        <div class="time-block" id="b-h"><div class="time-num" id="h-val">00</div><div class="time-label">HOURS</div></div>
-        <div class="time-block" id="b-m"><div class="time-num" id="m-val">00</div><div class="time-label">MINUTES</div></div>
-        <div class="time-block" id="b-s"><div class="time-num" id="s-val">00</div><div class="time-label">SECONDS</div></div>
-      </div>
-      <div class="human" id="human"></div>
-      <div class="progress"><div class="progress-fill" id="pfill"></div></div>
-      <div class="progress-label"><span id="p-left"></span><span id="p-pct"></span></div>
-    </div>
+  <main id="app" aria-busy="true">
+    <div class="card"><p class="msg" id="loading">Loading the schedule&hellip;</p></div>
+  </main>
 
-    <div class="editing" id="editing"></div>
-    <div class="input-group">
-      <label for="event-title">Event name</label>
-      <input type="text" id="event-title" maxlength="60" autocomplete="off" placeholder="e.g. Beach trip">
-    </div>
-    <div class="input-group">
-      <label for="target-date">Target date &amp; time</label>
-      <input type="datetime-local" id="target-date">
-      <details class="adv" id="tz-row">
-        <summary>Time zone options</summary>
-        <div class="tz-inner">
-          <label class="check"><input type="checkbox" id="tz-lock"><span id="tz-label"></span></label>
-          <div class="note" id="tz-note"></div>
-        </div>
-      </details>
-    </div>
-    <div class="input-group">
-      <span class="group-label">Icon &amp; color options</span>
-      <div class="note hint">Brighten up your countdown with an icon or a color!</div>
-      <div class="emoji-row" id="emoji-row"></div>
-      <div class="swatch-row" id="swatch-row"></div>
-    </div>
+  <p class="foot">Unofficial fan page, not affiliated with or endorsed by the NHL or the Montreal Canadiens. Team names and logos are trademarks of their owners. Broadcasters listed are the English-language broadcasters for the Montreal market; what you can watch depends on where you live. Times are shown in your own time zone. &ldquo;Game on&rdquo; is estimated from an assumed game length of about 2&frac12; hours.</p>
+</div>
 
-    <div class="btn-row">
-      <button class="btn" id="share-btn" type="button">Share link</button>
-      <button class="btn" id="cal-btn" type="button">Add to Calendar</button>
-    </div>
-    <button class="btn danger" id="del-btn" type="button">Delete this countdown</button>
-    <div class="note save-note">Changes save automatically on this device.</div>
+<div class="overlay" id="st-overlay"></div>
+<aside class="panel" id="st-panel" role="dialog" aria-modal="true" aria-labelledby="st-title" aria-hidden="true">
+  <div class="panel-head"><h2 id="st-title">Conference standings</h2><button type="button" class="x" id="st-close" aria-label="Close standings">&times;</button></div>
+  <div class="seg" role="group" aria-label="Conference">
+    <button type="button" id="st-east" aria-pressed="true">Eastern</button>
+    <button type="button" id="st-west" aria-pressed="false">Western</button>
   </div>
-
-  <div class="section-title">Your countdowns</div>
-  <div class="note tile-hint">Tap a countdown to view or edit it.</div>
-  <div class="tile-grid" id="tiles"></div>
-  <div class="new-row">
-    <button class="pill" id="new-btn" type="button">Click here to make a new countdown</button>
+  <div class="seg" role="group" aria-label="View">
+    <button type="button" id="st-view-conf" aria-pressed="true">Conference</button>
+    <button type="button" id="st-view-div" aria-pressed="false">Divisions</button>
   </div>
+  <div class="panel-body" id="st-body"></div>
+</aside>
 
-  <div class="sheet-overlay" id="sheet" hidden>
-    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1">
-      <div class="sheet-head"><h2 id="sheet-title"></h2><button class="sheet-x" id="sheet-x" type="button" aria-label="Close">&times;</button></div>
-      <div class="sheet-body" id="sheet-body"></div>
-      <div class="sheet-foot"><button class="sheet-done" id="sheet-done" type="button">Close</button></div>
-    </div>
-  </div>
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const ICS_URL = 'Canadiens-2026-27-schedule.ics';
+  const HOME_TEAM = 'Montreal Canadiens';
+  const ET = 'America/Toronto';
+  const PNG_LOGOS = { 'seattle-kraken': 1, 'utah-mammoth': 1 };
+  const ABBR = { 'Anaheim Ducks':'ANA','Boston Bruins':'BOS','Buffalo Sabres':'BUF','Calgary Flames':'CGY','Carolina Hurricanes':'CAR','Chicago Blackhawks':'CHI','Colorado Avalanche':'COL','Columbus Blue Jackets':'CBJ','Dallas Stars':'DAL','Detroit Red Wings':'DET','Edmonton Oilers':'EDM','Florida Panthers':'FLA','Los Angeles Kings':'LAK','Minnesota Wild':'MIN','Montreal Canadiens':'MTL','Nashville Predators':'NSH','New Jersey Devils':'NJD','New York Islanders':'NYI','New York Rangers':'NYR','Ottawa Senators':'OTT','Philadelphia Flyers':'PHI','Pittsburgh Penguins':'PIT','San Jose Sharks':'SJS','Seattle Kraken':'SEA','St. Louis Blues':'STL','Tampa Bay Lightning':'TBL','Toronto Maple Leafs':'TOR','Utah Mammoth':'UTA','Vancouver Canucks':'VAN','Vegas Golden Knights':'VGK','Washington Capitals':'WSH','Winnipeg Jets':'WPG' };
+  const pad = n => String(n).padStart(2, '0');
+  const KEY = 'countdowns-v2';
+  const LIVE_FALLBACK_MS = 150 * 6e4; // used if an event has no DTEND
 
-  <!-- Menu pages: edit the text here. -->
-  <template id="tpl-instructions">
-    <h3>Make a countdown</h3>
-    <ol>
-      <li>Type a name in <b>Event name</b>.</li>
-      <li>Pick a day and time in <b>Target date &amp; time</b>.</li>
-      <li>The countdown at the top updates every second. There is nothing to save: changes are kept automatically on this device.</li>
-    </ol>
-    <h3>Add more countdowns</h3>
-    <p>Tap <b>Click here to make a new countdown</b> under your list. Each one shows up as a tile under <b>Your countdowns</b>. Tap a tile to view or edit it. The label above <b>Event name</b> tells you which one you are editing.</p>
-    <h3>Icons and colors</h3>
-    <p>Under <b>Icon &amp; color options</b>, pick an icon and a color. They appear on the countdown and on its tile.</p>
-    <h3>Time zones</h3>
-    <p>Normally a time like 9:00 AM means 9:00 AM wherever the person looking at it is. To make it one exact moment for everyone, open <b>Time zone options</b> and tick <b>Keep this exact moment for everyone</b>.</p>
-    <h3>Canadiens schedule</h3>
-    <p>Open the menu and choose <b>Canadiens schedule</b> for a separate page with every 2026-27 game as a countdown. The next game is shown automatically. Tap <b>Add to my countdowns</b> to keep a game here as a tile.</p>
-    <h3>Share link</h3>
-    <p>Makes a link to this countdown. Whoever opens it gets their own copy, which they can change without affecting yours.</p>
-    <h3>Add to Calendar</h3>
-    <p>Downloads a calendar file with a reminder one hour before. Open it to add the event to your calendar app.</p>
-    <h3>When the time is up</h3>
-    <p>The numbers stop at zero and a message appears.</p>
-    <h3>Deleting</h3>
-    <p><b>Delete this countdown</b> removes it from this device only, and it can't be undone.</p>
-    <h3>Add it to your Home Screen</h3>
-    <p>On iPhone, open the page in Safari, tap the Share button, then <b>Add to Home Screen</b>. On Android, use your browser's menu and choose <b>Add to Home screen</b> or <b>Install app</b>.</p>
-    <h3>Good to know</h3>
-    <p>Your countdowns are saved in the browser on this device. They don't sync to other devices, and clearing your browser's website data deletes them.</p>
-  </template>
-  <template id="tpl-about">
-    <h3>Q's Countdown Page</h3>
-    <p>A simple, free countdown timer for the days you are looking forward to: trips, birthdays, games, anything with a date.</p>
-    <p>There is no account or sign-up. Your countdowns are stored only in your own browser, and the page doesn't send your event names or dates anywhere.</p>
-    <p>It works on phones, tablets and computers, and you can add it to your Home Screen so it opens like an app.</p>
-  </template>
+  const STANDINGS_FILE = 'standings.json';
+  const STANDINGS_URL = 'https://api-web.nhle.com/v1/standings/now';
+  const PREVIEW = /[?&]standings(=|&|$)/.test(location.search); // add ?standings to the page address to preview any day
+  let standings = null, standingsAt = 0, standingsTry = 0, standingsBusy = false, standingsErr = '', standingsAsOf = 0;
+  let games = [], filter = 'upcoming', selectedId = null, lastSig = '', tickEls = null;
 
-  <script>
-  (() => {
-    'use strict';
-    const $ = id => document.getElementById(id);
-    const q = (el, sel) => el.querySelector(sel);
-    const KEY = 'countdowns-v2', OLD_KEY = 'countdown';
-    const EMOJIS = ['⏳','🎉','🎂','✈️','🏖️','🎓','💍','🏆','🏒','img:canadiens.svg','🎄','❤️','🚀','📅'];
-    const COLORS = ['#0a84ff','#30d158','#ff9f0a','#ff375f','#bf5af2','#64d2ff'];
-    const DATE_RE = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
-    const pad = n => String(n).padStart(2, '0');
-    // Icons are emoji, or 'img:<file>' for an image file that sits next to index.html (only names in EMOJIS are ever loaded).
-    const FALLBACK_ICON = '🏒';
-    const isImg = e => typeof e === 'string' && e.startsWith('img:');
-    const iconText = e => isImg(e) ? FALLBACK_ICON : e;
-    function setIcon(el, e) {
-      if (el.dataset.icon === e) return;
-      el.dataset.icon = e; el.textContent = '';
-      if (!isImg(e)) { el.textContent = e; return; }
-      const img = document.createElement('img');
-      img.className = 'ico'; img.alt = ''; img.decoding = 'async'; img.src = e.slice(4);
-      img.onerror = () => { el.textContent = FALLBACK_ICON; };
-      el.appendChild(img);
+  /* ---------- schedule file ---------- */
+  function unescapeIcs(s) { return s.replace(/\\n/gi, '\n').replace(/\\([,;\\])/g, '$1'); }
+  function parseDt(v) {
+    const m = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/.exec(v || '');
+    return m ? Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]) : NaN;
+  }
+  function parseIcs(text) {
+    const unfolded = text.replace(/\r?\n[ \t]/g, '');
+    const out = [];
+    for (const block of unfolded.split('BEGIN:VEVENT').slice(1)) {
+      const body = block.split('END:VEVENT')[0], f = {};
+      for (const line of body.split(/\r?\n/)) {
+        const i = line.indexOf(':'); if (i < 1) continue;
+        const key = line.slice(0, i).split(';')[0].toUpperCase();
+        if (!(key in f)) f[key] = unescapeIcs(line.slice(i + 1)).trim();
+      }
+      const start = parseDt(f['DTSTART']); if (isNaN(start)) continue;
+      let end = parseDt(f['DTEND']); if (isNaN(end)) end = start + LIVE_FALLBACK_MS;
+      let visitor = f['X-VISITOR'], home = f['X-HOME'];
+      const sm = /^(.+?) at (.+)$/.exec(f['SUMMARY'] || '');
+      if ((!visitor || !home) && sm) { visitor = visitor || sm[1]; home = home || sm[2]; }
+      if (!visitor || !home) continue;
+      let bc = f['X-BROADCASTER-EN'];
+      if (!bc) { const dm = /Broadcaster \(EN\):\s*([^\n]+)/.exec(f['DESCRIPTION'] || ''); bc = dm ? dm[1].trim() : ''; }
+      out.push({ uid: f['UID'] || ('g' + start), start, end, visitor, home, bc });
     }
-    const DONE_MSG = 'This countdown is now done. I hope that your event worked out the way you wanted it to.';
-    const myTz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; } })();
-    function hpt() { if (navigator.vibrate) navigator.vibrate(15); }
+    return out.sort((a, b) => a.start - b.start);
+  }
 
-    /* ---------- time helpers ---------- */
-    function hexRgb(h) { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(','); }
-    function toLocalInput(ts) { const d = new Date(ts); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`; }
-    function validTz(tz) { try { new Intl.DateTimeFormat('en-US', { timeZone: tz }); return true; } catch (e) { return false; } }
-    function tzOffset(ts, tz) {
-      const parts = new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).formatToParts(new Date(ts));
-      const o = {}; for (const p of parts) o[p.type] = p.value;
-      return Date.UTC(+o.year, +o.month - 1, +o.day, +o.hour % 24, +o.minute, +o.second) - Math.floor(ts / 1000) * 1000;
-    }
-    function zonedToUtc(str, tz) {
-      const m = DATE_RE.exec(str); if (!m) return NaN;
-      const guess = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
-      const off1 = tzOffset(guess, tz);
-      return guess - tzOffset(guess - off1, tz);
-    }
-    function targetTs(ev) {
-      const m = DATE_RE.exec(ev.date || ''); if (!m) return NaN;
-      if (ev.tz === 'local') return new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]).getTime();
-      return zonedToUtc(ev.date, ev.tz);
-    }
-    function addMonths(d, n) {
-      const r = new Date(d.getTime()), day = r.getDate();
-      r.setDate(1); r.setMonth(r.getMonth() + n);
-      r.setDate(Math.min(day, new Date(r.getFullYear(), r.getMonth() + 1, 0).getDate()));
-      return r;
-    }
-    function human(a, b) { // a < b, local Dates
-      let m = (b.getFullYear() - a.getFullYear()) * 12 + b.getMonth() - a.getMonth();
-      let anchor = addMonths(a, m);
-      if (anchor > b) { m--; anchor = addMonths(a, m); }
-      const days = Math.floor((b - anchor) / 864e5), w = Math.floor(days / 7), dd = days % 7, parts = [];
-      if (m) parts.push(m + (m === 1 ? ' month' : ' months'));
-      if (w) parts.push(w + (w === 1 ? ' week' : ' weeks'));
-      if (dd) parts.push(dd + (dd === 1 ? ' day' : ' days'));
-      return (m ? '≈ ' : '= ') + parts.join(', ');
-    }
-    function compact(diff) {
-      const past = diff < 0, a = Math.abs(diff);
-      const d = Math.floor(a / 864e5), h = Math.floor(a % 864e5 / 36e5), m = Math.floor(a % 36e5 / 6e4), s = Math.floor(a % 6e4 / 1e3);
-      let num, unit = '';
-      if (d >= 1) { num = String(d); unit = d === 1 ? 'day ' : 'days '; }
-      else if (h >= 1) num = h + 'h ' + m + 'm';
-      else num = m + 'm ' + s + 's';
-      return { num, unit: unit + (past ? 'ago' : 'left') };
-    }
-    function fmt(t) {
-      const d = new Date(t), sameYear = d.getFullYear() === new Date().getFullYear();
-      return d.toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: sameYear ? undefined : 'numeric', hour: 'numeric', minute: '2-digit' });
-    }
-    function pctOf(ev, t, now) {
-      if (isNaN(t)) return 0;
-      if (now >= t) return 1;
-      const span = t - ev.created;
-      return span <= 0 ? 0 : Math.min(1, Math.max(0, (now - ev.created) / span));
-    }
+  /* ---------- helpers ---------- */
+  const slug = n => n.toLowerCase().replace(/\./g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const opponent = g => g.visitor === HOME_TEAM ? g.home : g.visitor;
+  const isHome = g => g.home === HOME_TEAM;
+  const shortName = n => n === HOME_TEAM ? 'Canadiens' : n;
+  function abbr(n) { return ABBR[n] || n.split(' ').map(w => w[0]).join('').slice(0, 3).toUpperCase(); }
+  function logoBox(cls, team) {
+    const box = document.createElement('div'); box.className = cls;
+    const s = slug(team), img = document.createElement('img');
+    img.alt = team + ' logo'; img.decoding = 'async'; if (cls === 'r-logo') img.loading = 'lazy';
+    img.src = 'logos/' + s + (PNG_LOGOS[s] ? '.png' : '.svg');
+    img.onerror = () => { box.textContent = ''; const a = document.createElement('span'); a.className = 'abbr'; a.textContent = abbr(team); box.appendChild(a); };
+    box.appendChild(img); return box;
+  }
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  const fmt = (ts, opts, tz) => new Intl.DateTimeFormat(undefined, Object.assign({}, opts, tz ? { timeZone: tz } : {})).format(new Date(ts));
+  const DATE_OPTS = { weekday: 'long', month: 'long', day: 'numeric' };
+  const TIME_OPTS = { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' };
+  function etWallClock(ts) {
+    const p = {}; for (const x of new Intl.DateTimeFormat('en-US', { timeZone: ET, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).formatToParts(new Date(ts))) p[x.type] = x.value;
+    return `${p.year}-${p.month}-${p.day}T${pad(+p.hour % 24)}:${p.minute}`;
+  }
+  const isLive = (g, now) => now >= g.start && now < g.end;
+  const isOver = (g, now) => now >= g.end;
+  const nextGame = now => games.find(g => g.start > now) || null;
+  const liveGame = now => games.find(g => isLive(g, now)) || null;
 
-    /* ---------- calendar (.ics) ---------- */
-    function icsEscape(s) { return s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
-    function icsDate(ts) { const d = new Date(ts); return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z'; }
-    function fold(line) {
-      const cps = Array.from(line), out = [];
-      for (let i = 0; i < cps.length; i += 45) out.push((i ? ' ' : '') + cps.slice(i, i + 45).join(''));
-      return out.join('\r\n');
-    }
-    function makeIcs(ev, t, now) {
-      const name = ((iconText(ev.emoji) + ' ' + (ev.title || 'Countdown')).trim());
-      const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//qcountdown//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
-        'BEGIN:VEVENT', 'UID:' + ev.id + '@qcountdown', 'DTSTAMP:' + icsDate(now), 'DTSTART:' + icsDate(t), 'DTEND:' + icsDate(t + 36e5),
-        'SUMMARY:' + icsEscape(name),
-        'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEscape(name), 'TRIGGER:-PT1H', 'END:VALARM',
-        'END:VEVENT', 'END:VCALENDAR'];
-      return lines.map(fold).join('\r\n') + '\r\n';
-    }
+  /* ---------- calendar & my countdowns ---------- */
+  function icsEscape(s) { return s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+  function icsDate(ts) { const d = new Date(ts); return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z'; }
+  function fold(line) { const cps = Array.from(line), o = []; for (let i = 0; i < cps.length; i += 45) o.push((i ? ' ' : '') + cps.slice(i, i + 45).join('')); return o.join('\r\n'); }
+  function titleOf(g) { return `${shortName(g.visitor)} at ${shortName(g.home)}`; }
+  function downloadIcs(g) {
+    const name = '\u{1F3D2} ' + titleOf(g);
+    const desc = `Visitor: ${g.visitor}\nHome: ${g.home}` + (g.bc ? `\nEnglish broadcast: ${g.bc}` : '');
+    const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//qcountdown//Canadiens game//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+      'BEGIN:VEVENT', 'UID:' + g.uid, 'DTSTAMP:' + icsDate(Date.now()), 'DTSTART:' + icsDate(g.start), 'DTEND:' + icsDate(g.end),
+      'SUMMARY:' + icsEscape(name), 'DESCRIPTION:' + icsEscape(desc),
+      'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEscape(name), 'TRIGGER:-PT1H', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'];
+    const blob = new Blob([lines.map(fold).join('\r\n') + '\r\n'], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = slug(titleOf(g)) + '.ics'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  }
+  function readState() {
+    try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && Array.isArray(s.events)) return s; } catch (e) {}
+    return { events: [], sel: null };
+  }
+  function inMyCountdowns(g) { return readState().events.some(e => e && e.id === 'nhl-' + g.uid); }
+  function addToMine(g) {
+    try {
+      const s = readState(), id = 'nhl-' + g.uid;
+      if (!s.events.some(e => e && e.id === id)) {
+        s.events.push({ id, title: titleOf(g).slice(0, 60), date: etWallClock(g.start), tz: ET, emoji: 'img:canadiens.svg', color: '#ff375f', created: Date.now() });
+      }
+      s.sel = id;
+      localStorage.setItem(KEY, JSON.stringify(s));
+      return true;
+    } catch (e) { return false; }
+  }
 
-    /* ---------- state ---------- */
-    let state = { events: [], sel: null };
-    const uid = () => Math.random().toString(36).slice(2, 8) + Date.now().toString(36);
-    function mk(title, date, o) { return Object.assign({ id: uid(), title, date, tz: 'local', emoji: EMOJIS[0], color: COLORS[0], created: Date.now() }, o || {}); }
-    function defaultDate() { const d = new Date(); d.setDate(d.getDate() + 10); return toLocalInput(d.getTime()); }
-    function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
-    function sanitize(e) {
-      return {
-        id: e.id, title: String(e.title || '').slice(0, 60), date: typeof e.date === 'string' ? e.date : '',
-        tz: (e.tz === 'local' || (typeof e.tz === 'string' && validTz(e.tz))) ? e.tz : 'local',
-        emoji: EMOJIS.includes(e.emoji) ? e.emoji : EMOJIS[0], color: COLORS.includes(e.color) ? e.color : COLORS[0],
-        created: Number(e.created) || Date.now()
-      };
+  /* ---------- standings (shown on game day) ---------- */
+  const ordinal = n => { const v = n % 100; return n + (['th', 'st', 'nd', 'rd'][(v - 20) % 10] || ['th', 'st', 'nd', 'rd'][v] || 'th'); };
+  const isGameDay = () => true; // standings are shown for whichever game is on the tile
+  function parseStandings(data) {
+    const m = {};
+    for (const t of ((data && data.standings) || [])) {
+      const ab = t.teamAbbrev && t.teamAbbrev.default;
+      if (!ab || ![t.wins, t.losses, t.otLosses, t.points].every(Number.isFinite)) continue;
+      m[ab] = { w: t.wins, l: t.losses, o: t.otLosses, pts: t.points, gp: t.gamesPlayed, div: t.divisionName, seq: t.divisionSequence, conf: t.conferenceName, cseq: t.conferenceSequence, stk: t.streakCode ? t.streakCode + (t.streakCount || '') : '' };
     }
-    function load() {
+    if (Object.keys(m).length < 20) throw new Error('unexpected data');
+    return m;
+  }
+  async function getJson(url) {
+    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 8000);
+    try { const res = await fetch(url, { signal: ctl.signal, cache: 'no-cache' }); if (!res.ok) throw new Error('HTTP ' + res.status); return await res.json(); }
+    finally { clearTimeout(timer); }
+  }
+  async function ensureStandings() {
+    const now = Date.now();
+    if (standingsBusy || (standings && now - standingsAt < 6e5) || (!standings && now - standingsTry < 3e5)) return;
+    standingsBusy = true; standingsTry = now; const errs = [];
+    // 1) the daily copy saved next to this page by GitHub; 2) the NHL's own feed (some browsers/networks block it)
+    for (const [label, url] of [['saved file', STANDINGS_FILE], ['NHL feed', STANDINGS_URL]]) {
       try {
-        const s = JSON.parse(localStorage.getItem(KEY) || 'null');
-        if (s && Array.isArray(s.events)) { state.events = s.events.filter(e => e && typeof e.id === 'string').map(sanitize); state.sel = s.sel; }
-      } catch (e) {}
-      if (!state.events.length) {
-        let ev = null;
-        try { const o = JSON.parse(localStorage.getItem(OLD_KEY) || 'null'); if (o && o.d) ev = mk(String(o.t || 'My Big Milestone').slice(0, 60), o.d); } catch (e) {}
-        state.events.push(ev || mk('My Big Milestone', defaultDate()));
-      }
-      if (!state.events.some(e => e.id === state.sel)) state.sel = state.events[0].id;
+        const data = await getJson(url);
+        standings = parseStandings(data); standingsAt = Date.now(); standingsAsOf = Date.parse(data.standingsDateTimeUtc || data.standingsDate || '') || 0;
+        standingsBusy = false; standingsErr = ''; lastSig = ''; render(true); renderStandPanel(); return;
+      } catch (e) { errs.push(label + ': ' + String((e && e.message) || e)); }
     }
-    const cur = () => state.events.find(e => e.id === state.sel);
+    standingsBusy = false; standingsErr = errs.join('; '); renderStandPanel();
+    if (PREVIEW) { lastSig = ''; render(true); }
+  }
+  function standingLines(team) {
+    const r = standings && standings[abbr(team)]; if (!r) return null;
+    const box = document.createDocumentFragment();
+    box.appendChild(el('div', 'rec', `${r.w}-${r.l}-${r.o} \u00b7 ${r.pts} pts`));
+    if (r.gp > 0 && r.seq && r.div) box.appendChild(el('div', 'rank', `${ordinal(r.seq)} in ${r.div}`));
+    return box;
+  }
 
-    // Shared link: ?name=&date=&tz=&emoji=&color= -> added as a new countdown
-    function importLink() {
-      try {
-        const p = new URLSearchParams(location.search), date = p.get('date');
-        if (p.get('name') === null && !date) return;
-        if (date && DATE_RE.test(date)) {
-          let tz = p.get('tz') || 'local'; if (tz !== 'local' && !validTz(tz)) tz = 'local';
-          const emoji = EMOJIS.includes(p.get('emoji')) ? p.get('emoji') : EMOJIS[0];
-          const color = COLORS.includes(p.get('color')) ? p.get('color') : COLORS[0];
-          const title = (p.get('name') || 'Countdown').slice(0, 60), d = date.slice(0, 16);
-          const dup = state.events.find(e => e.title === title && e.date === d && e.tz === tz);
-          if (dup) state.sel = dup.id;
-          else { const ev = mk(title, d, { tz, emoji, color }); state.events.push(ev); state.sel = ev.id; }
-          save();
-        }
-        history.replaceState(null, '', location.pathname);
-      } catch (e) {}
+  /* ---------- conference standings panel ---------- */
+  const ABBR_TO_NAME = Object.fromEntries(Object.entries(ABBR).map(([n, a]) => [a, n]));
+  const panel = $('st-panel'), overlay = $('st-overlay'), stBody = $('st-body');
+  let panelOpen = false, view = 'conf', conf = 'Eastern', opener = null, scrollY0 = 0;
+  function stCell(tag, cls, text) { const c = document.createElement(tag); if (cls) c.className = cls; c.textContent = text; return c; }
+  function renderStandPanel() {
+    $('st-view-conf').setAttribute('aria-pressed', String(view === 'conf')); $('st-view-div').setAttribute('aria-pressed', String(view === 'div'));
+    $('st-east').setAttribute('aria-pressed', String(conf === 'Eastern')); $('st-west').setAttribute('aria-pressed', String(conf === 'Western'));
+    stBody.textContent = '';
+    if (!standings) {
+      stBody.appendChild(el('div', 'empty', standingsErr ? 'The standings are not available right now. Please try again later.' : 'Loading standings\u2026'));
+      if (panelOpen) ensureStandings(); return;
     }
-
-    /* ---------- tiles ---------- */
-    const tilesEl = $('tiles'); let tileEls = new Map();
-    function buildTiles() {
-      const now = Date.now();
-      const rank = t => isNaN(t) ? 3 : t >= now ? 0 : 1;
-      const order = state.events.slice().sort((a, b) => {
-        const ta = targetTs(a), tb = targetTs(b), ra = rank(ta), rb = rank(tb);
-        if (ra !== rb) return ra - rb; if (ra === 0) return ta - tb; if (ra === 1) return tb - ta; return 0;
-      });
-      tilesEl.textContent = ''; tileEls = new Map();
-      for (const ev of order) {
-        const el = document.createElement('div');
-        el.className = 'tile'; el.setAttribute('role', 'button'); el.tabIndex = 0;
-        el.innerHTML = '<div><div class="widget-tag"><span class="t-emoji"></span> <span class="t-state"></span></div><div class="widget-title"></div></div><div class="widget-main-num"></div><div class="widget-subtext"></div><div class="tile-bar"><i></i></div>';
-        el.addEventListener('click', () => select(ev.id));
-        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(ev.id); } });
-        tilesEl.appendChild(el); tileEls.set(ev.id, el);
-      }
+    const rows = Object.entries(standings).filter(([, r]) => r.conf === conf && Number.isFinite(r.cseq)).sort((a, b) => a[1].cseq - b[1].cseq);
+    const nx = nextGame(Date.now()), oppAb = nx ? abbr(opponent(nx)) : '', meAb = abbr(HOME_TEAM);
+    const buildTable = (list, label) => {
+    const table = document.createElement('table'); table.className = 'st';
+    const cap = document.createElement('caption'); cap.className = 'sr'; cap.textContent = label; cap.style.cssText = 'position:absolute;left:-9999px';
+    table.appendChild(cap);
+    const hr = document.createElement('tr');
+    for (const [h, cls, full] of [['#', '', 'Rank'], ['Team', 'tm', 'Team'], ['GP', '', 'Games played'], ['W', '', 'Wins'], ['L', '', 'Losses'], ['OT', '', 'Overtime losses'], ['PTS', '', 'Points'], ['STK', '', 'Streak']]) {
+      const th = stCell('th', cls, h); th.scope = 'col'; th.title = full; hr.appendChild(th);
     }
-    function select(id) {
-      hpt(); state.sel = id; save(); loadDetail(); tick();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    /* ---------- detail ---------- */
-    function buildPickers() {
-      const er = $('emoji-row'), sr = $('swatch-row');
-      EMOJIS.forEach(e => {
-        const b = document.createElement('button'); b.type = 'button'; b.className = 'emoji-btn'; setIcon(b, e); b.setAttribute('aria-label', 'Icon ' + (isImg(e) ? e.slice(4) : e));
-        b.addEventListener('click', () => { hpt(); cur().emoji = e; save(); renderPickers(cur()); tick(); });
-        er.appendChild(b);
-      });
-      COLORS.forEach(c => {
-        const b = document.createElement('button'); b.type = 'button'; b.className = 'swatch'; b.style.setProperty('--c', c); b.setAttribute('aria-label', 'Color ' + c);
-        b.addEventListener('click', () => { hpt(); cur().color = c; save(); renderPickers(cur()); tick(); });
-        sr.appendChild(b);
-      });
-    }
-    function renderPickers(ev) {
-      Array.from($('emoji-row').children).forEach((b, i) => b.classList.toggle('on', EMOJIS[i] === ev.emoji));
-      Array.from($('swatch-row').children).forEach((b, i) => b.classList.toggle('on', COLORS[i] === ev.color));
-    }
-    function renderTz(ev) {
-      const row = $('tz-row');
-      if (!myTz) { row.hidden = true; return; }
-      row.hidden = false;
-      const locked = ev.tz !== 'local', foreign = locked && ev.tz !== myTz;
-      $('tz-lock').checked = locked;
-      $('tz-label').textContent = foreign ? 'Fixed to ' + ev.tz : 'Keep this exact moment for everyone';
-      if (foreign) row.open = true;
-      $('tz-note').textContent = foreign ? 'The time above is in ' + ev.tz + '. Uncheck to convert it to your time zone.'
-        : locked ? 'Locked to ' + myTz + '. Everyone sees the same moment, shown in their own time zone.'
-        : 'Anyone you share this with sees this clock time in their own time zone.';
-    }
-    function loadDetail() {
-      const ev = cur();
-      $('event-title').value = ev.title; $('target-date').value = ev.date;
-      renderPickers(ev); renderTz(ev);
-    }
-
-    /* ---------- tick ---------- */
-    function tick() {
-      const now = Date.now();
-      for (const ev of state.events) {
-        const el = tileEls.get(ev.id); if (!el) continue;
-        const t = targetTs(ev), ok = !isNaN(t);
-        el.style.setProperty('--c', ev.color);
-        el.classList.toggle('sel', ev.id === state.sel);
-        setIcon(q(el, '.t-emoji'), ev.emoji);
-        q(el, '.t-state').textContent = !ok ? 'No date' : t <= now ? 'Done' : 'Until';
-        q(el, '.widget-title').textContent = ev.title || 'Untitled';
-        const c = !ok ? { num: '—', unit: 'pick a date' } : t <= now ? { num: '0', unit: 'countdown done' } : compact(t - now);
-        const n = q(el, '.widget-main-num'); n.textContent = c.num; n.classList.toggle('long', c.num.length > 3);
-        q(el, '.widget-subtext').textContent = c.unit;
-        q(el, '.tile-bar i').style.width = (pctOf(ev, t, now) * 100) + '%';
-      }
-
-      const ev = cur(), t = targetTs(ev), card = $('detail');
-      setIcon($('cd-icon'), ev.emoji); $('cd-text').textContent = ev.title || 'Untitled';
-      const pos = Array.from(tilesEl.children).indexOf(tileEls.get(ev.id));
-      $('editing').textContent = pos >= 0 ? 'Editing countdown ' + (pos + 1) + ' of ' + state.events.length : 'Editing countdown';
-      card.style.setProperty('--accent', ev.color); card.style.setProperty('--accent-rgb', hexRgb(ev.color));
-      $('p-left').textContent = 'Started ' + new Date(ev.created).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-      if (isNaN(t)) {
-        $('status').textContent = 'Pick a date and time';
-        ['d', 'h', 'm', 's'].forEach(k => { $(k + '-val').textContent = '--'; $('b-' + k).hidden = false; });
-        $('cd-display').style.setProperty('--n', 4);
-        $('human').textContent = ''; $('pfill').style.width = '0%'; $('p-pct').textContent = '';
-        document.title = ev.title || 'Countdown';
-        return;
-      }
-      if (t - now <= 0) {
-        ['d', 'h', 'm', 's'].forEach(k => { $(k + '-val').textContent = '00'; $('b-' + k).hidden = false; });
-        $('d-val').classList.remove('three');
-        $('cd-display').style.setProperty('--n', 4);
-        $('status').textContent = DONE_MSG;
-        $('human').textContent = '';
-        $('pfill').style.width = '100%'; $('p-pct').textContent = '100%';
-        document.title = 'Done \u00b7 ' + (ev.title || 'Countdown');
-        return;
-      }
-      const diff = t - now, a = diff;
-      const d = Math.floor(a / 864e5), h = Math.floor(a % 864e5 / 36e5), m = Math.floor(a % 36e5 / 6e4), s = Math.floor(a % 6e4 / 1e3);
-      const showD = d > 0, showH = d > 0 || h > 0;
-      $('b-d').hidden = !showD; $('b-h').hidden = !showH;
-      $('cd-display').style.setProperty('--n', 2 + (showD ? 1 : 0) + (showH ? 1 : 0));
-      $('d-val').classList.toggle('three', d >= 100);
-      $('d-val').textContent = pad(d); $('h-val').textContent = pad(h); $('m-val').textContent = pad(m); $('s-val').textContent = pad(s);
-      const when = fmt(t);
-      $('status').textContent = 'Until ' + when;
-      $('human').textContent = d >= 14 ? human(new Date(now), new Date(t)) : '';
-      const pct = pctOf(ev, t, now);
-      $('pfill').style.width = (pct * 100) + '%'; $('p-pct').textContent = Math.floor(pct * 100) + '%';
-      const c = compact(diff);
-      document.title = c.num + ' ' + c.unit + ' · ' + (ev.title || 'Countdown');
-    }
-
-    /* ---------- events ---------- */
-    $('event-title').addEventListener('input', e => { cur().title = e.target.value; save(); tick(); });
-    $('target-date').addEventListener('input', e => { const ev = cur(); ev.date = e.target.value; save(); renderTz(ev); tick(); });
-    $('target-date').addEventListener('change', e => {
-      hpt(); const ev = cur(); ev.date = e.target.value;
-      if (!isNaN(targetTs(ev))) ev.created = Date.now();
-      save(); renderTz(ev); buildTiles(); tick();
+    const thead = document.createElement('thead'); thead.appendChild(hr); table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    list.forEach(([ab, r], i) => {
+      const tr = document.createElement('tr'); if (ab === meAb) tr.className = 'me'; else if (ab === oppAb) tr.className = 'opp';
+      tr.appendChild(stCell('td', 'n', String(i + 1)));
+      const tm = document.createElement('td'); tm.className = 'tm'; tm.appendChild(logoBox('t-logo', ABBR_TO_NAME[ab] || ab)); tm.appendChild(document.createTextNode(ab)); tr.appendChild(tm);
+      tr.appendChild(stCell('td', '', String(r.gp))); tr.appendChild(stCell('td', '', String(r.w))); tr.appendChild(stCell('td', '', String(r.l))); tr.appendChild(stCell('td', '', String(r.o)));
+      tr.appendChild(stCell('td', 'pts', String(r.pts)));
+      const k = r.stk ? r.stk.replace(/\d+$/, '') : ''; tr.appendChild(stCell('td', k ? 'stk-' + k : '', r.stk || '\u2013'));
+      tbody.appendChild(tr);
     });
-    $('tz-lock').addEventListener('change', e => {
-      hpt(); const ev = cur();
-      if (e.target.checked) ev.tz = myTz;
-      else { const t = targetTs(ev); if (!isNaN(t)) ev.date = toLocalInput(t); ev.tz = 'local'; $('target-date').value = ev.date; }
-      save(); renderTz(ev); buildTiles(); tick();
-    });
-    $('new-btn').addEventListener('click', () => {
-      hpt(); const ev = mk('New countdown', defaultDate());
-      state.events.push(ev); state.sel = ev.id; save(); buildTiles(); loadDetail(); tick();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      const i = $('event-title'); i.focus(); i.select();
-    });
-    $('del-btn').addEventListener('click', () => {
-      const ev = cur();
-      if (!confirm('Delete "' + (ev.title || 'Untitled') + '"?')) return;
-      const i = state.events.indexOf(ev); state.events.splice(i, 1);
-      if (!state.events.length) state.events.push(mk('New countdown', defaultDate()));
-      state.sel = state.events[Math.min(i, state.events.length - 1)].id;
-      save(); buildTiles(); loadDetail(); tick();
-    });
-    const shB = $('share-btn');
-    shB.addEventListener('click', async () => {
-      hpt(); const ev = cur();
-      if (!DATE_RE.test(ev.date)) { alert('Pick a date and time first.'); return; }
-      const p = new URLSearchParams({ name: ev.title, date: ev.date, emoji: ev.emoji, color: ev.color });
-      if (ev.tz !== 'local') p.set('tz', ev.tz);
-      const u = location.href.split(/[?#]/)[0] + '?' + p.toString();
-      try {
-        if (navigator.share) { await navigator.share({ title: ev.title || 'Countdown', url: u }); return; }
-        await navigator.clipboard.writeText(u);
-        shB.textContent = 'Link copied!'; setTimeout(() => shB.textContent = 'Share link', 1800);
-      } catch (e) {
-        if (e && e.name === 'AbortError') return;
-        window.prompt('Copy this link:', u);
+    table.appendChild(tbody); return table;
+    };
+    if (view === 'conf') stBody.appendChild(buildTable(rows, conf + ' Conference standings'));
+    else {
+      const divs = [...new Set(rows.map(([, r]) => r.div).filter(Boolean))].sort();
+      for (const dv of divs) {
+        const list = rows.filter(([, r]) => r.div === dv).sort((x, y) => x[1].seq - y[1].seq);
+        stBody.appendChild(el('h3', 'div-h', dv + ' Division')); stBody.appendChild(buildTable(list, dv + ' Division standings'));
       }
-    });
-    $('cal-btn').addEventListener('click', () => {
-      hpt(); const ev = cur(), t = targetTs(ev);
-      if (isNaN(t)) { alert('Pick a date and time first.'); return; }
-      const blob = new Blob([makeIcs(ev, t, Date.now())], { type: 'text/calendar;charset=utf-8' });
-      const url = URL.createObjectURL(blob), a = document.createElement('a');
-      a.href = url; a.download = ((ev.title || 'countdown').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-') || 'countdown') + '.ics';
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 4000);
-    });
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
-
-    /* ---------- menu and info pages ---------- */
-    (function () {
-      const btn = $('menu-btn'), panel = $('menu-panel'), sheet = $('sheet'), body = $('sheet-body'), title = $('sheet-title'), closeBtn = $('sheet-x');
-      const TITLES = { instructions: 'Instructions', about: 'About' };
-      let lastFocus = null;
-      function menuOpen(open) {
-        panel.hidden = !open; btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        if (open) { const f = panel.querySelector('a,button'); if (f) f.focus(); }
-      }
-      function openSheet(name) {
-        const tpl = document.getElementById('tpl-' + name); if (!tpl) return;
-        title.textContent = TITLES[name] || ''; body.textContent = ''; body.appendChild(tpl.content.cloneNode(true)); body.scrollTop = 0;
-        menuOpen(false); lastFocus = btn;
-        sheet.hidden = false; document.body.style.overflow = 'hidden';
-        sheet.querySelector('.sheet').focus();
-      }
-      function closeSheet() {
-        if (sheet.hidden) return;
-        sheet.hidden = true; document.body.style.overflow = '';
-        if (lastFocus) lastFocus.focus();
-      }
-      btn.addEventListener('click', e => { e.stopPropagation(); hpt(); menuOpen(panel.hidden); });
-      panel.addEventListener('click', e => { const b = e.target.closest('[data-open]'); if (b) { hpt(); openSheet(b.dataset.open); } });
-      document.addEventListener('click', e => { if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) menuOpen(false); });
-      $('sheet-x').addEventListener('click', closeSheet); $('sheet-done').addEventListener('click', closeSheet);
-      sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') { if (!sheet.hidden) closeSheet(); else if (!panel.hidden) { menuOpen(false); btn.focus(); } }
-        else if (e.key === 'Tab' && !sheet.hidden) { // keep keyboard focus inside the open page
-          const f = Array.from(sheet.querySelectorAll('button')); if (!f.length) return;
-          const i = f.indexOf(document.activeElement), next = e.shiftKey ? (i <= 0 ? f.length - 1 : i - 1) : (i === f.length - 1 ? 0 : i + 1);
-          e.preventDefault(); f[next].focus();
-        }
-      });
-    })();
-
-    /* ---------- start ---------- */
-    load(); importLink(); buildPickers(); buildTiles(); loadDetail(); tick();
-    setInterval(tick, 1000);
-    if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
     }
-  })();
-  </script>
+    const lg = el('p', 'legend');
+    const a = document.createElement('i'); a.style.background = 'rgba(232,40,63,0.55)'; lg.appendChild(a); lg.appendChild(document.createTextNode('Canadiens  '));
+    if (oppAb && rows.some(([ab]) => ab === oppAb)) { const b = document.createElement('i'); b.style.background = 'rgba(77,143,224,0.6)'; lg.appendChild(b); lg.appendChild(document.createTextNode('Next opponent  ')); }
+    lg.appendChild(document.createElement('br'));
+    lg.appendChild(document.createTextNode((standingsAsOf ? 'As of ' + fmt(standingsAsOf, { month: 'short', day: 'numeric' }) + '. ' : '') + 'GP games played, W wins, L losses, OT overtime losses, PTS points, STK current streak.'));
+    stBody.appendChild(lg);
+  }
+  function focusables() { return [...panel.querySelectorAll('button')].filter(b => !b.disabled); }
+  function openPanel(from) {
+    if (panelOpen) return; panelOpen = true; opener = from || null;
+    scrollY0 = window.scrollY; document.body.style.overflow = 'hidden';
+    renderStandPanel(); ensureStandings();
+    overlay.classList.add('open'); panel.classList.add('open'); panel.setAttribute('aria-hidden', 'false');
+    setTimeout(() => $('st-close').focus(), 50);
+  }
+  function closePanel() {
+    if (!panelOpen) return; panelOpen = false;
+    overlay.classList.remove('open'); panel.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); document.body.style.overflow = '';
+    if (opener && document.body.contains(opener)) opener.focus();
+  }
+  $('st-close').addEventListener('click', closePanel); overlay.addEventListener('click', closePanel);
+  $('st-view-conf').addEventListener('click', () => { view = 'conf'; renderStandPanel(); });
+  $('st-view-div').addEventListener('click', () => { view = 'div'; renderStandPanel(); });
+  $('st-east').addEventListener('click', () => { conf = 'Eastern'; renderStandPanel(); });
+  $('st-west').addEventListener('click', () => { conf = 'Western'; renderStandPanel(); });
+  document.addEventListener('keydown', e => {
+    if (!panelOpen) return;
+    if (e.key === 'Escape') { closePanel(); return; }
+    if (e.key === 'Tab') { const f = focusables(), first = f[0], last = f[f.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } }
+  });
+  // swipe right to close
+  let tx = 0, ty = 0;
+  panel.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  panel.addEventListener('touchend', e => { const t = e.changedTouches[0], dx = t.clientX - tx, dy = Math.abs(t.clientY - ty); if (dx > 70 && dy < 50) closePanel(); }, { passive: true });
+
+  /* ---------- rendering ---------- */
+  const app = $('app');
+  function pieces(diff) {
+    const t = Math.max(0, diff), d = Math.floor(t / 864e5), h = Math.floor(t % 864e5 / 36e5), m = Math.floor(t % 36e5 / 6e4), s = Math.floor(t % 6e4 / 1e3);
+    return { d, h, m, s };
+  }
+  function renderHero(now) {
+    const box = el('section', 'card'); box.setAttribute('aria-label', 'Game countdown');
+    const live = liveGame(now);
+    if (live) { const b = el('div', 'live', 'Game on! ' + titleOf(live)); b.setAttribute('role', 'status'); box.appendChild(b); }
+    const next = nextGame(now);
+    let g = games.find(x => x.uid === selectedId) || next;
+    if (!g) {
+      const w = el('div', 'season-over'); w.appendChild(logoBox('chip', HOME_TEAM));
+      w.appendChild(el('p', '', 'That\u2019s the end of the 2026-27 regular season. Thanks for following along. See you next season!'));
+      box.appendChild(w); tickEls = null; return box;
+    }
+    const isSel = g !== next;
+    const tag = isSel ? (isOver(g, now) || isLive(g, now) ? 'Selected game' : 'Selected game') : (g === games[0] ? 'Season opener' : 'Next game');
+    box.appendChild(el('div', 'tag', `${tag} \u00b7 Game ${games.indexOf(g) + 1} of ${games.length}`));
+    const showStand = isGameDay(g, now);
+    if (showStand) ensureStandings();
+    const mu = el('div', 'matchup');
+    for (const [team, role] of [[g.visitor, 'Visitor'], [null, null], [g.home, 'Home']]) {
+      if (!team) { mu.appendChild(el('div', 'at', 'at')); continue; }
+      const side = el('div', 'side'); side.appendChild(logoBox('chip', team));
+      side.appendChild(el('div', 'nm', team)); side.appendChild(el('div', 'role', role));
+      if (showStand) { const sl = standingLines(team); if (sl) side.appendChild(sl); }
+      mu.appendChild(side);
+    }
+    box.appendChild(mu);
+    if (showStand && !standings && PREVIEW) box.appendChild(el('div', 'rec-note', standingsErr ? 'Preview: standings could not be loaded (' + standingsErr + ').' : 'Preview: loading standings\u2026'));
+    if (showStand && standings) box.appendChild(el('div', 'rec-note', (standingsAsOf ? 'Standings as of ' + fmt(standingsAsOf, { month: 'short', day: 'numeric' }) + ': ' : 'Standings: ') + 'wins-losses-overtime losses, points.'));
+    box.appendChild(el('div', 'when', fmt(g.start, DATE_OPTS) + ' \u00b7 ' + fmt(g.start, TIME_OPTS)));
+    const mine = fmt(g.start, Object.assign({}, DATE_OPTS, TIME_OPTS)), et = fmt(g.start, Object.assign({}, DATE_OPTS, TIME_OPTS), ET);
+    if (mine !== et) box.appendChild(el('div', 'when-sub', 'In Montreal: ' + fmt(g.start, { weekday: 'short', month: 'short', day: 'numeric' }, ET) + ' \u00b7 ' + fmt(g.start, TIME_OPTS, ET)));
+    if (g.bc) { const b = el('div', 'bcast', 'English broadcast: '); b.appendChild(el('b', '', g.bc)); box.appendChild(b); }
+
+    tickEls = null;
+    if (now >= g.start) {
+      box.appendChild(el('div', 'started', isLive(g, now) ? 'This game is on right now.' : 'This game has already been played.'));
+    } else {
+      const cd = el('div', 'cd'); cd.setAttribute('role', 'timer'); cd.setAttribute('aria-label', 'Time until puck drop');
+      tickEls = { g, cd, vals: {} };
+      for (const [k, label] of [['d', 'DAYS'], ['h', 'HOURS'], ['m', 'MINUTES'], ['s', 'SECONDS']]) {
+        const b = el('div', 'blk'), n = el('div', 'num', '00'); b.appendChild(n); b.appendChild(el('div', 'lbl', label));
+        cd.appendChild(b); tickEls.vals[k] = { n, b };
+      }
+      box.appendChild(cd);
+    }
+    const btns = el('div', 'btns');
+    const add = el('button', 'btn', inMyCountdowns(g) ? 'In my countdowns \u2713' : 'Add to my countdowns'); add.type = 'button';
+    const cal = el('button', 'btn alt', 'Add to Calendar'); cal.type = 'button';
+    btns.appendChild(add); btns.appendChild(cal); box.appendChild(btns);
+    const msg = el('div', 'msg'); msg.setAttribute('role', 'status'); box.appendChild(msg);
+    add.addEventListener('click', () => {
+      const had = inMyCountdowns(g), ok = addToMine(g);
+      msg.textContent = '';
+      if (!ok) { msg.textContent = 'Could not save here. Your browser may be blocking storage.'; return; }
+      add.textContent = 'In my countdowns \u2713';
+      msg.appendChild(document.createTextNode(had ? 'Already in your countdowns. ' : 'Added. '));
+      const a = el('a', '', 'Open it'); a.href = 'countdowns.html'; msg.appendChild(a);
+    });
+    cal.addEventListener('click', () => { downloadIcs(g); msg.textContent = 'Calendar file downloaded. Open it to add the game.'; });
+    if (isSel) {
+      const back = el('button', 'back-next', next ? '\u2190 Back to the next game' : '\u2190 Back'); back.type = 'button';
+      back.addEventListener('click', () => { selectedId = null; render(true); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      box.appendChild(back);
+    }
+    return box;
+  }
+  function tick() {
+    if (!tickEls) return;
+    const now = Date.now(), g = tickEls.g;
+    if (now >= g.start) { render(true); return; }
+    const p = pieces(g.start - now), v = tickEls.vals;
+    const showD = p.d > 0, showH = showD || p.h > 0;
+    v.d.b.hidden = !showD; v.h.b.hidden = !showH;
+    tickEls.cd.style.setProperty('--n', 2 + (showD ? 1 : 0) + (showH ? 1 : 0));
+    v.d.n.textContent = String(p.d); v.h.n.textContent = pad(p.h); v.m.n.textContent = pad(p.m); v.s.n.textContent = pad(p.s);
+  }
+  function renderSeason(now) {
+    const played = games.filter(g => isOver(g, now)).length, box = el('section', 'season');
+    const top = el('div', 'season-top'); top.appendChild(el('span', '', `${played} of ${games.length} games played`));
+    const left = games.length - played; top.appendChild(el('span', '', left + ' to go'));
+    const bar = el('div', 'bar'), i = document.createElement('i'); i.style.width = (games.length ? played / games.length * 100 : 0) + '%'; bar.appendChild(i);
+    box.appendChild(top); box.appendChild(bar); return box;
+  }
+  function renderFilters() {
+    const f = el('div', 'filters'); f.setAttribute('role', 'group'); f.setAttribute('aria-label', 'Filter games');
+    for (const [k, label] of [['upcoming', 'Upcoming'], ['home', 'Home'], ['away', 'Away'], ['played', 'Played']]) {
+      const b = el('button', 'fchip', label); b.type = 'button'; b.setAttribute('aria-pressed', String(filter === k));
+      b.addEventListener('click', () => { filter = k; render(true); }); f.appendChild(b);
+    }
+    return f;
+  }
+  function renderList(now) {
+    const wrap = el('section'); wrap.setAttribute('aria-label', 'Schedule');
+    const list = games.filter(g => filter === 'upcoming' ? !isOver(g, now) : filter === 'home' ? isHome(g) : filter === 'away' ? !isHome(g) : isOver(g, now));
+    if (!list.length) { wrap.appendChild(el('div', 'empty', filter === 'played' ? 'No games played yet.' : 'No games to show here.')); return wrap; }
+    const next = nextGame(now); let lastMonth = '';
+    for (const g of list) {
+      const month = fmt(g.start, { month: 'long', year: 'numeric' });
+      if (month !== lastMonth) { wrap.appendChild(el('h2', 'month', month)); lastMonth = month; }
+      const opp = opponent(g), r = el('button', 'row'); r.type = 'button';
+      if (g.uid === selectedId) r.classList.add('sel');
+      if (isOver(g, now)) r.classList.add('past');
+      if (next && g === next && !selectedId) r.classList.add('next');
+      const d = el('div', 'r-date', fmt(g.start, { weekday: 'short' })); d.appendChild(el('b', '', fmt(g.start, { day: 'numeric' }))); r.appendChild(d);
+      r.appendChild(logoBox('r-logo', opp));
+      const main = el('div', 'r-main'), t = el('div', 'r-team', isHome(g) ? 'vs ' : 'at '); t.appendChild(document.createTextNode(opp)); main.appendChild(t);
+      main.appendChild(el('div', 'r-time', fmt(g.start, TIME_OPTS) + (isHome(g) ? ' \u00b7 Home' : ' \u00b7 Away'))); r.appendChild(main);
+      if (g.bc) r.appendChild(el('div', 'r-bc', g.bc));
+      r.setAttribute('aria-label', `${titleOf(g)}, ${fmt(g.start, DATE_OPTS)} ${fmt(g.start, TIME_OPTS)}`);
+      r.addEventListener('click', () => { selectedId = g.uid; render(true); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      wrap.appendChild(r);
+    }
+    return wrap;
+  }
+  function render(force) {
+    const now = Date.now(), nx = nextGame(now), lv = liveGame(now);
+    const played = games.filter(g => isOver(g, now)).length;
+    const sig = [nx && nx.uid, lv && lv.uid, played, selectedId, filter].join('|');
+    if (!force && sig === lastSig) return;
+    lastSig = sig;
+    app.textContent = ''; app.setAttribute('aria-busy', 'false');
+    app.appendChild(renderHero(now)); app.appendChild(renderSeason(now));
+    const sb = el('button', 'stand-btn'); sb.type = 'button'; sb.appendChild(el('span', '', 'Conference standings')); sb.appendChild(el('span', '', '\u25b8'));
+    sb.addEventListener('click', () => openPanel(sb)); app.appendChild(sb); app.appendChild(renderFilters()); app.appendChild(renderList(now));
+    const dl = el('p', 'dl'); const a = el('a', '', 'Download the whole schedule (.ics)'); a.href = ICS_URL; a.setAttribute('download', ''); dl.appendChild(a);
+    dl.appendChild(document.createElement('br')); dl.appendChild(el('span', 'msg', 'Opens in your calendar app.')); app.appendChild(dl);
+    tick();
+  }
+  function showError() {
+    app.textContent = ''; app.setAttribute('aria-busy', 'false');
+    const c = el('div', 'card err');
+    c.appendChild(el('p', '', 'The schedule could not be loaded. Check your connection, and make sure the file ' + ICS_URL + ' is in the same folder as this page.'));
+    const b = el('button', 'btn', 'Try again'); b.type = 'button'; b.addEventListener('click', start); c.appendChild(b); app.appendChild(c);
+  }
+  async function start() {
+    app.setAttribute('aria-busy', 'true');
+    try {
+      const res = await fetch(ICS_URL, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      games = parseIcs(await res.text());
+      if (!games.length) throw new Error('no games');
+    } catch (e) { showError(); return; }
+    lastSig = ''; render(true);
+  }
+
+  setInterval(() => { if (!games.length) return; render(false); tick(); if (tickEls && isGameDay(tickEls.g, Date.now())) ensureStandings(); }, 1000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && games.length) { render(false); tick(); } });
+  start();
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+</script>
 </body>
 </html>
