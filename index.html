@@ -11,6 +11,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Habs Countdown">
   <link rel="manifest" href="manifest-habs.webmanifest">
+  <!-- ===== THE SCRIPT: everything below builds and updates the page ===== -->
+  <!-- How it works: 1) load the schedule (.ics) 2) find the next game 3) build the game box, filters and list 4) tick every second to update the countdown 5) load standings.json and add records/ranks -->
+  <!-- Search (Ctrl+F) for a function name from the list to jump to it. Each section has a banner like "---------- standings ----------". -->
   <script>
     // Old shared countdown links (?name=...&date=...) used to open the main address; send them to the countdown page.
     if (/[?&](name|date)=/.test(location.search)) location.replace('countdowns.html' + location.search + location.hash);
@@ -31,6 +34,8 @@
     .back { flex-shrink: 0; font-size: 14px; font-weight: 600; color: var(--blue); text-decoration: none; border: 1px solid rgba(77,143,224,0.35); background: rgba(77,143,224,0.12); padding: 9px 12px; border-radius: 99px; white-space: nowrap; }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 
+    /* ===== GAME BOX (the big card at the top). Its pieces are styled in the rules below: ===== */
+    /* .live = red "Game on" banner, .tag = "NEXT GAME" label, .matchup = the two logos, .cd = countdown blocks, .btns = the two buttons */
     .card { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 22px; padding: 20px 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); margin-bottom: 16px; }
     .live { background: linear-gradient(90deg, #b3122a, #e8283f); border-radius: 16px; padding: 12px 14px; margin-bottom: 14px; font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 10px; }
     .live::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #fff; flex-shrink: 0; }
@@ -64,11 +69,13 @@
     .season-over .chip { margin-bottom: 12px; }
     .season-over p { font-size: 16px; line-height: 1.4; }
 
+    /* ===== Season progress bar ("19 of 84 games played") ===== */
     .season { margin-bottom: 14px; }
     .season-top { display: flex; justify-content: space-between; font-size: 13px; color: var(--sub); margin-bottom: 6px; }
     .bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
     .bar i { display: block; height: 100%; width: 0; background: var(--red); border-radius: 99px; }
 
+    /* ===== Filter buttons (Upcoming / Home / Away / Played) and the schedule list. .row = one game ===== */
     .filters { display: flex; gap: 8px; margin-bottom: 8px; overflow-x: auto; padding-bottom: 4px; }
     .fchip { flex-shrink: 0; padding: 9px 14px; border-radius: 99px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #d0d5dd; font-size: 14px; font-weight: 600; cursor: pointer; }
     .fchip[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; }
@@ -87,7 +94,9 @@
     .r-team small { color: var(--sub); font-weight: 500; font-size: 13px; }
     .r-time { font-size: 13px; color: var(--sub); margin-top: 2px; }
     .r-bc { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 99px; background: rgba(77,143,224,0.16); color: #9cc3f5; white-space: nowrap; }
-    .stand-btn { width: 100%; margin-bottom: 14px; padding: 13px 14px; border-radius: 14px; border: 1px solid rgba(77,143,224,0.4); background: rgba(77,143,224,0.14); color: #9cc3f5; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    /* ===== "Conference standings" button (inside the game box) and the slide-in panel ===== */
+    /* .overlay = dark background, .panel = the sliding box. It slides because .panel starts moved off-screen (translateX(100%)) and .open brings it back. */
+    .stand-btn { width: 100%; margin-top: 12px; padding: 13px 14px; border-radius: 14px; border: 1px solid rgba(77,143,224,0.4); background: rgba(77,143,224,0.14); color: #9cc3f5; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; z-index: 40; }
     .overlay.open { opacity: 1; visibility: visible; }
     .panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(100%, 520px); background: #0c1322; border-left: 1px solid var(--border); box-shadow: -10px 0 30px rgba(0,0,0,0.4); transform: translateX(100%); visibility: hidden; transition: transform .28s ease, visibility .28s; z-index: 41; display: flex; flex-direction: column; padding-top: env(safe-area-inset-top); touch-action: pan-y; }
@@ -100,6 +109,7 @@
     .seg button[aria-pressed="true"] { background: var(--red); color: #fff; }
     .div-h { font-size: 14px; font-weight: 700; margin: 16px 4px 4px; color: #fff; }
     .panel-body { flex: 1; overflow-y: auto; padding: 0 12px calc(env(safe-area-inset-bottom) + 20px); overscroll-behavior: contain; }
+    /* ===== Standings table (rows, team logos, streak colors) ===== */
     .st { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
     .st th { position: sticky; top: 0; background: #0c1322; z-index: 1; font-size: 11px; font-weight: 700; color: var(--sub); text-align: center; padding: 8px 2px; border-bottom: 1px solid var(--border); }
     .st td { text-align: center; padding: 6px 2px; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -120,6 +130,7 @@
     .empty { text-align: center; color: var(--sub); padding: 22px 8px; font-size: 14px; }
     .dl { text-align: center; margin-top: 18px; font-size: 14px; }
     .dl a { color: var(--blue); }
+    /* ===== Footer note ===== */
     .foot { margin-top: 22px; font-size: 12px; line-height: 1.5; color: var(--sub); text-align: center; }
     .err { text-align: center; line-height: 1.45; }
     .err p { margin-bottom: 14px; }
@@ -128,19 +139,24 @@
 </head>
 <body>
 <div class="wrap">
+  <!-- PAGE TOP: logo, title and the "My countdowns" link -->
   <header>
     <img src="logos/montreal-canadiens.svg" alt="">
     <h1>Q's Canadiens Countdown</h1>
     <a class="back" href="countdowns.html">My countdowns</a>
   </header>
 
+  <!-- MAIN AREA: starts empty. The script at the bottom builds the game box, progress bar, filters and schedule list in here. -->
+  <!-- To change how something LOOKS, edit the CSS above. To change what is BUILT or where it goes, edit the script below. -->
   <main id="app" aria-busy="true">
     <div class="card"><p class="msg" id="loading">Loading the schedule&hellip;</p></div>
   </main>
 
+  <!-- FOOTER: disclaimer text. Plain HTML, safe to edit. -->
   <p class="foot">Unofficial fan page, not affiliated with or endorsed by the NHL or the Montreal Canadiens. Team names and logos are trademarks of their owners. Broadcasters listed are the English-language broadcasters for the Montreal market; what you can watch depends on where you live. Times are shown in your own time zone. &ldquo;Game on&rdquo; is estimated from an assumed game length of about 2&frac12; hours.</p>
 </div>
 
+<!-- STANDINGS PANEL: sits outside the main area so it survives page rebuilds. The script fills the table (id="st-body") when it is opened. -->
 <div class="overlay" id="st-overlay"></div>
 <aside class="panel" id="st-panel" role="dialog" aria-modal="true" aria-labelledby="st-title" aria-hidden="true">
   <div class="panel-head"><h2 id="st-title">Conference standings</h2><button type="button" class="x" id="st-close" aria-label="Close standings">&times;</button></div>
@@ -180,6 +196,7 @@
     const m = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/.exec(v || '');
     return m ? Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]) : NaN;
   }
+  // Turns the schedule file text into a list of games. Each game gets: start, end, visitor, home, broadcaster.
   function parseIcs(text) {
     const unfolded = text.replace(/\r?\n[ \t]/g, '');
     const out = [];
@@ -209,6 +226,7 @@
   const isHome = g => g.home === HOME_TEAM;
   const shortName = n => n === HOME_TEAM ? 'Canadiens' : n;
   function abbr(n) { return ABBR[n] || n.split(' ').map(w => w[0]).join('').slice(0, 3).toUpperCase(); }
+  // Builds a logo square from logos/<team-name>.svg (or .png). If the image is missing it shows the 3-letter team code instead.
   function logoBox(cls, team) {
     const box = document.createElement('div'); box.className = cls;
     const s = slug(team), img = document.createElement('img');
@@ -217,16 +235,19 @@
     img.onerror = () => { box.textContent = ''; const a = document.createElement('span'); a.className = 'abbr'; a.textContent = abbr(team); box.appendChild(a); };
     box.appendChild(img); return box;
   }
+  // Tiny helper: creates an HTML element with a CSS class and text. Used everywhere below instead of writing HTML by hand.
   function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   const fmt = (ts, opts, tz) => new Intl.DateTimeFormat(undefined, Object.assign({}, opts, tz ? { timeZone: tz } : {})).format(new Date(ts));
   const DATE_OPTS = { weekday: 'long', month: 'long', day: 'numeric' };
   const TIME_OPTS = { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' };
+  // Converts a game start to Eastern time text, e.g. 2026-11-14T19:00, for the countdowns page.
   function etWallClock(ts) {
     const p = {}; for (const x of new Intl.DateTimeFormat('en-US', { timeZone: ET, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).formatToParts(new Date(ts))) p[x.type] = x.value;
     return `${p.year}-${p.month}-${p.day}T${pad(+p.hour % 24)}:${p.minute}`;
   }
   const isLive = (g, now) => now >= g.start && now < g.end;
   const isOver = (g, now) => now >= g.end;
+  // The "next game" = the first game that has not started yet. This is how the box advances by itself.
   const nextGame = now => games.find(g => g.start > now) || null;
   const liveGame = now => games.find(g => isLive(g, now)) || null;
 
@@ -235,6 +256,7 @@
   function icsDate(ts) { const d = new Date(ts); return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z'; }
   function fold(line) { const cps = Array.from(line), o = []; for (let i = 0; i < cps.length; i += 45) o.push((i ? ' ' : '') + cps.slice(i, i + 45).join('')); return o.join('\r\n'); }
   function titleOf(g) { return `${shortName(g.visitor)} at ${shortName(g.home)}`; }
+  // Makes a calendar file for ONE game and downloads it (the "Add to Calendar" button).
   function downloadIcs(g) {
     const name = '\u{1F3D2} ' + titleOf(g);
     const desc = `Visitor: ${g.visitor}\nHome: ${g.home}` + (g.bc ? `\nEnglish broadcast: ${g.bc}` : '');
@@ -252,6 +274,7 @@
     return { events: [], sel: null };
   }
   function inMyCountdowns(g) { return readState().events.some(e => e && e.id === 'nhl-' + g.uid); }
+  // Saves a game into the countdowns page (browser storage key "countdowns-v2") (the "Add to my countdowns" button).
   function addToMine(g) {
     try {
       const s = readState(), id = 'nhl-' + g.uid;
@@ -282,6 +305,7 @@
     try { const res = await fetch(url, { signal: ctl.signal, cache: 'no-cache' }); if (!res.ok) throw new Error('HTTP ' + res.status); return await res.json(); }
     finally { clearTimeout(timer); }
   }
+  // Loads standings: first standings.json (saved by GitHub), then the NHL feed as a backup. Re-checks at most every 10 minutes.
   async function ensureStandings() {
     const now = Date.now();
     if (standingsBusy || (standings && now - standingsAt < 6e5) || (!standings && now - standingsTry < 3e5)) return;
@@ -297,6 +321,7 @@
     standingsBusy = false; standingsErr = errs.join('; '); renderStandPanel();
     if (PREVIEW) { lastSig = ''; render(true); }
   }
+  // Builds the record ("11-6-3 · 25 pts") and rank ("3rd in Central") lines shown under a team.
   function standingLines(team) {
     const r = standings && standings[abbr(team)]; if (!r) return null;
     const box = document.createDocumentFragment();
@@ -310,6 +335,7 @@
   const panel = $('st-panel'), overlay = $('st-overlay'), stBody = $('st-body');
   let panelOpen = false, view = 'conf', conf = 'Eastern', opener = null, scrollY0 = 0;
   function stCell(tag, cls, text) { const c = document.createElement(tag); if (cls) c.className = cls; c.textContent = text; return c; }
+  // Fills the slide-in panel with the standings table. Handles the Eastern/Western and Conference/Divisions switches.
   function renderStandPanel() {
     $('st-view-conf').setAttribute('aria-pressed', String(view === 'conf')); $('st-view-div').setAttribute('aria-pressed', String(view === 'div'));
     $('st-east').setAttribute('aria-pressed', String(conf === 'Eastern')); $('st-west').setAttribute('aria-pressed', String(conf === 'Western'));
@@ -357,6 +383,7 @@
     stBody.appendChild(lg);
   }
   function focusables() { return [...panel.querySelectorAll('button')].filter(b => !b.disabled); }
+  // Slides the standings panel in. (Closing is in closePanel just below.)
   function openPanel(from) {
     if (panelOpen) return; panelOpen = true; opener = from || null;
     scrollY0 = window.scrollY; document.body.style.overflow = 'hidden';
@@ -390,6 +417,13 @@
     const t = Math.max(0, diff), d = Math.floor(t / 864e5), h = Math.floor(t % 864e5 / 36e5), m = Math.floor(t % 36e5 / 6e4), s = Math.floor(t % 6e4 / 1e3);
     return { d, h, m, s };
   }
+  // Creates the "Conference standings" button. It is placed into the game box by renderHero (search for standBtn()).
+  function standBtn() {
+    const sb = el('button', 'stand-btn'); sb.type = 'button'; sb.appendChild(el('span', '', 'Conference standings')); sb.appendChild(el('span', '', '\u25b8'));
+    sb.addEventListener('click', () => openPanel(sb)); return sb;
+  }
+  // BUILDS THE GAME BOX: label, logos, records, date/time, broadcaster, countdown blocks, the two buttons, then the standings button.
+  // To move something in the game box, move its appendChild line within this function (order here = order on screen).
   function renderHero(now) {
     const box = el('section', 'card'); box.setAttribute('aria-label', 'Game countdown');
     const live = liveGame(now);
@@ -399,7 +433,7 @@
     if (!g) {
       const w = el('div', 'season-over'); w.appendChild(logoBox('chip', HOME_TEAM));
       w.appendChild(el('p', '', 'That\u2019s the end of the 2026-27 regular season. Thanks for following along. See you next season!'));
-      box.appendChild(w); tickEls = null; return box;
+      box.appendChild(w); box.appendChild(standBtn()); tickEls = null; return box;
     }
     const isSel = g !== next;
     const tag = isSel ? (isOver(g, now) || isLive(g, now) ? 'Selected game' : 'Selected game') : (g === games[0] ? 'Season opener' : 'Next game');
@@ -448,6 +482,8 @@
       const a = el('a', '', 'Open it'); a.href = 'countdowns.html'; msg.appendChild(a);
     });
     cal.addEventListener('click', () => { downloadIcs(g); msg.textContent = 'Calendar file downloaded. Open it to add the game.'; });
+    // >>> The "Conference standings" button is added to the game box here. Move this line to move the button.
+    box.appendChild(standBtn());
     if (isSel) {
       const back = el('button', 'back-next', next ? '\u2190 Back to the next game' : '\u2190 Back'); back.type = 'button';
       back.addEventListener('click', () => { selectedId = null; render(true); window.scrollTo({ top: 0, behavior: 'smooth' }); });
@@ -455,6 +491,7 @@
     }
     return box;
   }
+  // Runs every second: updates the countdown numbers, and hides days/hours when they reach zero.
   function tick() {
     if (!tickEls) return;
     const now = Date.now(), g = tickEls.g;
@@ -465,6 +502,7 @@
     tickEls.cd.style.setProperty('--n', 2 + (showD ? 1 : 0) + (showH ? 1 : 0));
     v.d.n.textContent = String(p.d); v.h.n.textContent = pad(p.h); v.m.n.textContent = pad(p.m); v.s.n.textContent = pad(p.s);
   }
+  // Builds the progress bar ("19 of 84 games played").
   function renderSeason(now) {
     const played = games.filter(g => isOver(g, now)).length, box = el('section', 'season');
     const top = el('div', 'season-top'); top.appendChild(el('span', '', `${played} of ${games.length} games played`));
@@ -472,6 +510,7 @@
     const bar = el('div', 'bar'), i = document.createElement('i'); i.style.width = (games.length ? played / games.length * 100 : 0) + '%'; bar.appendChild(i);
     box.appendChild(top); box.appendChild(bar); return box;
   }
+  // Builds the Upcoming / Home / Away / Played buttons.
   function renderFilters() {
     const f = el('div', 'filters'); f.setAttribute('role', 'group'); f.setAttribute('aria-label', 'Filter games');
     for (const [k, label] of [['upcoming', 'Upcoming'], ['home', 'Home'], ['away', 'Away'], ['played', 'Played']]) {
@@ -480,6 +519,7 @@
     }
     return f;
   }
+  // Builds the schedule list: month headings and one row per game. Tapping a row puts that game in the game box.
   function renderList(now) {
     const wrap = el('section'); wrap.setAttribute('aria-label', 'Schedule');
     const list = games.filter(g => filter === 'upcoming' ? !isOver(g, now) : filter === 'home' ? isHome(g) : filter === 'away' ? !isHome(g) : isOver(g, now));
@@ -503,6 +543,7 @@
     }
     return wrap;
   }
+  // Rebuilds the visible page. The line below with renderHero / renderSeason / renderFilters / renderList sets the top-to-bottom order of the page.
   function render(force) {
     const now = Date.now(), nx = nextGame(now), lv = liveGame(now);
     const played = games.filter(g => isOver(g, now)).length;
@@ -511,18 +552,19 @@
     lastSig = sig;
     app.textContent = ''; app.setAttribute('aria-busy', 'false');
     app.appendChild(renderHero(now)); app.appendChild(renderSeason(now));
-    const sb = el('button', 'stand-btn'); sb.type = 'button'; sb.appendChild(el('span', '', 'Conference standings')); sb.appendChild(el('span', '', '\u25b8'));
-    sb.addEventListener('click', () => openPanel(sb)); app.appendChild(sb); app.appendChild(renderFilters()); app.appendChild(renderList(now));
+    app.appendChild(renderFilters()); app.appendChild(renderList(now));
     const dl = el('p', 'dl'); const a = el('a', '', 'Download the whole schedule (.ics)'); a.href = ICS_URL; a.setAttribute('download', ''); dl.appendChild(a);
     dl.appendChild(document.createElement('br')); dl.appendChild(el('span', 'msg', 'Opens in your calendar app.')); app.appendChild(dl);
     tick();
   }
+  // Shown if the schedule file cannot be loaded.
   function showError() {
     app.textContent = ''; app.setAttribute('aria-busy', 'false');
     const c = el('div', 'card err');
     c.appendChild(el('p', '', 'The schedule could not be loaded. Check your connection, and make sure the file ' + ICS_URL + ' is in the same folder as this page.'));
     const b = el('button', 'btn', 'Try again'); b.type = 'button'; b.addEventListener('click', start); c.appendChild(b); app.appendChild(c);
   }
+  // Runs first: downloads and reads the schedule, then draws the page.
   async function start() {
     app.setAttribute('aria-busy', 'true');
     try {
@@ -534,6 +576,7 @@
     lastSig = ''; render(true);
   }
 
+  // Every second: checks whether the next game has changed (and redraws if so) and updates the countdown.
   setInterval(() => { if (!games.length) return; render(false); tick(); if (tickEls && isGameDay(tickEls.g, Date.now())) ensureStandings(); }, 1000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden && games.length) { render(false); tick(); } });
   start();
