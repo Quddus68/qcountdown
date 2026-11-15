@@ -496,7 +496,7 @@
         ['d', 'h', 'm', 's'].forEach(k => { $(k + '-val').textContent = '00'; $('b-' + k).hidden = false; });
         $('d-val').classList.remove('three');
         $('cd-display').style.setProperty('--n', 4);
-        $('status').textContent = DONE_MSG;
+        $('status').textContent = doneMsg(ev);
         $('human').textContent = '';
         $('pfill').style.width = '100%'; $('p-pct').textContent = '100%';
         document.title = 'Done \u00b7 ' + (ev.title || 'Countdown');
