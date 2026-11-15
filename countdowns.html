@@ -47,6 +47,7 @@
     .cd-title .ico { width: 1.3em; height: 1.3em; vertical-align: -0.28em; }
     .new-row { width: 100%; max-width: var(--w); margin-top: 18px; text-align: center; }
     .new-row .pill { max-width: 100%; }
+    .new-row-top { margin-top: 2px; margin-bottom: 14px; }
     .countdown-section { padding: 6px 0 20px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
     .cd-title { font-size: 22px; font-weight: 700; text-align: center; margin: 2px 0 4px; overflow-wrap: anywhere; line-height: 1.25; }
     .time-num.three { font-size: clamp(22px, 7vw, 34px); }
@@ -127,6 +128,11 @@
     </div>
   </header>
 
+  <!-- Second "new countdown" button, at the top of the page. It does the same thing as the one under the tiles. -->
+  <div class="new-row new-row-top">
+    <button class="pill" id="new-btn-top" type="button">Click here to make a new countdown</button>
+  </div>
+
   <div class="card" id="detail">
     <div class="countdown-section">
       <div class="cd-title" id="cd-title"><span id="cd-icon"></span> <span id="cd-text"></span></div>
@@ -197,7 +203,7 @@
       <li>The countdown at the top updates every second. There is nothing to save: changes are kept automatically on this device.</li>
     </ol>
     <h3>Add more countdowns</h3>
-    <p>Tap <b>Click here to make a new countdown</b> under your list. Each one shows up as a tile under <b>Your countdowns</b>. Tap a tile to view or edit it. The label above <b>Event name</b> tells you which one you are editing.</p>
+    <p>Tap <b>Click here to make a new countdown</b> at the top of the page or under your list. Each one shows up as a tile under <b>Your countdowns</b>. Tap a tile to view or edit it. The label above <b>Event name</b> tells you which one you are editing.</p>
     <h3>Icons and colors</h3>
     <p>Under <b>Icon &amp; color options</b>, pick an icon and a color. They appear on the countdown and on its tile.</p>
     <h3>Time zones</h3>
@@ -532,12 +538,13 @@
       else { const t = targetTs(ev); if (!isNaN(t)) ev.date = toLocalInput(t); ev.tz = 'local'; $('target-date').value = ev.date; }
       save(); renderTz(ev); buildTiles(); tick();
     });
-    $('new-btn').addEventListener('click', () => {
+    // Both new-countdown buttons (top of page and under the tiles) use this same handler.
+    ['new-btn', 'new-btn-top'].forEach(id => $(id).addEventListener('click', () => {
       hpt(); const ev = mk('New countdown', defaultDate());
       state.events.push(ev); state.sel = ev.id; save(); buildTiles(); loadDetail(); tick();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       const i = $('event-title'); i.focus(); i.select();
-    });
+    }));
     $('del-btn').addEventListener('click', () => {
       const ev = cur();
       if (!confirm('Delete "' + (ev.title || 'Untitled') + '"?')) return;
