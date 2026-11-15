@@ -48,7 +48,16 @@
     .new-row { width: 100%; max-width: var(--w); margin-top: 18px; text-align: center; }
     .new-row .pill { max-width: 100%; }
     .new-row-top { margin-top: 2px; margin-bottom: 14px; }
-    .countdown-section { padding: 6px 0 20px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .countdown-section { padding: 6px 0 4px; }
+    .card.edit-open .countdown-section { padding-bottom: 20px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    /* The editing options slide open and shut. The grid-row trick animates the height without knowing it. */
+    .edit-toggle { display: block; margin: 14px auto 2px; }
+    .edit-toggle .chev { display: inline-block; transition: transform .3s ease; margin-left: 4px; }
+    .edit-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+    .editor { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows .3s ease, visibility 0s .3s; }
+    .editor.open { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows .3s ease, visibility 0s; }
+    .editor-inner { overflow: hidden; min-height: 0; padding: 4px; margin: -4px; }
+    @media (prefers-reduced-motion: reduce) { .editor, .editor.open, .edit-toggle .chev { transition: none; } }
     .cd-title { font-size: 22px; font-weight: 700; text-align: center; margin: 2px 0 4px; overflow-wrap: anywhere; line-height: 1.25; }
     .time-num.three { font-size: clamp(22px, 7vw, 34px); }
     .editing { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--sub); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 14px; }
@@ -146,7 +155,11 @@
       <div class="human" id="human"></div>
       <div class="progress"><div class="progress-fill" id="pfill"></div></div>
       <div class="progress-label"><span id="p-left"></span><span id="p-pct"></span></div>
+      <button class="pill edit-toggle" id="edit-toggle" type="button" aria-expanded="false" aria-controls="editor"><span id="edit-toggle-text">Edit countdown</span><span class="chev" aria-hidden="true">&#9662;</span></button>
     </div>
+
+    <!-- EDITING OPTIONS: hidden until "Edit countdown" is tapped (see setEditor in the script). -->
+    <div class="editor" id="editor" inert><div class="editor-inner">
 
     <div class="editing" id="editing"></div>
     <div class="input-group">
@@ -177,10 +190,11 @@
     </div>
     <button class="btn danger" id="del-btn" type="button">Delete this countdown</button>
     <div class="note save-note">Changes save automatically on this device.</div>
+    </div></div>
   </div>
 
   <div class="section-title">Your countdowns</div>
-  <div class="note tile-hint">Tap a countdown to view or edit it.</div>
+  <div class="note tile-hint">Tap a countdown to view it. Use Edit countdown to change it.</div>
   <div class="tile-grid" id="tiles"></div>
   <div class="new-row">
     <button class="pill" id="new-btn" type="button">Click here to make a new countdown</button>
@@ -198,12 +212,13 @@
   <template id="tpl-instructions">
     <h3>Make a countdown</h3>
     <ol>
+      <li>Tap <b>Edit countdown</b> under the countdown to open the editing options. A new countdown opens them for you. They hold the name, date, icon and color, <b>Share link</b>, <b>Add to Calendar</b> and <b>Delete</b>.</li>
       <li>Type a name in <b>Event name</b>.</li>
       <li>Pick a day and time in <b>Target date &amp; time</b>.</li>
       <li>The countdown at the top updates every second. There is nothing to save: changes are kept automatically on this device.</li>
     </ol>
     <h3>Add more countdowns</h3>
-    <p>Tap <b>Click here to make a new countdown</b> at the top of the page or under your list. Each one shows up as a tile under <b>Your countdowns</b>. Tap a tile to view or edit it. The label above <b>Event name</b> tells you which one you are editing.</p>
+    <p>Tap <b>Click here to make a new countdown</b> at the top of the page or under your list. Each one shows up as a tile under <b>Your countdowns</b>. Tap a tile to view it, then tap <b>Edit countdown</b> to change it. The label above <b>Event name</b> tells you which one you are editing.</p>
     <h3>Icons and colors</h3>
     <p>Under <b>Icon &amp; color options</b>, pick an icon and a color. They appear on the countdown and on its tile.</p>
     <h3>Time zones</h3>
@@ -427,7 +442,7 @@
       }
     }
     function select(id) {
-      hpt(); state.sel = id; save(); loadDetail(); tick();
+      hpt(); if (id !== state.sel) setEditor(false); state.sel = id; save(); loadDetail(); tick();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -539,9 +554,17 @@
       save(); renderTz(ev); buildTiles(); tick();
     });
     // Both new-countdown buttons (top of page and under the tiles) use this same handler.
+    // Slides the editing options open or shut ("Edit countdown" button). A new countdown opens it; choosing another countdown or deleting one closes it.
+    function setEditor(open) {
+      $('editor').classList.toggle('open', open); $('detail').classList.toggle('edit-open', open);
+      if (open) $('editor').removeAttribute('inert'); else $('editor').setAttribute('inert', '');
+      $('edit-toggle').setAttribute('aria-expanded', String(open));
+      $('edit-toggle-text').textContent = open ? 'Hide editor' : 'Edit countdown';
+    }
+    $('edit-toggle').addEventListener('click', () => { hpt(); setEditor(!$('editor').classList.contains('open')); });
     ['new-btn', 'new-btn-top'].forEach(id => $(id).addEventListener('click', () => {
       hpt(); const ev = mk('New countdown', defaultDate());
-      state.events.push(ev); state.sel = ev.id; save(); buildTiles(); loadDetail(); tick();
+      state.events.push(ev); state.sel = ev.id; save(); buildTiles(); loadDetail(); tick(); setEditor(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       const i = $('event-title'); i.focus(); i.select();
     }));
@@ -551,7 +574,7 @@
       const i = state.events.indexOf(ev); state.events.splice(i, 1);
       if (!state.events.length) state.events.push(mk('New countdown', defaultDate()));
       state.sel = state.events[Math.min(i, state.events.length - 1)].id;
-      save(); buildTiles(); loadDetail(); tick();
+      save(); buildTiles(); loadDetail(); tick(); setEditor(false);
     });
     const shB = $('share-btn');
     shB.addEventListener('click', async () => {
