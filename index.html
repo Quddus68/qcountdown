@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <!-- Google Search Console verification -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0f1a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Habs Countdown">
+
+<!-- Google Search Console verification -->
 <meta name="google-site-verification" content="ZuIEL9HHA7_gylkGi3GO5gLXBJKF_9dFbKPsiOuGmY8" />
 
 <!-- Title and description (replace your existing <title> and meta description) -->
@@ -39,6 +47,7 @@
     header { padding: 18px 0 12px; display: flex; align-items: center; gap: 12px; }
     header img { width: 44px; height: 44px; object-fit: contain; flex-shrink: 0; background: #fff; border-radius: 12px; padding: 4px; }
     header h1 { font-size: clamp(18px, 5.6vw, 26px); line-height: 1.15; font-weight: 700; letter-spacing: -0.4px; flex: 1; min-width: 0; }
+    .intro { font-size: 14px; line-height: 1.5; color: var(--sub); margin: 0 0 14px; }
     .back { flex-shrink: 0; font-size: 14px; font-weight: 600; color: var(--blue); text-decoration: none; border: 1px solid rgba(77,143,224,0.35); background: rgba(77,143,224,0.12); padding: 9px 12px; border-radius: 99px; white-space: nowrap; }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 
@@ -154,10 +163,14 @@
     <a class="back" href="countdowns.html">My countdowns</a>
   </header>
 
+  <!-- INTRO: plain HTML text that search engines can read even before the script runs. The script adds the next game to it. -->
+  <p class="intro" id="intro">Habs countdown: a live countdown to the next Montreal Canadiens game, with the full 2026-27 NHL schedule, English broadcasters, game times in your time zone and conference standings.<span id="intro-next"></span></p>
+
   <!-- MAIN AREA: starts empty. The script at the bottom builds the game box, progress bar, filters and schedule list in here. -->
   <!-- To change how something LOOKS, edit the CSS above. To change what is BUILT or where it goes, edit the script below. -->
   <main id="app" aria-busy="true">
     <div class="card"><p class="msg" id="loading">Loading the schedule&hellip;</p></div>
+    <noscript><div class="card"><p class="msg">This countdown needs JavaScript. The full 2026-27 Montreal Canadiens schedule is available as a calendar file: <a href="Canadiens-2026-27-schedule.ics">download the schedule (.ics)</a>.</p></div></noscript>
   </main>
 
   <!-- FOOTER: disclaimer text. Plain HTML, safe to edit. -->
@@ -551,6 +564,21 @@
     }
     return wrap;
   }
+  /* ---------- search engine info ---------- */
+  // Adds the next game to the intro sentence and to the page's structured data (JSON-LD) so search engines can read it.
+  function updateSeo(next) {
+    const note = $('intro-next');
+    if (note) note.textContent = next ? ' Next game: ' + titleOf(next) + ', ' + fmt(next.start, DATE_OPTS) + '.' : '';
+    let s = $('ld-next');
+    if (!next) { if (s) s.remove(); return; }
+    if (!s) { s = document.createElement('script'); s.type = 'application/ld+json'; s.id = 'ld-next'; document.head.appendChild(s); }
+    const team = n => ({ '@type': 'SportsTeam', name: n, sport: 'Ice Hockey' });
+    const ev = { '@context': 'https://schema.org', '@type': 'SportsEvent', name: titleOf(next), sport: 'Ice Hockey',
+      startDate: new Date(next.start).toISOString(), endDate: new Date(next.end).toISOString(),
+      eventStatus: 'https://schema.org/EventScheduled', awayTeam: team(next.visitor), homeTeam: team(next.home) };
+    if (isHome(next)) ev.location = { '@type': 'Place', name: 'Bell Centre', address: 'Montreal, QC, Canada' };
+    s.textContent = JSON.stringify(ev);
+  }
   // Rebuilds the visible page. The line below with renderHero / renderSeason / renderFilters / renderList sets the top-to-bottom order of the page.
   function render(force) {
     const now = Date.now(), nx = nextGame(now), lv = liveGame(now);
@@ -558,6 +586,7 @@
     const sig = [nx && nx.uid, lv && lv.uid, played, selectedId, filter].join('|');
     if (!force && sig === lastSig) return;
     lastSig = sig;
+    updateSeo(nx);
     app.textContent = ''; app.setAttribute('aria-busy', 'false');
     app.appendChild(renderHero(now)); app.appendChild(renderSeason(now));
     app.appendChild(renderFilters()); app.appendChild(renderList(now));
